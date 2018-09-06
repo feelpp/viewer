@@ -1,0 +1,16 @@
+FORMAT:
+type: ensight gold
+GEOMETRY:
+model: Export.geo
+VARIABLES:
+vector per node: 2 solid.displacement Export.solid.displacement.vec.****
+scalar per element: 2 solid.pid Export.solid.pid.scl.****
+scalar per element: 2 solid.von_mises_criterions Export.solid.von_mises_criterions.scl.****
+TIME:
+time set:        2
+number of steps: 10
+filename start number: 1
+filename increment: 1
+time values: 1.000000e+00 2.000000e+00 3.000000e+00 4.000000e+00 5.000000e+00 6.000000e+00 7.000000e+00 8.000000e+00 9.000000e+00 1.000000e+01 
+
+

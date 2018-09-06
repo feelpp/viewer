@@ -1,0 +1,12 @@
+FORMAT:
+type: master_server gold 
+
+MULTIPLE_CASEFILES
+total number of cfiles: 1 
+cfiles global path: /feel/toolboxes/solid/rotating-winch/biele/P2/np_24
+cfiles pattern: Export.case
+cfiles start number: 0
+cfiles increment: 1
+
+SERVERS
+number of servers: 1 repeat

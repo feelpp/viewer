@@ -1,0 +1,17 @@
+FORMAT:
+type: ensight gold
+GEOMETRY:
+model: Export.geo
+VARIABLES:
+vector per node: 2 solid.displacement Export.solid.displacement.vec.****
+scalar per element: 2 solid.princial_stress_0 Export.solid.princial_stress_0.scl.****
+scalar per element: 2 solid.princial_stress_1 Export.solid.princial_stress_1.scl.****
+scalar per element: 2 solid.princial_stress_2 Export.solid.princial_stress_2.scl.****
+scalar per element: 2 solid.von_mises_criterions Export.solid.von_mises_criterions.scl.****
+TIME:
+time set:        2
+number of steps: 1
+filename start number: 1
+filename increment: 1
+time values: 0.000000e+00 
+

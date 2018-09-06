@@ -1,0 +1,9 @@
+FORMAT:
+type: master_server gold 
+SERVERS
+number of servers: 1 
+#Server 1
+machine id: feelpp
+executable: /usr/local/bin/ensight76/bin/ensight7.server
+data_path: /feel/toolboxes/solid/t-beam/P2/np_24
+casefile: Export.case
