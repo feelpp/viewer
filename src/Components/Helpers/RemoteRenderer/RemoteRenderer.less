@@ -1,0 +1,31 @@
+/* Imports */
+
+@import '../../Root/Root.less';
+
+/* Variables */
+
+@margin: 10px;
+
+/* Style definition */
+
+.RemoteRenderer
+{
+	width: 100%;
+	height: 100%;
+
+	.renderer
+	{
+		width: 100%;
+		height: 100%;
+	}
+
+	.statisticsViewer
+	{
+		position: absolute;
+		top: @margin;
+		left: @margin;
+		font-family: @fontFamily;
+		font-size: @fontSizeSmall;
+		z-index: 1;
+	}
+}

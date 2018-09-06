@@ -1,0 +1,53 @@
+/* Imports */
+
+/* Variables */
+
+@red: #ed5564;
+@darkRed: darken(@red, 5%);
+@orange: #fb6e52;
+@darkOrange: darken(@orange, 5%);
+@yellow: #ffeb3b;
+@darkYellow: darken(@yellow, 5%);
+@green: #48cfae;
+@darkGreen: darken(@green, 5%);
+@turquoise: #22a3a9;
+@darkTurquoise: darken(@turquoise, 5%);
+@blue: #2e8bda;
+@darkBlue: darken(@blue, 5%);
+@white: #ffffff;
+@offWhite: #f9f9f9;
+@cobalt: #1c2541;
+@cobaltDark: darken(@cobalt, 5%);
+@darkGrey: #212429;
+@black: #000000;
+
+@blackSemiTransparentGigaLight: rgba(0, 0, 0, 0.03125);
+@blackSemiTransparentMegaLight: rgba(0, 0, 0, 0.0625);
+@blackSemiTransparentUltraLight: rgba(0, 0, 0, 0.125);
+@blackSemiTransparentLight: rgba(0, 0, 0, 0.25);
+@blackSemiTransparentMedium: rgba(0, 0, 0, 0.5);
+@blackSemiTransparentDark: rgba(0, 0, 0, 0.75);
+
+@boxShadow: 0px 1px 5px 0px @blackSemiTransparentLight;
+@borderRadius: 3px;
+
+@fontFamily: Arial;
+@fontSizeNormal: 16px;
+@fontSizeSmall: 14px;
+
+@configurationEditorWidth: 800px;
+@configurationEditorHeight: 600px;
+
+/* Style definition */
+
+.Root
+{
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	font-family: @fontFamily;
+	font-size: @fontSizeNormal;
+	color: @white;
+	background-color: @black;
+}
