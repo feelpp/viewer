@@ -73,10 +73,61 @@ const configuration = {
 />
 ```
 
-Configuration
--------------
+Parameters
+----------
 
-TODO
+To correctly use the viewer, using the source or the compiled version, you need to properly configure it.
+
+You need to pass to the viewer two parameters:
+
+- `data`: 
+
+	This parameters is a string describing the data to load. Since this parameter is passed by the client to the server, it need to be not obvious / encrypted.
+	
+	In the context of this standalone project, a signature mechanism example has been implemented.
+	A signature is generated, passed as `data` parameter to the viewer, passed to the server by the viewer, decrypted and handled by the server.
+	In order to decrypt the signature, the server need to access a decoder handling it. This decoder is passed to the server starting script using the `--data-load-signature-decoder` option.
+	Examples of [signature encoder]('./bin/encodeDataLoadSignature.js') and [signature decoder]('./bin/decodeDataLoadSignature.js') live in `./bin`.
+	
+	In a production environment you can use a token mechanism instead.
+	A token is generated, passed as `data` parameter to the viewer, passed to the server by the viewer, checked and handled by the server.
+	
+	In both case, the `data-load-signature-decoder` executable need to return a JSON response of the following format:
+	
+	```
+	{
+	    value: ..., // boolean describing if decoding succeed
+	    code: ..., // number describing decoding result
+	    data: {
+	        filePath: ..., // string describing the relative path of the file to load, belonging to the data directory
+	        expirationDate: ..., // string describing when the data load signature expires
+	    },
+	}
+	```
+
+- `configuration`:
+
+	This parameter is a JavaScript object describing the configuration of the viewer:
+	
+	```
+	{
+	    connection: {
+	        sessionManagerURL: ..., // string describing URL to get WebSocket connection to use for the viewer
+	        timeout: ..., // number describing the accepted time during the API need to respond
+	    },
+	    render: {
+	        quality: {
+	            still: ..., // number [0:100] describing the JPEG compression percentage image to use for still images
+	            interactive: ..., // number [0:100] describing the JPEG compression percentage to use for interactive images
+	        },
+	        ratio: {
+	            still: ..., // number [0:1] describing the size ratio of the JPEG image to use for still images
+	            interactive: ..., // number [0:1] describing the size ratio of the JPEG image to use for interactive images
+	        },
+	    },
+	    statisticsDisplayStatus: ..., // boolean describing if statistics should be displayed
+	}
+	```
 
 Setup
 =====
