@@ -1,0 +1,95 @@
+{
+	"name": "cemosis-viewer",
+	"version": "1.0.0",
+	"description": "Cemosis Viewer",
+	"license": "UNLICENSED",
+	"private": true,
+	"author": "Félix Veysseyre <felix.veysseyre@kitware.com>",
+	"contributors": [
+		{
+			"name": "Félix Veysseyre",
+			"email": "felix.veysseyre@kitware.com"
+		}
+	],
+	"main": "index.js",
+	"scripts": {
+		"build-dev": "webpack --mode development",
+		"build-dev-auto": "webpack --mode development --watch",
+		"build-prod": "webpack --mode production"
+	},
+	"dependencies": {
+		"babel-runtime": "^6.26.0",
+		"commander": "^2.15.0",
+		"hammerjs": "^2.0.8",
+		"monologue.js": "^0.3.5",
+		"open": "^0.0.5",
+		"react": "^16.2.0",
+		"react-dom": "^16.2.0",
+		"shelljs": "^0.8.1"
+	},
+	"devDependencies": {
+		"babel-core": "^6.26.0",
+		"babel-eslint": "^8.2.2",
+		"babel-loader": "^7.1.4",
+		"babel-plugin-react-transform": "^3.0.0",
+		"babel-preset-env": "^1.7.0",
+		"babel-preset-react": "^6.24.1",
+		"classnames": "^2.2.5",
+		"css-loader": "^0.28.10",
+		"deep-equal": "^1.0.1",
+		"element-resize-detector": "^1.1.14",
+		"eslint": "^4.18.2",
+		"eslint-loader": "^2.0.0",
+		"eslint-plugin-react": "^7.7.0",
+		"expose-loader": "^0.7.5",
+		"file-loader": "^1.1.11",
+		"less": "^3.0.1",
+		"less-loader": "^4.1.0",
+		"moment": "^2.22.0",
+		"paraviewweb": "^3.2.5",
+		"prop-types": "^15.6.1",
+		"randomstring": "^1.1.5",
+		"react-fa": "^4.2.0",
+		"react-redux": "^5.0.7",
+		"react-router-dom": "^4.2.2",
+		"redux": "^3.7.2",
+		"style-loader": "^0.20.3",
+		"url-loader": "^1.0.1",
+		"webpack": "^4.17.2",
+		"webpack-cli": "^2.0.15",
+		"wslink": "^0.1.7"
+	},
+	"bin": {
+		"startRenderingServer": "./bin/startRenderingServer.js"
+	},
+	"babel": {
+		"presets": [
+			"env",
+			"react"
+		]
+	},
+	"eslintConfig": {
+		"parser": "babel-eslint",
+		"plugins": [
+			"react"
+		],
+		"env": {
+			"browser": true
+		},
+		"rules": {
+			"no-console": [
+				0
+			],
+			"no-extra-semi": [
+				0
+			],
+			"react/no-unescaped-entities": [
+				0
+			]
+		},
+		"extends": [
+			"eslint:recommended",
+			"plugin:react/recommended"
+		]
+	}
+}
