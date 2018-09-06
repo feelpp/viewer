@@ -1,0 +1,48 @@
+{
+	"configuration": {
+		"host": "localhost",
+		"port": 9000,
+		"endpoint": "paraview",
+		"proxy_file": "/.../proxy/proxy.txt",
+		"sessionURL": "ws://.../proxy?sessionId=${id}&path=ws",
+		"timeout": 25,
+		"log_dir": "/.../logs",
+		"fields": [
+			"file",
+			"host",
+			"port",
+			"updir"
+		]
+	},
+
+	"resources": [
+		{
+			"host": "localhost",
+			"port_range": [9001, 9100]
+		}
+	],
+
+	"properties": {
+		"python_exec": "/.../pvpython",
+		"starting_script_path": "/.../server/startRenderingServer.py",
+		"data_directory_path": "/",
+		"data_load_signature_decoder": "/...",
+		"plugins_directory_path": "/.../server/plugins"
+	},
+
+	"apps": {
+		"viewer": {
+			"cmd": [
+				"${python_exec}",
+				"--force-offscreen-rendering",
+				"-dr",
+				"${starting_script_path}",
+				"--port", "${port}",
+				"--data-directory-path", "${data_directory_path}",
+				"--data-load-signature-decoder", "${data_load_signature_decoder}",
+				"--plugins-directory-path", "${plugins_directory_path}"
+			],
+			"ready_line": "Starting factory"
+		},
+	}
+}
