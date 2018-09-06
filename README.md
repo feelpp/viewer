@@ -56,7 +56,22 @@ You need to set manually the size of the container as the application has been c
 Source version instantiation
 ----------------------------
 
-TODO
+In case your main application is using React (as a frontend library) and WebPack (for the building process), you can consider to use the Viewer sources instead of the compiled version.
+
+You need to use the `Root` component defined in `./src/Components/Root/Root.js`:
+
+```
+const data = '...';
+
+const configuration = {
+    ...
+};
+
+<Root
+    data={data}
+    configuration={configuration}
+/>
+```
 
 Configuration
 -------------
