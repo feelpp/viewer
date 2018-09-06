@@ -132,6 +132,28 @@ You need to pass to the viewer two parameters:
 Setup
 =====
 
+Development
+-----------
+
+In order to develop on the project and test new features, you need two things:
+
+1. Start server:
+
+	To start the server you need to run the following command:
+
+	```
+	node ./bin/startRenderingServer.js --pvpython [PVPYTHON_EXECUTABLE_PATH] --data-directory-path [DATA_DIRECTORY_PATH] --data-load-signature-decoder [DATA_LOAD_SIGNATURE_DECODER_EXECUTABLE_PATH]
+	```
+
+	The following parameters need to be passed:
+	- `PVPYTHON_EXECUTABLE_PATH`: Path to `pvpython` executable, 5.5 version is required
+	- `DATA_DIRECTORY_PATH`: Path to the directory used to store the data available to be loaded by the viewer: (`.../data`)
+	- `DATA_LOAD_SIGNATURE_DECODER_EXECUTABLE_PATH`: Path to `decodeDataLoadSignature` executable: (`.../bin/decodeDataLoadSignature.js`)
+	
+2. Open the testing web page:
+
+	Open the page [`http://localhost:8080/`](http://localhost:8080/) with your browser
+
 Production
 ----------
 
@@ -265,25 +287,3 @@ In order to deploy the viewer in a production environment, you need several thin
 	```
 	/opt/Softwares/ParaView/bin/pvpython /opt/Softwares/wslink/python/src/wslink/launcher.py /opt/Others/launcher.json
 	```
-
-Development
------------
-
-In order to develop on the project and test new features, you need two things:
-
-1. Start server:
-
-	To start the server you need to run the following command:
-
-	```
-	node ./bin/startRenderingServer.js --pvpython [PVPYTHON_EXECUTABLE_PATH] --data-directory-path [DATA_DIRECTORY_PATH] --data-load-signature-decoder [DATA_LOAD_SIGNATURE_DECODER_EXECUTABLE_PATH]
-	```
-
-	The following parameters need to be passed:
-	- `PVPYTHON_EXECUTABLE_PATH`: Path to `pvpython` executable, 5.5 version is required
-	- `DATA_DIRECTORY_PATH`: Path to the directory used to store the data available to be loaded by the viewer: (`.../data`)
-	- `DATA_LOAD_SIGNATURE_DECODER_EXECUTABLE_PATH`: Path to `decodeDataLoadSignature` executable: (`.../bin/decodeDataLoadSignature.js`)
-	
-2. Open the testing web page:
-
-	Open the page [`http://localhost:8080/`](http://localhost:8080/) with your browser
