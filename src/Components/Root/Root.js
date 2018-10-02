@@ -9,7 +9,7 @@ import main from '../../Reducers/main.js';
 import configurationActions from '../../Actions/configuration.js';
 import dataActions from '../../Actions/data.js';
 
-import Main from '../Main/Main.js';
+import Main from './Main/Main.js';
 
 import './Root.less';
 
