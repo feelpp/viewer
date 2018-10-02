@@ -7,8 +7,8 @@ import ViewerProtocol from '../../../../Others/ParaViewWebProtocols/Viewer.js';
 
 import {Connection} from '../../../../Helpers/Connection.js';
 
-import connectionActions from '../../../../Actions/connection.js';
-import visualizationParametersActions from '../../../../Actions/visualizationParameters.js';
+import connectionActions from '../../../../Actions/connection/connection.js';
+import visualizationParametersActions from '../../../../Actions/visualizationParameters/visualizationParameters.js';
 
 import RemoteRenderer from '../../../Helpers/RemoteRenderer/RemoteRenderer.js';
 

@@ -6,9 +6,9 @@ import {HashRouter as Router} from 'react-router-dom';
 
 import {reduceRootState} from '../../Reducers/root.js';
 
-import configurationActions from '../../Actions/configuration.js';
-import dataActions from '../../Actions/data.js';
-import panelActions from '../../Actions/panel.js';
+import configurationActions from '../../Actions/configuration/configuration.js';
+import dataActions from '../../Actions/data/data.js';
+import panelActions from '../../Actions/panel/panel.js';
 
 import Main from './Main/Main.js';
 

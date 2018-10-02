@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import panelActions from '../../../../../Actions/panel.js';
-import visualizationParametersActions from '../../../../../Actions/visualizationParameters.js';
+import panelActions from '../../../../../Actions/panel/panel.js';
+import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
 
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
