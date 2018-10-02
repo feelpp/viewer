@@ -1,0 +1,89 @@
+/* Imports */
+
+@import '../../Root/Root.less';
+
+/* Variables */
+
+@margin: 10px;
+@padding: 10px;
+@widthOpen: 250px;
+
+/* Style definition */
+
+.Panel
+{
+	position: absolute;
+	top: @margin;
+	right: @margin;
+	width: 40px;
+	background-color: @blue;
+	border-radius: 20px;
+	box-shadow: @boxShadow;
+
+	overflow: hidden;
+	transition: all 200ms;
+
+	&.open
+	{
+		width: @panelWidth;
+		border-radius: 3px;
+
+		.header
+		{
+			table
+			{
+				tr
+				{
+					td
+					{
+						&.text
+						{
+							display: block;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.header
+	{
+		width: 100%;
+		height: 40px;
+		background-color: @blue;
+		cursor: pointer;
+
+		table
+		{
+			width: 100%;
+			border-collapse: collapse;
+
+			tr
+			{
+				td
+				{
+					&.text
+					{
+						display: none;
+						padding: @padding;
+						text-align: left;
+					}
+
+					&.icon
+					{
+						padding: (@padding + 2) (@padding + 1) (@padding - 2) (@padding - 1);
+						text-align: right;
+					}
+				}
+			}
+		}
+	}
+
+	.content
+	{
+		box-sizing: border-box;
+		width: 100%;
+		color: @black;
+		background-color: @offWhite;
+	}
+}

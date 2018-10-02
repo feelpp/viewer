@@ -8,8 +8,10 @@ import ViewerProtocol from '../../../../Others/ParaViewWebProtocols/Viewer.js';
 import {Connection} from '../../../../Helpers/Connection.js';
 
 import connectionActions from '../../../../Actions/connection.js';
+import panelActions from '../../../../Actions/panel.js';
 
 import RemoteRenderer from '../../../Helpers/RemoteRenderer/RemoteRenderer.js';
+import Panel from '../../../Helpers/Panel/Panel.js';
 
 import './Viewer.less';
 
@@ -34,10 +36,6 @@ export class Viewer extends Component {
 			custom: {
 				Viewer: ViewerProtocol,
 			},
-		};
-
-		this.state = {
-			orientationAxesVisibilityStatus: true,
 		};
 	}
 
@@ -74,11 +72,28 @@ export class Viewer extends Component {
 					/>
 				);
 
+				/* Panel */
+
+				let panel = null;
+
+				if(this.props.configuration.panelDisplayStatus)
+				{
+					panel = (
+						<Panel
+							openStatus={this.props.panelOpenStatus}
+							setOpenStatus={this.props.setPanelOpenStatus}
+						>
+							Test
+						</Panel>
+					);
+				}
+
 				/* Content */
 
 				content = (
 					<div className="content">
 						{remoteRenderer}
+						{panel}
 					</div>
 				);
 			}
@@ -174,6 +189,8 @@ Viewer.propTypes = {
 	loadStatus: PropTypes.bool.isRequired,
 	setLoadStatus: PropTypes.func.isRequired,
 	setClient: PropTypes.func.isRequired,
+	panelOpenStatus: PropTypes.bool.isRequired,
+	setPanelOpenStatus: PropTypes.func.isRequired,
 };
 
 Viewer.defaultProps = {
@@ -186,6 +203,7 @@ export default connect(
 			data: state.data,
 			loadStatus: state.connection.loadStatus,
 			client: state.connection.client,
+			panelOpenStatus: state.panel.openStatus,
 		};
 	},
 	(dispatch) => {
@@ -195,6 +213,9 @@ export default connect(
 			},
 			setClient: (client) => {
 				dispatch(connectionActions.setClient(client));
+			},
+			setPanelOpenStatus: (openStatus) => {
+				dispatch(panelActions.setOpenStatus(openStatus));
 			},
 		};
 	}

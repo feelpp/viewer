@@ -1,6 +1,7 @@
 import configuration from './configuration.js';
-import data from './data.js';
 import connection from './connection.js';
+import data from './data.js';
+import panel from './panel.js';
 
 export default function main(state = {}, action) {
 
@@ -8,7 +9,8 @@ export default function main(state = {}, action) {
 
 	return {
 		configuration: configuration(state.configuration, action),
-		data: data(state.data, action),
 		connection: connection(state.connection, action),
+		data: data(state.data, action),
+		panel: panel(state.panel, action),
 	};
 };

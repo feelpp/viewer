@@ -27,6 +27,7 @@ export class Viewer {
 				},
 			},
 			statisticsDisplayStatus: false,
+			panelDisplayStatus: true,
 		};
 
 		configuration = Object.assign({}, defaultConfiguration, configuration);
