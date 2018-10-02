@@ -1,6 +1,6 @@
-const initialState = {};
+const configurationInitialState = {};
 
-export default function configuration(state = initialState, action) {
+export function reduceConfigurationState(state = configurationInitialState, action) {
 	if(action && action.type)
 	{
 		/* setConfiguration */
@@ -18,4 +18,4 @@ export default function configuration(state = initialState, action) {
 	{
 		return state;
 	}
-};
+}

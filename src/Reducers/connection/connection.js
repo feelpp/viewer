@@ -1,9 +1,9 @@
-const initialState = {
+const connectionInitialState = {
 	loadStatus: false,
 	client: null,
 };
 
-export default function connection(state = initialState, action) {
+export function reduceConnectionState(state = connectionInitialState, action) {
 	if(action && action.type)
 	{
 		/* setLoadStatus */
@@ -32,4 +32,4 @@ export default function connection(state = initialState, action) {
 	{
 		return state;
 	}
-};
+}

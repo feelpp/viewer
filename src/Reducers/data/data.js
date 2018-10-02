@@ -1,6 +1,6 @@
-const initialState = null;
+const dataInitialState = null;
 
-export default function data(state = initialState, action) {
+export function reduceDataState(state = dataInitialState, action) {
 	if(action && action.type)
 	{
 		/* setData */
@@ -18,4 +18,4 @@ export default function data(state = initialState, action) {
 	{
 		return state;
 	}
-};
+}

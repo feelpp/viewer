@@ -4,7 +4,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {HashRouter as Router} from 'react-router-dom';
 
-import main from '../../Reducers/main.js';
+import {reduceRootState} from '../../Reducers/root.js';
 
 import configurationActions from '../../Actions/configuration.js';
 import dataActions from '../../Actions/data.js';
@@ -24,7 +24,7 @@ export default class Root extends Component {
 
 		/** Store **/
 
-		this.store = createStore(main);
+		this.store = createStore(reduceRootState);
 
 		/* Initial values */
 

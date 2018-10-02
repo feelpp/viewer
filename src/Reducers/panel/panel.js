@@ -1,8 +1,8 @@
-const initialState = {
+const panelInitialState = {
 	openStatus: false,
 };
 
-export default function panel(state = initialState, action) {
+export function reducePanelState(state = panelInitialState, action) {
 	if(action && action.type)
 	{
 		/* setOpenStatus */
@@ -22,4 +22,4 @@ export default function panel(state = initialState, action) {
 	{
 		return state;
 	}
-};
+}
