@@ -1,0 +1,38 @@
+/* Imports */
+
+@import '../../../Root.less';
+
+/* Variables */
+
+@padding: 10px;
+
+/* Style definition */
+
+.VisualizationParameterEditor
+{
+	.fields
+	{
+		width: 100%;
+		border-collapse: collapse;
+		padding: 0px;
+		margin: 0px;
+
+		tr
+		{
+			td
+			{
+				padding: @padding;
+
+				&.fieldLabel
+				{
+					text-align: left;
+				}
+
+				&.fieldEditor
+				{
+					text-align: right;
+				}
+			}
+		}
+	}
+}
