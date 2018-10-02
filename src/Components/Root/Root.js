@@ -53,7 +53,7 @@ export default class Root extends Component {
 
 	/* Specific */
 
-};
+}
 
 Root.propTypes = {
 	data: PropTypes.string.isRequired,

@@ -164,7 +164,7 @@ export class Viewer extends Component {
 			this.props.setClient(false);
 		}
 	}
-};
+}
 
 Viewer.propTypes = {
 	client: PropTypes.object,

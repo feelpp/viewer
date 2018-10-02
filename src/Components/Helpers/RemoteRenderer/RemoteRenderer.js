@@ -303,7 +303,7 @@ export default class RemoteRenderer extends Component {
 			}
 		}
 	}
-};
+}
 
 RemoteRenderer.propTypes = {
 	className: PropTypes.string,

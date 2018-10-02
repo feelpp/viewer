@@ -44,7 +44,7 @@ export default class StatisticsViewer extends Component {
 
 	/* Specific */
 
-};
+}
 
 StatisticsViewer.propTypes = {
 	className: PropTypes.string,

@@ -39,7 +39,7 @@ export class Main extends Component {
 
 	/* Specific */
 
-};
+}
 
 Main.propTypes = {
 	data: PropTypes.string.isRequired,
