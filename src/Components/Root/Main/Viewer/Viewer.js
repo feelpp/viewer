@@ -8,6 +8,7 @@ import ViewerProtocol from '../../../../Others/ParaViewWebProtocols/Viewer.js';
 import {Connection} from '../../../../Helpers/Connection.js';
 
 import connectionActions from '../../../../Actions/connection.js';
+import visualizationParametersActions from '../../../../Actions/visualizationParameters.js';
 
 import RemoteRenderer from '../../../Helpers/RemoteRenderer/RemoteRenderer.js';
 
@@ -147,11 +148,23 @@ export class Viewer extends Component {
 			{
 				ready: (client) => {
 					this.props.setClient(client);
-					this.props.setLoadStatus(false);
 
 					/* Load data */
 
-					client.Viewer.loadFile(this.props.data);
+					client.Viewer.loadFile(this.props.data).then((result) => {
+
+						/* Other */
+
+						if(result.value)
+						{
+							this.props.setRepresentationTypes(result.data.representationTypes);
+							this.props.setRepresentationType(result.data.representationType);
+						}
+
+						/* Load status */
+
+						this.props.setLoadStatus(false);
+					});
 				},
 				error: () => {
 					this.props.setClient(false);
@@ -184,6 +197,8 @@ Viewer.propTypes = {
 	loadStatus: PropTypes.bool.isRequired,
 	setLoadStatus: PropTypes.func.isRequired,
 	setClient: PropTypes.func.isRequired,
+	setRepresentationTypes: PropTypes.func.isRequired,
+	setRepresentationType: PropTypes.func.isRequired,
 };
 
 Viewer.defaultProps = {
@@ -205,6 +220,12 @@ export default connect(
 			},
 			setClient: (client) => {
 				dispatch(connectionActions.setClient(client));
+			},
+			setRepresentationTypes: (representationTypes) => {
+				dispatch(visualizationParametersActions.setRepresentationTypes(representationTypes));
+			},
+			setRepresentationType: (representationType) => {
+				dispatch(visualizationParametersActions.setRepresentationType(representationType));
 			},
 		};
 	}

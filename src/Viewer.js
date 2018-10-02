@@ -28,6 +28,7 @@ export class Viewer {
 			},
 			statisticsDisplayStatus: false,
 			visualizationParameterEditorDisplayStatus: true,
+			visualizationParameterEditorInitialOpenStatus: false,
 		};
 
 		configuration = Object.assign({}, defaultConfiguration, configuration);

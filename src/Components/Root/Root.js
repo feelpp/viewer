@@ -8,6 +8,7 @@ import {reduceRootState} from '../../Reducers/root.js';
 
 import configurationActions from '../../Actions/configuration.js';
 import dataActions from '../../Actions/data.js';
+import panelActions from '../../Actions/panel.js';
 
 import Main from './Main/Main.js';
 
@@ -28,8 +29,17 @@ export default class Root extends Component {
 
 		/* Initial values */
 
+		/** Configuration **/
+
 		this.store.dispatch(configurationActions.setConfiguration(this.props.configuration));
+
+		/** Data **/
+
 		this.store.dispatch(dataActions.setData(this.props.data));
+
+		/** Initialization **/
+
+		this.store.dispatch(panelActions.setOpenStatus(this.props.configuration.visualizationParameterEditorInitialOpenStatus));
 	}
 
 	render() {

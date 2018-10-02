@@ -50,7 +50,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
             # Test file existence #
 
-            if (os.path.isfile(self.fileName)):
+            if(os.path.isfile(self.fileName)):
 
                return self.displayData()
 
@@ -87,13 +87,22 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
         # Logging #
         
         print('Loaded')
-        
+
+        # Data #
+
+        representationTypes = list(self.representation.GetPropertyValue('RepresentationTypesInfo'))
+        representationType = str(self.representation.GetPropertyValue('Representation'))
+
         # Return #
         
         return createResponse(
             value=True,
             code=1,
-            message='Data loading succeed'
+            message='Data loading succeed',
+            data={
+                'representationTypes': representationTypes,
+                'representationType': representationType,
+            }
         )
 
     def updateView(self):
@@ -115,10 +124,68 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         self.updateView()
 
+        # Return #
+
+        return createResponse(
+            value=True,
+            code=1,
+            message='View reset'
+        )
+
     @exportRpc('viewer.set.orientation.visibility')
     def setOrientationVisibility(self, orientationAxesVisibility):
 
         if(self.renderView):
 
+            # Set orientation visibility #
+
             self.renderView.OrientationAxesVisibility = orientationAxesVisibility
+
+            # Update view #
+
             self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Orientation visibility set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Orientation visibility not set'
+            )
+
+    @exportRpc('viewer.set.representation.type')
+    def setRepresentationType(self, representationType):
+
+        if(self.reader and self.renderView):
+
+            # Set representation type #
+
+            GetDisplayProperties(self.reader, self.renderView).SetRepresentationType(representationType)
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Representation type set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Representation type not set'
+            )
