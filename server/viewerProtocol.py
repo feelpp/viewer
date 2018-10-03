@@ -59,7 +59,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 print('Not loaded')
 
                 return createResponse(
-                    value=false,
+                    value=False,
                     code=-2,
                     message='Data loading failed'
                 )
@@ -69,7 +69,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             print('Invalid dataLoadSignature')
 
             return createResponse(
-                value=false,
+                value=False,
                 code=-1,
                 message='DataLoadSignature decoding failed'
             )
