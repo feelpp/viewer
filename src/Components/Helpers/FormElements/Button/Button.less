@@ -1,0 +1,95 @@
+/* Imports */
+
+@import '../../../Root/Root.less';
+
+/* Variables */
+
+/* Style definition */
+
+.Button
+{
+	display: inline-block;
+	min-width: 110px;
+	height: 35px;
+
+	&:not(:first-child)
+	{
+		margin-left: 10px;
+	}
+
+	&:not(:last-child)
+	{
+		margin-right: 10px;
+	}
+
+	button
+	{
+		display: block;
+		width: 100%;
+		height: 100%;
+		padding: 10px;
+		color: @white;
+		font-family: @fontFamily;
+		font-size: @fontSizeNormal;
+		vertical-align: middle;
+		text-transform: uppercase;
+
+		cursor: pointer;
+		background-color: @darkGrey;
+		border: none;
+		border-radius: 5px;
+		outline: none;
+
+		&:disabled
+		{
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+
+		&:not(:disabled):hover
+		{
+			background-color: lighten(@darkGrey, 5%);;
+			box-shadow: none;
+		}
+
+		&.blue
+		{
+			background-color: @blue;
+
+			&:hover
+			{
+				background-color: lighten(@blue, 5%);
+			}
+		}
+
+		&.green
+		{
+			background-color: @green;
+
+			&:hover
+			{
+				background-color: lighten(@green, 5%);
+			}
+		}
+
+		&.orange
+		{
+			background-color: @orange;
+
+			&:hover
+			{
+				background-color: lighten(@orange, 5%);
+			}
+		}
+
+		&.red
+		{
+			background-color: @red;
+
+			&:hover
+			{
+				background-color: lighten(@red, 5%);
+			}
+		}
+	}
+}
