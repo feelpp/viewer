@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
 
+import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import Player from '../../../../Helpers/FormElements/Player/Player.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
@@ -134,6 +135,27 @@ export class VisualizationParameterEditor extends Component {
 									/>
 								</td>
 							</tr>
+							<tr
+								className="fieldLine"
+							>
+								<td
+									className="fieldLabel"
+								>
+									View
+								</td>
+								<td
+									className="fieldEditor"
+								>
+									<Button
+										className="blue"
+										action={() => {
+											this.resetView();
+										}}
+									>
+										Reset
+									</Button>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</Panel>
@@ -146,6 +168,10 @@ export class VisualizationParameterEditor extends Component {
 	}
 
 	/* Specific */
+
+	resetView() {
+		this.props.client.Viewer.resetView();
+	}
 
 	setDataArray(dataArray) {
 		this.props.client.Viewer.setDataArray(dataArray).then((result) => {
