@@ -6,6 +6,7 @@ import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
 
 import Panel from '../../../../Helpers/Panel/Panel.js';
+import Player from '../../../../Helpers/FormElements/Player/Player.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
 import Switch from '../../../../Helpers/FormElements/Switch/Switch.js';
 
@@ -38,7 +39,9 @@ export class VisualizationParameterEditor extends Component {
 						className="fields"
 					>
 						<tbody>
-							<tr>
+							<tr
+								className="fieldLine"
+							>
 								<td
 									className="fieldLabel"
 								>
@@ -61,7 +64,9 @@ export class VisualizationParameterEditor extends Component {
 									/>
 								</td>
 							</tr>
-							<tr>
+							<tr
+								className="fieldLine"
+							>
 								<td
 									className="fieldLabel"
 								>
@@ -84,7 +89,9 @@ export class VisualizationParameterEditor extends Component {
 									/>
 								</td>
 							</tr>
-							<tr>
+							<tr
+								className="fieldLine"
+							>
 								<td
 									className="fieldLabel"
 								>
@@ -93,7 +100,7 @@ export class VisualizationParameterEditor extends Component {
 								<td
 									className="fieldEditor"
 								>
-									<Select
+									<Player
 										value={this.props.timeStep}
 										options={this.props.timeSteps.map((timeStep) => {
 											return {
@@ -104,10 +111,13 @@ export class VisualizationParameterEditor extends Component {
 										action={(timeStep) => {
 											this.setTimeStep(Number(timeStep));
 										}}
+										delay={1000}
 									/>
 								</td>
 							</tr>
-							<tr>
+							<tr
+								className="fieldLine"
+							>
 								<td
 									className="fieldLabel"
 								>

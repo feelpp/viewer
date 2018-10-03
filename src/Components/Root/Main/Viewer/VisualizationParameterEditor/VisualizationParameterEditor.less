@@ -17,26 +17,24 @@
 		padding: 0px;
 		margin: 0px;
 
-		tr
+		.fieldLine
 		{
 			&:not(:last-child)
 			{
 				border-bottom: 2px solid @blackSemiTransparentMegaLight;
 			}
 
-			td
+			.fieldLabel
+			{
+				min-width: 150px;
+				padding: @padding;
+				text-align: left;
+			}
+
+			.fieldEditor
 			{
 				padding: @padding;
-
-				&.fieldLabel
-				{
-					text-align: left;
-				}
-
-				&.fieldEditor
-				{
-					text-align: right;
-				}
+				text-align: right;
 			}
 		}
 	}
