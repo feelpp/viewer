@@ -18,8 +18,6 @@ export default class Switch extends Component {
 
 		/* Element */
 
-		console.log(this.props.value);
-
 		const element = (
 			<div
 				className={ClassNames('Switch', [
