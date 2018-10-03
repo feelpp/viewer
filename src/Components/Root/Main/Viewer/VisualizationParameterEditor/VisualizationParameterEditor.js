@@ -53,7 +53,7 @@ export class VisualizationParameterEditor extends Component {
 										value={this.props.dataArray}
 										options={this.props.dataArrays.map((dataArray) => {
 											return {
-												text: dataArray.name,
+												text: dataArray.name + ' (' + dataArray.type + ')',
 												value: dataArray,
 											};
 										})}
