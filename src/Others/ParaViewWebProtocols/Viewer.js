@@ -12,5 +12,8 @@ export default function createMethods(session) {
 		setRepresentationType: (representationType) => {
 			return session.call('viewer.set.representation.type', [representationType]);
 		},
+		setTimeStep: (timeStep) => {
+			return session.call('viewer.set.time.step', [timeStep]);
+		},
 	};
 }

@@ -159,6 +159,9 @@ export class Viewer extends Component {
 						{
 							this.props.setRepresentationTypes(result.data.representationTypes);
 							this.props.setRepresentationType(result.data.representationType);
+
+							this.props.setTimeSteps(result.data.timeSteps);
+							this.props.setTimeStep(result.data.timeStep);
 						}
 
 						/* Load status */
@@ -199,6 +202,8 @@ Viewer.propTypes = {
 	setClient: PropTypes.func.isRequired,
 	setRepresentationTypes: PropTypes.func.isRequired,
 	setRepresentationType: PropTypes.func.isRequired,
+	setTimeSteps: PropTypes.func.isRequired,
+	setTimeStep: PropTypes.func.isRequired,
 };
 
 Viewer.defaultProps = {
@@ -226,6 +231,12 @@ export default connect(
 			},
 			setRepresentationType: (representationType) => {
 				dispatch(visualizationParametersActions.setRepresentationType(representationType));
+			},
+			setTimeSteps: (timeSteps) => {
+				dispatch(visualizationParametersActions.setTimeSteps(timeSteps));
+			},
+			setTimeStep: (timeStep) => {
+				dispatch(visualizationParametersActions.setTimeStep(timeStep));
 			},
 		};
 	}

@@ -8,6 +8,7 @@ from wslink import register as exportRpc
 from response import createResponse
 from filePath import computeFullFilePath
 from dataLoadSignature import decodeDataLoadSignature
+from helpers import formatPropertyValueAsList
 
 class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
@@ -90,8 +91,15 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         # Data #
 
-        representationTypes = list(self.representation.GetPropertyValue('RepresentationTypesInfo'))
+        ## Representation type ##
+
+        representationTypes = formatPropertyValueAsList(self.representation.GetPropertyValue('RepresentationTypesInfo'))
         representationType = str(self.representation.GetPropertyValue('Representation'))
+
+        ## Time steps ##
+
+        timeSteps = formatPropertyValueAsList(GetAnimationScene().TimeKeeper.TimestepValues)
+        timeStep = GetAnimationScene().TimeKeeper.Time
 
         # Return #
         
@@ -102,6 +110,8 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             data={
                 'representationTypes': representationTypes,
                 'representationType': representationType,
+                'timeSteps': timeSteps,
+                'timeStep': timeStep,
             }
         )
 
@@ -189,3 +199,22 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 code=-1,
                 message='Representation type not set'
             )
+
+    @exportRpc('viewer.set.time.step')
+    def setTimeStep(self, timeStep):
+
+        # Set time step #
+
+        GetAnimationScene().TimeKeeper.Time = timeStep
+
+        # Update view #
+
+        self.updateView()
+
+        # Return #
+
+        return createResponse(
+            value=True,
+            code=1,
+            message='Time step set'
+        )

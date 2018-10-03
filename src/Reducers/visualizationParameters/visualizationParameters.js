@@ -1,11 +1,22 @@
 const visualizationParametersInitialState = {
 	representationTypes: [],
 	representationType: null,
+	timeSteps: [],
+	timeStep: null,
 };
 
 export function reduceVisualizationParametersState(state = visualizationParametersInitialState, action) {
 	if(action && action.type)
 	{
+		/* set */
+
+		if(action.type === 'visualizationParameters.set')
+		{
+			return Object.assign({}, state, {
+				[action.field]: action.value,
+			});
+		}
+
 		/* setRepresentationTypes */
 
 		if(action.type === 'visualizationParameters.setRepresentationTypes')
@@ -21,6 +32,24 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 		{
 			return Object.assign({}, state, {
 				representationType: action.representationType,
+			});
+		}
+
+		/* setTimeSteps */
+
+		if(action.type === 'visualizationParameters.setTimeSteps')
+		{
+			return Object.assign({}, state, {
+				timeSteps: action.timeSteps,
+			});
+		}
+
+		/* setTimeStep */
+
+		if(action.type === 'visualizationParameters.setTimeStep')
+		{
+			return Object.assign({}, state, {
+				timeStep: action.timeStep,
 			});
 		}
 

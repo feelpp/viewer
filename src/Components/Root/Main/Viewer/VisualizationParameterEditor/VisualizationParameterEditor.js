@@ -18,6 +18,10 @@ export class VisualizationParameterEditor extends Component {
 		super(props);
 
 		/* Attributes */
+
+		this.state = {
+			value: 50,
+		};
 	}
 
 	render() {
@@ -59,6 +63,29 @@ export class VisualizationParameterEditor extends Component {
 									/>
 								</td>
 							</tr>
+							<tr>
+								<td
+									className="fieldLabel"
+								>
+									Time
+								</td>
+								<td
+									className="fieldEditor"
+								>
+									<Select
+										value={this.props.timeStep}
+										options={this.props.timeSteps.map((timeStep) => {
+											return {
+												text: timeStep,
+												value: timeStep,
+											};
+										})}
+										action={(timeStep) => {
+											this.setTimeStep(Number(timeStep));
+										}}
+									/>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</Panel>
@@ -80,6 +107,15 @@ export class VisualizationParameterEditor extends Component {
 			}
 		});
 	}
+
+	setTimeStep(timeStep) {
+		this.props.client.Viewer.setTimeStep(timeStep).then((result) => {
+			if(result.value)
+			{
+				this.props.setTimeStep(timeStep);
+			}
+		});
+	}
 }
 
 VisualizationParameterEditor.propTypes = {
@@ -89,6 +125,9 @@ VisualizationParameterEditor.propTypes = {
 	representationTypes: PropTypes.array.isRequired,
 	representationType: PropTypes.string.isRequired,
 	setRepresentationType: PropTypes.func.isRequired,
+	timeSteps: PropTypes.array.isRequired,
+	timeStep: PropTypes.number.isRequired,
+	setTimeStep: PropTypes.func.isRequired,
 };
 
 VisualizationParameterEditor.defaultProps = {
@@ -101,6 +140,8 @@ export default connect(
 			openStatus: state.panel.openStatus,
 			representationTypes: state.visualizationParameters.representationTypes,
 			representationType: state.visualizationParameters.representationType,
+			timeSteps: state.visualizationParameters.timeSteps,
+			timeStep: state.visualizationParameters.timeStep,
 		};
 	},
 	(dispatch) => {
@@ -110,6 +151,9 @@ export default connect(
 			},
 			setRepresentationType: (representationType) => {
 				dispatch(visualizationParametersActions.setRepresentationType(representationType));
+			},
+			setTimeStep: (timeStep) => {
+				dispatch(visualizationParametersActions.setTimeStep(timeStep));
 			},
 		};
 	}
