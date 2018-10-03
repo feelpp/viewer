@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import DeepEqual from 'deep-equal';
 import ClassNames from 'classnames';
 
 import './Select.less';
@@ -16,26 +17,33 @@ export default class Select extends Component {
 
 		/* Options */
 
-		const options = this.props.options.map((option, index) => {
+		const options = this.props.options.map((optionValue, optionIndex) => {
 			return (
 				<option
-					key={index}
-					value={option.value}
+					key={optionIndex}
+					value={optionIndex}
 				>
-					{option.text}
+					{optionValue.text}
 				</option>
 			);
 		});
 
 		/* Element */
 
+		const index = this.props.options.findIndex((element) => {
+			return DeepEqual(element.value, this.props.value);
+		});
+
+		const value = (index !== -1) ? index : '';
+
 		const element = (
-			<div className="Select">
+			<div
+				className={ClassNames('Select', [
+					this.props.className,
+				])}
+			>
 				<select
-					className={ClassNames({
-						invalid: this.props.checker && (this.props.checker(this.props.value) === false),
-					})}
-					value={this.props.value}
+					value={value}
 					placeholder={this.props.placeholder}
 					disabled={this.props.disabled}
 					required={this.props.required}
@@ -58,21 +66,22 @@ export default class Select extends Component {
 	onChangeAction(event) {
 		if(this.props.action)
 		{
-			this.props.action(event.target.value);
+			this.props.action(this.props.options[Number(event.target.value)].value);
 		}
 	}
 };
 
 Select.propTypes = {
+	className: PropTypes.string,
 	placeholder: PropTypes.string,
 	value: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.number,
+		PropTypes.object,
 	]),
 	options: PropTypes.array,
 	disabled: PropTypes.bool,
 	required: PropTypes.bool,
-	checker: PropTypes.func,
 	action: PropTypes.func,
 };
 
@@ -82,6 +91,5 @@ Select.defaultProps = {
 	options: [],
 	disabled: false,
 	required: false,
-	checker: null,
 	action: null,
 };
