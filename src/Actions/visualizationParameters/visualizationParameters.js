@@ -42,4 +42,10 @@ export default {
 			timeStep: timeStep,
 		};
 	},
+	setScaleBarVisibility: (scaleBarVisibility) => {
+		return {
+			type: 'visualizationParameters.setScaleBarVisibility',
+			scaleBarVisibility: scaleBarVisibility,
+		};
+	},
 };

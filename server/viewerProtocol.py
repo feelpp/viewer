@@ -124,6 +124,10 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
         timeSteps = formatPropertyValueAsList(GetAnimationScene().TimeKeeper.TimestepValues)
         timeStep = GetAnimationScene().TimeKeeper.Time
 
+        ## Scale bar visibility ##
+
+        scaleBarVisibility = GetDisplayProperties(self.reader, self.renderView).IsScalarBarVisible(self.renderView)
+
         # Return #
         
         return createResponse(
@@ -137,6 +141,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 'representationType': representationType,
                 'timeSteps': timeSteps,
                 'timeStep': timeStep,
+                'scaleBarVisibility': scaleBarVisibility,
             }
         )
 
@@ -284,3 +289,32 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             code=1,
             message='Time step set'
         )
+
+    @exportRpc('viewer.set.scale.bar.visibility')
+    def setScaleBarVisibility(self, scaleBarVisibility):
+
+        if(self.reader and self.renderView):
+
+            # Set scale bar visibility #
+
+            GetDisplayProperties(self.reader, self.renderView).SetScalarBarVisibility(self.renderView, scaleBarVisibility)
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Scale bar visibility set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Scale bar visibility not set'
+            )

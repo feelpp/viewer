@@ -78,6 +78,7 @@ Select.propTypes = {
 		PropTypes.string,
 		PropTypes.number,
 		PropTypes.object,
+		PropTypes.bool,
 	]),
 	options: PropTypes.array,
 	disabled: PropTypes.bool,
@@ -86,6 +87,7 @@ Select.propTypes = {
 };
 
 Select.defaultProps = {
+	className: null,
 	placeholder: null,
 	value: null,
 	options: [],

@@ -165,6 +165,8 @@ export class Viewer extends Component {
 
 							this.props.setTimeSteps(result.data.timeSteps);
 							this.props.setTimeStep(result.data.timeStep);
+
+							this.props.setScaleBarVisibility(result.data.scaleBarVisibility);
 						}
 
 						/* Load status */
@@ -209,6 +211,7 @@ Viewer.propTypes = {
 	setRepresentationType: PropTypes.func.isRequired,
 	setTimeSteps: PropTypes.func.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
+	setScaleBarVisibility: PropTypes.func.isRequired,
 };
 
 Viewer.defaultProps = {
@@ -248,6 +251,9 @@ export default connect(
 			},
 			setTimeStep: (timeStep) => {
 				dispatch(visualizationParametersActions.setTimeStep(timeStep));
+			},
+			setScaleBarVisibility: (scaleBarVisibility) => {
+				dispatch(visualizationParametersActions.setScaleBarVisibility(scaleBarVisibility));
 			},
 		};
 	}

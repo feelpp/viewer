@@ -5,6 +5,7 @@ const visualizationParametersInitialState = {
 	representationType: null,
 	timeSteps: [],
 	timeStep: null,
+	scaleBarVisibility: null,
 };
 
 export function reduceVisualizationParametersState(state = visualizationParametersInitialState, action) {
@@ -70,6 +71,15 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 		{
 			return Object.assign({}, state, {
 				timeStep: action.timeStep,
+			});
+		}
+
+		/* setScaleBarVisibility */
+
+		if(action.type === 'visualizationParameters.setScaleBarVisibility')
+		{
+			return Object.assign({}, state, {
+				scaleBarVisibility: action.scaleBarVisibility,
 			});
 		}
 

@@ -7,6 +7,7 @@ import visualizationParametersActions from '../../../../../Actions/visualization
 
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
+import Switch from '../../../../Helpers/FormElements/Switch/Switch.js';
 
 import './VisualizationParameterEditor.less';
 
@@ -19,9 +20,6 @@ export class VisualizationParameterEditor extends Component {
 
 		/* Attributes */
 
-		this.state = {
-			value: 50,
-		};
 	}
 
 	render() {
@@ -90,7 +88,7 @@ export class VisualizationParameterEditor extends Component {
 								<td
 									className="fieldLabel"
 								>
-									Time
+									Time step
 								</td>
 								<td
 									className="fieldEditor"
@@ -105,6 +103,23 @@ export class VisualizationParameterEditor extends Component {
 										})}
 										action={(timeStep) => {
 											this.setTimeStep(Number(timeStep));
+										}}
+									/>
+								</td>
+							</tr>
+							<tr>
+								<td
+									className="fieldLabel"
+								>
+									Legend visibility
+								</td>
+								<td
+									className="fieldEditor"
+								>
+									<Switch
+										value={this.props.scaleBarVisibility}
+										action={(scaleBarVisibility) => {
+											this.setScaleBarVisibility(scaleBarVisibility);
 										}}
 									/>
 								</td>
@@ -148,6 +163,15 @@ export class VisualizationParameterEditor extends Component {
 			}
 		});
 	}
+
+	setScaleBarVisibility(scaleBarVisibility) {
+		this.props.client.Viewer.setScaleBarVisibility(scaleBarVisibility).then((result) => {
+			if(result.value)
+			{
+				this.props.setScaleBarVisibility(scaleBarVisibility);
+			}
+		});
+	}
 }
 
 VisualizationParameterEditor.propTypes = {
@@ -163,6 +187,8 @@ VisualizationParameterEditor.propTypes = {
 	timeSteps: PropTypes.array.isRequired,
 	timeStep: PropTypes.number.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
+	scaleBarVisibility: PropTypes.bool.isRequired,
+	setScaleBarVisibility: PropTypes.func.isRequired,
 };
 
 VisualizationParameterEditor.defaultProps = {
@@ -179,6 +205,7 @@ export default connect(
 			representationType: state.visualizationParameters.representationType,
 			timeSteps: state.visualizationParameters.timeSteps,
 			timeStep: state.visualizationParameters.timeStep,
+			scaleBarVisibility: state.visualizationParameters.scaleBarVisibility,
 		};
 	},
 	(dispatch) => {
@@ -194,6 +221,9 @@ export default connect(
 			},
 			setTimeStep: (timeStep) => {
 				dispatch(visualizationParametersActions.setTimeStep(timeStep));
+			},
+			setScaleBarVisibility: (scaleBarVisibility) => {
+				dispatch(visualizationParametersActions.setScaleBarVisibility(scaleBarVisibility));
 			},
 		};
 	}

@@ -18,5 +18,8 @@ export default function createMethods(session) {
 		setTimeStep: (timeStep) => {
 			return session.call('viewer.set.time.step', [timeStep]);
 		},
+		setScaleBarVisibility: (scaleBarVisibility) => {
+			return session.call('viewer.set.scale.bar.visibility', [scaleBarVisibility]);
+		},
 	};
 }
