@@ -91,6 +91,29 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         # Data #
 
+        ## Data arrays #
+
+        dataArrays = []
+
+        for pointArray in self.reader.PointArrays:
+
+            dataArrays.append({
+                'type': 'point',
+                'name': pointArray,
+            })
+
+        for cellArray in self.reader.CellArrays:
+
+            dataArrays.append({
+                'type': 'cell',
+                'name': cellArray,
+            })
+
+        dataArray = {
+            'type': 'point' if self.representation.ColorArrayName[0] == 'POINTS' else 'cell',
+            'name': self.representation.ColorArrayName[1]
+        }
+
         ## Representation type ##
 
         representationTypes = formatPropertyValueAsList(self.representation.GetPropertyValue('RepresentationTypesInfo'))
@@ -108,6 +131,8 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             code=1,
             message='Data loading succeed',
             data={
+                'dataArrays': dataArrays,
+                'dataArray': dataArray,
                 'representationTypes': representationTypes,
                 'representationType': representationType,
                 'timeSteps': timeSteps,
@@ -169,6 +194,47 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 value=False,
                 code=-1,
                 message='Orientation visibility not set'
+            )
+
+    @exportRpc('viewer.set.data.array')
+    def setDataArray(self, dataArray):
+
+        if (self.reader and self.renderView):
+
+            # Set data array #
+
+            displayProperties = GetDisplayProperties(self.reader, self.renderView)
+
+            if(dataArray['type'] == 'cell'):
+
+                ColorBy(displayProperties, ('CELLS', dataArray['name']))
+
+            else:
+
+                ColorBy(displayProperties, ('POINTS', dataArray['name']))
+
+            # Update transfer function #
+
+            displayProperties.RescaleTransferFunctionToDataRange(True, False)
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Data array set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Data array not set'
             )
 
     @exportRpc('viewer.set.representation.type')

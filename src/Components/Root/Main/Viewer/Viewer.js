@@ -157,6 +157,9 @@ export class Viewer extends Component {
 
 						if(result.value)
 						{
+							this.props.setDataArrays(result.data.dataArrays);
+							this.props.setDataArray(result.data.dataArray);
+
 							this.props.setRepresentationTypes(result.data.representationTypes);
 							this.props.setRepresentationType(result.data.representationType);
 
@@ -200,6 +203,8 @@ Viewer.propTypes = {
 	loadStatus: PropTypes.bool.isRequired,
 	setLoadStatus: PropTypes.func.isRequired,
 	setClient: PropTypes.func.isRequired,
+	setDataArrays: PropTypes.func.isRequired,
+	setDataArray: PropTypes.func.isRequired,
 	setRepresentationTypes: PropTypes.func.isRequired,
 	setRepresentationType: PropTypes.func.isRequired,
 	setTimeSteps: PropTypes.func.isRequired,
@@ -225,6 +230,12 @@ export default connect(
 			},
 			setClient: (client) => {
 				dispatch(connectionActions.setClient(client));
+			},
+			setDataArrays: (dataArrays) => {
+				dispatch(visualizationParametersActions.setDataArrays(dataArrays));
+			},
+			setDataArray: (dataArray) => {
+				dispatch(visualizationParametersActions.setDataArray(dataArray));
 			},
 			setRepresentationTypes: (representationTypes) => {
 				dispatch(visualizationParametersActions.setRepresentationTypes(representationTypes));

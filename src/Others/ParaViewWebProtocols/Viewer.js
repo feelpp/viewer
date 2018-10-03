@@ -9,6 +9,9 @@ export default function createMethods(session) {
 		loadFile: (fileName) => {
 			return session.call('viewer.load.file', [fileName]);
 		},
+		setDataArray: (dataArray) => {
+			return session.call('viewer.set.data.array', [dataArray]);
+		},
 		setRepresentationType: (representationType) => {
 			return session.call('viewer.set.representation.type', [representationType]);
 		},

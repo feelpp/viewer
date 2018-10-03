@@ -44,6 +44,29 @@ export class VisualizationParameterEditor extends Component {
 								<td
 									className="fieldLabel"
 								>
+									Data array
+								</td>
+								<td
+									className="fieldEditor"
+								>
+									<Select
+										value={this.props.dataArray}
+										options={this.props.dataArrays.map((dataArray) => {
+											return {
+												text: dataArray.name,
+												value: dataArray,
+											};
+										})}
+										action={(dataArray) => {
+											this.setDataArray(dataArray);
+										}}
+									/>
+								</td>
+							</tr>
+							<tr>
+								<td
+									className="fieldLabel"
+								>
 									Representation type
 								</td>
 								<td
@@ -99,6 +122,15 @@ export class VisualizationParameterEditor extends Component {
 
 	/* Specific */
 
+	setDataArray(dataArray) {
+		this.props.client.Viewer.setDataArray(dataArray).then((result) => {
+			if(result.value)
+			{
+				this.props.setDataArray(dataArray);
+			}
+		});
+	}
+
 	setRepresentationType(representationType) {
 		this.props.client.Viewer.setRepresentationType(representationType).then((result) => {
 			if(result.value)
@@ -122,6 +154,9 @@ VisualizationParameterEditor.propTypes = {
 	client: PropTypes.object.isRequired,
 	openStatus: PropTypes.bool.isRequired,
 	setOpenStatus: PropTypes.func.isRequired,
+	dataArrays: PropTypes.array.isRequired,
+	dataArray: PropTypes.object.isRequired,
+	setDataArray: PropTypes.func.isRequired,
 	representationTypes: PropTypes.array.isRequired,
 	representationType: PropTypes.string.isRequired,
 	setRepresentationType: PropTypes.func.isRequired,
@@ -138,6 +173,8 @@ export default connect(
 		return {
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
+			dataArrays: state.visualizationParameters.dataArrays,
+			dataArray: state.visualizationParameters.dataArray,
 			representationTypes: state.visualizationParameters.representationTypes,
 			representationType: state.visualizationParameters.representationType,
 			timeSteps: state.visualizationParameters.timeSteps,
@@ -148,6 +185,9 @@ export default connect(
 		return {
 			setOpenStatus: (openStatus) => {
 				dispatch(panelActions.setOpenStatus(openStatus));
+			},
+			setDataArray: (dataArray) => {
+				dispatch(visualizationParametersActions.setDataArray(dataArray));
 			},
 			setRepresentationType: (representationType) => {
 				dispatch(visualizationParametersActions.setRepresentationType(representationType));

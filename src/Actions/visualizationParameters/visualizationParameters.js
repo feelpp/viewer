@@ -6,6 +6,18 @@ export default {
 			value: value,
 		};
 	},
+	setDataArrays: (dataArrays) => {
+		return {
+			type: 'visualizationParameters.setDataArrays',
+			dataArrays: dataArrays,
+		};
+	},
+	setDataArray: (dataArray) => {
+		return {
+			type: 'visualizationParameters.setDataArray',
+			dataArray: dataArray,
+		};
+	},
 	setRepresentationTypes: (representationTypes) => {
 		return {
 			type: 'visualizationParameters.setRepresentationTypes',

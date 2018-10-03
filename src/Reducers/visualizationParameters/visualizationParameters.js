@@ -1,4 +1,6 @@
 const visualizationParametersInitialState = {
+	dataArrays: [],
+	dataArray: null,
 	representationTypes: [],
 	representationType: null,
 	timeSteps: [],
@@ -14,6 +16,24 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 		{
 			return Object.assign({}, state, {
 				[action.field]: action.value,
+			});
+		}
+
+		/* setDataArrays */
+
+		if(action.type === 'visualizationParameters.setDataArrays')
+		{
+			return Object.assign({}, state, {
+				dataArrays: action.dataArrays,
+			});
+		}
+
+		/* setDataArray */
+
+		if(action.type === 'visualizationParameters.setDataArray')
+		{
+			return Object.assign({}, state, {
+				dataArray: action.dataArray,
 			});
 		}
 
