@@ -35,11 +35,18 @@
 
 			var containerId = 'root';
 
-			var data = {
-				filePath: '1/Export.cas',
-				expirationDate: '2019-09-06 20:10:36',
-				dataLoadSignature: '7a09cf46a555a0e7b2b31c1cbfab85675271029a4edc83c6338a7a4d2a9e8a6d766abe085e86bbacd12e02add8a41f7a389fac1cfed128260bfb34bfec86fac963fd2a12d57a002adf118caa193210d6',
-			};
+			var data = [
+				{
+					filePath: '1/Export.case',
+					expirationDate: '2019-09-06 20:10:36',
+					dataLoadSignature: '7a09cf46a555a0e7b2b31c1cbfab85675271029a4edc83c6338a7a4d2a9e8a6d766abe085e86bbacd12e02add8a41f7a389fac1cfed128260bfb34bfec86fac963fd2a12d57a002adf118caa193210d6',
+				},
+				{
+					filePath: '2/Export.case',
+					expirationDate: '2019-10-03 10:27:14',
+					dataLoadSignature: 'c2df3cbcab34084fed2a8b22cd147582b36364cc310d13e7ea884906bf46a369b14ff87bf91b56d9a9848f8b0e6e161572019b98a50f44e876b3666622757c74303f11edb6559125a0431bb3796d81d4',
+				},
+			];
 
 			var configuration = {
 				connection: {
@@ -61,7 +68,7 @@
 				visualizationParameterEditorInitialOpenStatus: true,
 			};
 
-			var viewer = new Cemosis.Viewer(containerId, data.dataLoadSignature, configuration);
+			var viewer = new Cemosis.Viewer(containerId, data[1].dataLoadSignature, configuration);
 		</script>
 	</body>
 </html>
