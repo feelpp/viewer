@@ -1,0 +1,93 @@
+/* Imports */
+
+@import '../../../Root/Root.less';
+
+/* Variables */
+
+@buttonWidth: 75px;
+
+/* Style definition */
+
+.ValidationInput
+{
+	display: inline-block;
+	min-width: 20px;
+	border-radius: 5px;
+	overflow: hidden;
+
+	&:not(:first-child)
+	{
+		margin-left: 10px;
+	}
+
+	&:not(:last-child)
+	{
+		margin-right: 10px;
+	}
+
+	input
+	{
+		display: inline-block;
+		width: ~'calc(100% - 75px)'; //100% - @buttonWidth
+		height: 100%;
+		padding: 5px;
+		box-sizing: border-box;
+
+		font-family: @fontFamily;
+		font-size: @fontSizeNormal;
+		color: @black;
+		vertical-align: middle;
+
+		border: 2px solid @blackSemiTransparentMegaLight;
+		border-right: 0px;
+		border-radius: 0px;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		background-color: transparent;
+		box-shadow: none;
+		outline: none;
+
+		-webkit-appearance: none;
+		-webkit-border-radius: 0px;
+
+		&::placeholder
+		{
+			color: @blackSemiTransparentLight;
+		}
+
+		&:disabled
+		{
+			opacity: 0.5;
+		}
+
+		&:focus
+		{
+			border: 2px solid @blue;
+			border-right: 0px;
+		}
+
+		&:invalid,
+		&.invalid
+		{
+			border: 2px solid @red;
+			border-right: 0px;
+		}
+
+		&:not(:disabled):hover
+		{
+
+		}
+	}
+
+	.validationButton
+	{
+		width: @buttonWidth;
+		margin-right: 0px;
+		margin-left: 0px;
+
+		border-radius: 0px;
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		background-color: @blue;
+	}
+}
