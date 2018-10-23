@@ -8,7 +8,7 @@ from wslink import register as exportRpc
 from response import createResponse
 from filePath import computeFullFilePath
 from dataLoadSignature import decodeDataLoadSignature
-from helpers import formatPropertyValueAsList
+from helpers import formatPropertyValueAsList, convertHexadecimalToDecimal, convertDecimalToHexadecimal
 
 class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
@@ -128,6 +128,14 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         scaleBarVisibility = GetDisplayProperties(self.reader, self.renderView).IsScalarBarVisible(self.renderView)
 
+        ## Background color ##
+
+        R = convertDecimalToHexadecimal(int(self.renderView.Background[0] * 255))
+        G = convertDecimalToHexadecimal(int(self.renderView.Background[1] * 255))
+        B = convertDecimalToHexadecimal(int(self.renderView.Background[2] * 255))
+
+        backgroundColor = R + G + B
+
         # Return #
         
         return createResponse(
@@ -142,6 +150,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 'timeSteps': timeSteps,
                 'timeStep': timeStep,
                 'scaleBarVisibility': scaleBarVisibility,
+                'backgroundColor': backgroundColor,
             }
         )
 
@@ -290,31 +299,47 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             message='Time step set'
         )
 
-    @exportRpc('viewer.set.scale.bar.visibility')
-    def setScaleBarVisibility(self, scaleBarVisibility):
+    @exportRpc('viewer.set.background.color')
+    def setBackgroundColor(self, backgroundColor):
 
-        if(self.reader and self.renderView):
+        if(self.renderView):
 
-            # Set scale bar visibility #
+            if len(backgroundColor) == 6:
 
-            GetDisplayProperties(self.reader, self.renderView).SetScalarBarVisibility(self.renderView, scaleBarVisibility)
+                # Extract components #
 
-            # Update view #
+                R = float(convertHexadecimalToDecimal(backgroundColor[0 : 2])) / 255
+                G = float(convertHexadecimalToDecimal(backgroundColor[2 : 4])) / 255
+                B = float(convertHexadecimalToDecimal(backgroundColor[4 : 6])) / 255
 
-            self.updateView()
+                # Set background color #
 
-            # Return #
+                self.renderView.Background = [R, G, B]
 
-            return createResponse(
-                value=True,
-                code=1,
-                message='Scale bar visibility set'
-            )
+                # Update view #
+
+                self.updateView()
+
+                # Return #
+
+                return createResponse(
+                    value=True,
+                    code=1,
+                    message='Background color set'
+                )
+
+            else:
+
+                return createResponse(
+                    value=False,
+                    code=-2,
+                    message='Background color invalid'
+                )
 
         else:
 
             return createResponse(
                 value=False,
                 code=-1,
-                message='Scale bar visibility not set'
+                message='Background color not set'
             )

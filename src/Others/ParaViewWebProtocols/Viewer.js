@@ -21,5 +21,8 @@ export default function createMethods(session) {
 		setScaleBarVisibility: (scaleBarVisibility) => {
 			return session.call('viewer.set.scale.bar.visibility', [scaleBarVisibility]);
 		},
+		setBackgroundColor: (backgroundColor) => {
+			return session.call('viewer.set.background.color', [backgroundColor]);
+		},
 	};
 }
