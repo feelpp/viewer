@@ -9,8 +9,15 @@
 .Button
 {
 	display: inline-block;
-	min-width: 110px;
-	height: 35px;
+	min-width: 75px;
+	height: 32px;
+	color: @white;
+	font-family: @fontFamily;
+	font-size: @fontSizeNormal;
+	vertical-align: middle;
+	text-transform: uppercase;
+	border-radius: 5px;
+	background-color: @darkGrey;
 
 	&:not(:first-child)
 	{
@@ -22,74 +29,68 @@
 		margin-right: 10px;
 	}
 
+	&.blue
+	{
+		background-color: @blue;
+
+		&:hover
+		{
+			background-color: lighten(@blue, 5%);
+		}
+	}
+
+	&.green
+	{
+		background-color: @green;
+
+		&:hover
+		{
+			background-color: lighten(@green, 5%);
+		}
+	}
+
+	&.orange
+	{
+		background-color: @orange;
+
+		&:hover
+		{
+			background-color: lighten(@orange, 5%);
+		}
+	}
+
+	&.red
+	{
+		background-color: @red;
+
+		&:hover
+		{
+			background-color: lighten(@red, 5%);
+		}
+	}
+
 	button
 	{
 		display: block;
+		box-sizing: border-box;
 		width: 100%;
 		height: 100%;
-		padding: 10px;
-		color: @white;
-		font-family: @fontFamily;
-		font-size: @fontSizeNormal;
-		vertical-align: middle;
-		text-transform: uppercase;
+		padding: 5px;
 
+		color: inherit;
+		font-family: inherit;
+		font-size: inherit;
+		vertical-align: inherit;
+		text-transform: inherit;
 		cursor: pointer;
-		background-color: @darkGrey;
+		background-color: transparent;
 		border: none;
-		border-radius: 5px;
 		outline: none;
 
 		&:disabled
 		{
 			opacity: 0.5;
 			cursor: not-allowed;
-		}
-
-		&:not(:disabled):hover
-		{
-			background-color: lighten(@darkGrey, 5%);;
-			box-shadow: none;
-		}
-
-		&.blue
-		{
-			background-color: @blue;
-
-			&:hover
-			{
-				background-color: lighten(@blue, 5%);
-			}
-		}
-
-		&.green
-		{
-			background-color: @green;
-
-			&:hover
-			{
-				background-color: lighten(@green, 5%);
-			}
-		}
-
-		&.orange
-		{
-			background-color: @orange;
-
-			&:hover
-			{
-				background-color: lighten(@orange, 5%);
-			}
-		}
-
-		&.red
-		{
-			background-color: @red;
-
-			&:hover
-			{
-				background-color: lighten(@red, 5%);
-			}
 		}
 	}
 }

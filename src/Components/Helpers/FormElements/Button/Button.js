@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import ClassNames from 'classnames';
 
 import './Button.less';
 
@@ -16,9 +17,12 @@ export default class Button extends Component {
 		/* Element */
 
 		const element = (
-			<div className="Button">
+			<div
+				className={ClassNames('Button', [
+					this.props.className
+				])}
+			>
 				<button
-					className={this.props.className}
 					style={this.props.style}
 					disabled={this.props.disabled}
 					onClick={() => {
