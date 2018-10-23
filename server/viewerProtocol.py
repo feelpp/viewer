@@ -299,6 +299,35 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             message='Time step set'
         )
 
+    @exportRpc('viewer.set.scale.bar.visibility')
+    def setScaleBarVisibility(self, scaleBarVisibility):
+
+        if(self.reader and self.renderView):
+
+            # Set scale bar visibility #
+
+            GetDisplayProperties(self.reader, self.renderView).SetScalarBarVisibility(self.renderView, scaleBarVisibility)
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Scale bar visibility set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Scale bar visibility not set'
+            )
+
     @exportRpc('viewer.set.background.color')
     def setBackgroundColor(self, backgroundColor):
 
