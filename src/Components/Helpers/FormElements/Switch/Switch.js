@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import ClassNames from 'classnames';
 
-import Select from '../Select/Select.js';
+import Toggle from '../Toggle/Toggle.js';
 
 import './Switch.less';
 
@@ -24,24 +24,15 @@ export default class Switch extends Component {
 					this.props.className,
 				])}
 			>
-				<Select
+				<Toggle
 					value={this.props.value}
-					options={[
-						{
-							text: 'On',
-							value: true,
-						},
-						{
-							text: 'Off',
-							value: false,
-						},
-					]}
 					disabled={this.props.disabled}
-					required={this.props.required}
 					action={(value) => {
 						this.props.action(value);
 					}}
-				/>
+				>
+					{(this.props.value) ? 'On' : 'Off'}
+				</Toggle>
 			</div>
 		);
 
@@ -57,7 +48,6 @@ export default class Switch extends Component {
 Switch.propTypes = {
 	className: PropTypes.string,
 	disabled: PropTypes.bool,
-	required: PropTypes.bool,
 
 	value: PropTypes.bool.isRequired,
 	action: PropTypes.func.isRequired,
@@ -66,5 +56,4 @@ Switch.propTypes = {
 Switch.defaultProps = {
 	className: null,
 	disabled: false,
-	required: false,
 };

@@ -147,7 +147,6 @@ export class VisualizationParameterEditor extends Component {
 									className="fieldEditor"
 								>
 									<Button
-										className="blue"
 										action={() => {
 											this.resetView();
 										}}

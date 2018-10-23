@@ -17,7 +17,12 @@
 	vertical-align: middle;
 	text-transform: uppercase;
 	border-radius: 5px;
-	background-color: @darkGrey;
+	background-color: @blue;
+
+	&:hover
+	{
+		background-color: lighten(@blue, 5%);
+	}
 
 	&:not(:first-child)
 	{
@@ -29,13 +34,23 @@
 		margin-right: 10px;
 	}
 
-	&.blue
+	&.black
 	{
-		background-color: @blue;
+		background-color: @darkGrey;
 
 		&:hover
 		{
-			background-color: lighten(@blue, 5%);
+			background-color: lighten(@darkGrey, 5%);
+		}
+	}
+
+	&.grey
+	{
+		background-color: @lightGrey;
+
+		&:hover
+		{
+			background-color: lighten(@lightGrey, 5%);
 		}
 	}
 

@@ -2,9 +2,11 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import ClassNames from 'classnames';
 
-import './Button.less';
+import Button from '../Button/Button.js';
 
-export default class Button extends Component {
+import './Toggle.less';
+
+export default class Toggle extends Component {
 
 	/* Generic */
 
@@ -18,19 +20,19 @@ export default class Button extends Component {
 
 		const element = (
 			<div
-				className={ClassNames('Button', [
+				className={ClassNames('Toggle', [
 					this.props.className,
 				])}
 			>
-				<button
-					style={this.props.style}
+				<Button
+					className={(this.props.value) ? '' : 'grey'}
 					disabled={this.props.disabled}
-					onClick={() => {
+					action={() => {
 						this.onClickAction();
 					}}
 				>
 					{this.props.children}
-				</button>
+				</Button>
 			</div>
 		);
 
@@ -44,26 +46,26 @@ export default class Button extends Component {
 	onClickAction() {
 		if(this.props.action)
 		{
-			this.props.action();
+			this.props.action(! this.props.value);
 		}
 	}
 };
 
-Button.propTypes = {
+Toggle.propTypes = {
 	className: PropTypes.string,
-	style: PropTypes.object,
+	disabled: PropTypes.bool,
 	children: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.node,
 	]),
-	disabled: PropTypes.bool,
 	action: PropTypes.func,
+
+	value: PropTypes.bool.isRequired,
 };
 
-Button.defaultProps = {
-	className: '',
-	style: null,
-	children: null,
+Toggle.defaultProps = {
+	className: null,
 	disabled: false,
+	children: null,
 	action: null,
 };
