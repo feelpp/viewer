@@ -167,6 +167,8 @@ export class Viewer extends Component {
 							this.props.setTimeStep(result.data.timeStep);
 
 							this.props.setScaleBarVisibility(result.data.scaleBarVisibility);
+
+							this.props.setBackgroundColor(result.data.backgroundColor);
 						}
 
 						/* Load status */
@@ -212,6 +214,7 @@ Viewer.propTypes = {
 	setTimeSteps: PropTypes.func.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
 	setScaleBarVisibility: PropTypes.func.isRequired,
+	setBackgroundColor: PropTypes.func.isRequired,
 };
 
 Viewer.defaultProps = {
@@ -254,6 +257,9 @@ export default connect(
 			},
 			setScaleBarVisibility: (scaleBarVisibility) => {
 				dispatch(visualizationParametersActions.setScaleBarVisibility(scaleBarVisibility));
+			},
+			setBackgroundColor: (backgroundColor) => {
+				dispatch(visualizationParametersActions.setBackgroundColor(backgroundColor));
 			},
 		};
 	}

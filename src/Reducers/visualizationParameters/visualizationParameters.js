@@ -6,6 +6,7 @@ const visualizationParametersInitialState = {
 	timeSteps: [],
 	timeStep: null,
 	scaleBarVisibility: null,
+	backgroundColor: null,
 };
 
 export function reduceVisualizationParametersState(state = visualizationParametersInitialState, action) {
@@ -80,6 +81,15 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 		{
 			return Object.assign({}, state, {
 				scaleBarVisibility: action.scaleBarVisibility,
+			});
+		}
+
+		/* setBackgroundColor */
+
+		if(action.type === 'visualizationParameters.setBackgroundColor')
+		{
+			return Object.assign({}, state, {
+				backgroundColor: action.backgroundColor,
 			});
 		}
 

@@ -48,4 +48,10 @@ export default {
 			scaleBarVisibility: scaleBarVisibility,
 		};
 	},
+	setBackgroundColor: (backgroundColor) => {
+		return {
+			type: 'visualizationParameters.setBackgroundColor',
+			backgroundColor: backgroundColor,
+		};
+	},
 };

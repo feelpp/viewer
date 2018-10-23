@@ -10,6 +10,7 @@ import Panel from '../../../../Helpers/Panel/Panel.js';
 import Player from '../../../../Helpers/FormElements/Player/Player.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
 import Switch from '../../../../Helpers/FormElements/Switch/Switch.js';
+import ValidationInput from '../../../../Helpers/FormElements/ValidationInput/ValidationInput.js';
 
 import './VisualizationParameterEditor.less';
 
@@ -21,7 +22,6 @@ export class VisualizationParameterEditor extends Component {
 		super(props);
 
 		/* Attributes */
-
 	}
 
 	render() {
@@ -156,6 +156,29 @@ export class VisualizationParameterEditor extends Component {
 									</Button>
 								</td>
 							</tr>
+							<tr
+								className="fieldLine"
+							>
+								<td
+									className="fieldLabel"
+								>
+									Background
+								</td>
+								<td
+									className="fieldEditor"
+								>
+									<ValidationInput
+										type="text"
+										value={this.props.backgroundColor}
+										checker={(backgroundColor) => {
+											return /[A-Fa-f0-9]{6}/.test(backgroundColor)
+										}}
+										action={(backgroundColor) => {
+											this.setBackgroundColor(backgroundColor);
+										}}
+									/>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</Panel>
@@ -208,6 +231,15 @@ export class VisualizationParameterEditor extends Component {
 			}
 		});
 	}
+
+	setBackgroundColor(backgroundColor) {
+		this.props.client.Viewer.setBackgroundColor(backgroundColor).then((result) => {
+			if(result.value)
+			{
+				this.props.setBackgroundColor(backgroundColor);
+			}
+		});
+	}
 }
 
 VisualizationParameterEditor.propTypes = {
@@ -225,6 +257,8 @@ VisualizationParameterEditor.propTypes = {
 	setTimeStep: PropTypes.func.isRequired,
 	scaleBarVisibility: PropTypes.bool.isRequired,
 	setScaleBarVisibility: PropTypes.func.isRequired,
+	backgroundColor: PropTypes.string.isRequired,
+	setBackgroundColor: PropTypes.func.isRequired,
 };
 
 VisualizationParameterEditor.defaultProps = {
@@ -242,6 +276,7 @@ export default connect(
 			timeSteps: state.visualizationParameters.timeSteps,
 			timeStep: state.visualizationParameters.timeStep,
 			scaleBarVisibility: state.visualizationParameters.scaleBarVisibility,
+			backgroundColor: state.visualizationParameters.backgroundColor,
 		};
 	},
 	(dispatch) => {
@@ -260,6 +295,9 @@ export default connect(
 			},
 			setScaleBarVisibility: (scaleBarVisibility) => {
 				dispatch(visualizationParametersActions.setScaleBarVisibility(scaleBarVisibility));
+			},
+			setBackgroundColor: (backgroundColor) => {
+				dispatch(visualizationParametersActions.setBackgroundColor(backgroundColor));
 			},
 		};
 	}
