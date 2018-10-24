@@ -11,6 +11,7 @@ import visualizationParametersActions from '../../../../../Actions/visualization
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import MultiButton from '../../../../Helpers/FormElements/MultiButton/MultiButton.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
+import PanelSection from '../../../../Helpers/Panel/PanelSection/PanelSection.js';
 import Player from '../../../../Helpers/FormElements/Player/Player.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
 import Switch from '../../../../Helpers/FormElements/Switch/Switch.js';
@@ -41,60 +42,98 @@ export class VisualizationParameterEditor extends Component {
 						this.props.setOpenStatus(openStatus);
 					}}
 				>
-					<table
-						className="fields"
+					<PanelSection
+						label="View"
 					>
-						<tbody>
-							<tr
-								className="fieldLine"
-							>
-								<td
-									className="fieldLabel"
+						<table
+							className="fields"
+						>
+							<tbody>
+								<tr
+									className="fieldLine"
 								>
-									Data array
-								</td>
-								<td
-									className="fieldEditor"
+									<td
+										className="fieldLabel"
+									>
+										Data array
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Select
+											value={this.props.dataArray}
+											options={this.props.dataArrays.map((dataArray) => {
+												return {
+													text: dataArray.name + ' (' + dataArray.type + ')',
+													value: dataArray,
+												};
+											})}
+											action={(dataArray) => {
+												this.setDataArray(dataArray);
+											}}
+										/>
+									</td>
+								</tr>
+								<tr
+									className="fieldLine"
 								>
-									<Select
-										value={this.props.dataArray}
-										options={this.props.dataArrays.map((dataArray) => {
-											return {
-												text: dataArray.name + ' (' + dataArray.type + ')',
-												value: dataArray,
-											};
-										})}
-										action={(dataArray) => {
-											this.setDataArray(dataArray);
-										}}
-									/>
-								</td>
-							</tr>
-							<tr
-								className="fieldLine"
-							>
-								<td
-									className="fieldLabel"
+									<td
+										className="fieldLabel"
+									>
+										Representation type
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Select
+											value={this.props.representationType}
+											options={this.props.representationTypes.map((representationType) => {
+												return {
+													text: representationType,
+													value: representationType,
+												};
+											})}
+											action={(representationType) => {
+												this.setRepresentationType(representationType);
+											}}
+										/>
+									</td>
+								</tr>
+								<tr
+									className="fieldLine"
 								>
-									Representation type
-								</td>
-								<td
-									className="fieldEditor"
-								>
-									<Select
-										value={this.props.representationType}
-										options={this.props.representationTypes.map((representationType) => {
-											return {
-												text: representationType,
-												value: representationType,
-											};
-										})}
-										action={(representationType) => {
-											this.setRepresentationType(representationType);
-										}}
-									/>
-								</td>
-							</tr>
+									<td
+										className="fieldLabel"
+									>
+										Time step
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Player
+											value={this.props.timeStep}
+											options={this.props.timeSteps.map((timeStep) => {
+												return {
+													text: timeStep,
+													value: timeStep,
+												};
+											})}
+											action={(timeStep) => {
+												this.setTimeStep(Number(timeStep));
+											}}
+											delay={1000}
+										/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</PanelSection>
+					<PanelSection
+						label="Color map"
+					>
+						<table
+							className="fields"
+						>
 							<tr
 								className="fieldLine"
 							>
@@ -120,140 +159,144 @@ export class VisualizationParameterEditor extends Component {
 									/>
 								</td>
 							</tr>
-							<tr
-								className="fieldLine"
-							>
-								<td
-									className="fieldLabel"
+						</table>
+					</PanelSection>
+					<PanelSection
+						label="Camera"
+					>
+						<table
+							className="fields"
+						>
+							<tbody>
+								<tr
+									className="fieldLine"
 								>
-									Time step
-								</td>
-								<td
-									className="fieldEditor"
-								>
-									<Player
-										value={this.props.timeStep}
-										options={this.props.timeSteps.map((timeStep) => {
-											return {
-												text: timeStep,
-												value: timeStep,
-											};
-										})}
-										action={(timeStep) => {
-											this.setTimeStep(Number(timeStep));
-										}}
-										delay={1000}
-									/>
-								</td>
-							</tr>
-							<tr
-								className="fieldLine"
-							>
-								<td
-									className="fieldLabel"
-								>
-									Legend visibility
-								</td>
-								<td
-									className="fieldEditor"
-								>
-									<Switch
-										value={this.props.scaleBarVisibility}
-										action={(scaleBarVisibility) => {
-											this.setScaleBarVisibility(scaleBarVisibility);
-										}}
-									/>
-								</td>
-							</tr>
-							<tr
-								className="fieldLine"
-							>
-								<td
-									className="fieldLabel"
-								>
-									View
-								</td>
-								<td
-									className="fieldEditor"
-								>
-									<Button
-										action={() => {
-											this.resetView();
-										}}
+									<td
+										className="fieldLabel"
 									>
-										Reset
-									</Button>
-								</td>
-							</tr>
-							<tr
-								className="fieldLine"
-							>
-								<td
-									className="fieldLabel"
+										View
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Button
+											action={() => {
+												this.resetView();
+											}}
+										>
+											Reset
+										</Button>
+									</td>
+								</tr>
+								<tr
+									className="fieldLine"
 								>
-									Camera
-								</td>
-								<td
-									className="fieldEditor"
+									<td
+										className="fieldLabel"
+									>
+										Camera
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<MultiButton
+											options={[
+												{
+													text: '+X',
+													value: '+X',
+												},
+												{
+													text: '-X',
+													value: '-X',
+												},
+												{
+													text: '+Y',
+													value: '+Y',
+												},
+												{
+													text: '-Y',
+													value: '-Y',
+												},
+												{
+													text: '+Z',
+													value: '+Z',
+												},
+												{
+													text: '-Z',
+													value: '-Z',
+												},
+											]}
+											action={(cameraPosition) => {
+												this.setCameraPosition(cameraPosition);
+											}}
+										/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</PanelSection>
+					<PanelSection
+						label="Legend"
+					>
+						<table
+							className="fields"
+						>
+							<tbody>
+								<tr
+									className="fieldLine"
 								>
-									<MultiButton
-										options={[
-											{
-												text: '+X',
-												value: '+X',
-											},
-											{
-												text: '-X',
-												value: '-X',
-											},
-											{
-												text: '+Y',
-												value: '+Y',
-											},
-											{
-												text: '-Y',
-												value: '-Y',
-											},
-											{
-												text: '+Z',
-												value: '+Z',
-											},
-											{
-												text: '-Z',
-												value: '-Z',
-											},
-										]}
-										action={(cameraPosition) => {
-											this.setCameraPosition(cameraPosition);
-										}}
-									/>
-								</td>
-							</tr>
-							<tr
-								className="fieldLine"
-							>
-								<td
-									className="fieldLabel"
+									<td
+										className="fieldLabel"
+									>
+										Legend visibility
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Switch
+											value={this.props.scaleBarVisibility}
+											action={(scaleBarVisibility) => {
+												this.setScaleBarVisibility(scaleBarVisibility);
+											}}
+										/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</PanelSection>
+					<PanelSection
+						label="Others"
+					>
+						<table
+							className="fields"
+						>
+							<tbody>
+								<tr
+									className="fieldLine"
 								>
-									Background
-								</td>
-								<td
-									className="fieldEditor"
-								>
-									<ValidationInput
-										type="text"
-										value={this.props.backgroundColor}
-										checker={(backgroundColor) => {
-											return /[A-Fa-f0-9]{6}/.test(backgroundColor)
-										}}
-										action={(backgroundColor) => {
-											this.setBackgroundColor(backgroundColor);
-										}}
-									/>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+									<td
+										className="fieldLabel"
+									>
+										Background
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<ValidationInput
+											type="text"
+											value={this.props.backgroundColor}
+											checker={(backgroundColor) => {
+												return /[A-Fa-f0-9]{6}/.test(backgroundColor)
+											}}
+											action={(backgroundColor) => {
+												this.setBackgroundColor(backgroundColor);
+											}}
+										/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</PanelSection>
 				</Panel>
 			</div>
 		);
