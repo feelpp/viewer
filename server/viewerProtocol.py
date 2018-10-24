@@ -35,7 +35,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         # Reset #
 
-        if(self.reader):
+        if self.reader:
 
             Delete(self.reader)
 
@@ -43,7 +43,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         dataLoadSignatureDecoderResponse = decodeDataLoadSignature(self.dataLoadSignatureDecoder, dataLoadSignature)
 
-        if(dataLoadSignatureDecoderResponse['value']):
+        if dataLoadSignatureDecoderResponse['value']:
 
             self.fileName = computeFullFilePath(self.dataDirectoryPath, dataLoadSignatureDecoderResponse['data']['filePath'])
 
@@ -51,7 +51,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
             # Test file existence #
 
-            if(os.path.isfile(self.fileName)):
+            if os.path.isfile(self.fileName):
 
                return self.displayData()
 
@@ -184,7 +184,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.set.orientation.visibility')
     def setOrientationVisibility(self, orientationAxesVisibility):
 
-        if(self.renderView):
+        if self.renderView:
 
             # Set orientation visibility #
 
@@ -213,13 +213,13 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.set.data.array')
     def setDataArray(self, dataArray):
 
-        if (self.reader and self.renderView):
+        if self.reader and self.renderView:
 
             # Set data array #
 
             displayProperties = GetDisplayProperties(self.reader, self.renderView)
 
-            if(dataArray['type'] == 'cell'):
+            if dataArray['type'] == 'cell':
 
                 ColorBy(displayProperties, ('CELLS', dataArray['name']))
 
@@ -254,7 +254,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.set.representation.type')
     def setRepresentationType(self, representationType):
 
-        if(self.reader and self.renderView):
+        if self.reader and self.renderView:
 
             # Set representation type #
 
@@ -291,11 +291,11 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             'rainbow': 'rainbow',
         }
 
-        if(colorMap in colorMapCodes):
+        if colorMap in colorMapCodes:
 
             colorMapCode = colorMapCodes[colorMap]
 
-            if(self.representation):
+            if self.representation:
 
                 # Get current data array #
 
@@ -305,7 +305,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
                 colorTransferFunction = GetColorTransferFunction(dataArrayName)
 
-                if(colorTransferFunction):
+                if colorTransferFunction:
 
                     colorTransferFunction.ApplyPreset(colorMapCode, True)
 
@@ -367,7 +367,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.set.scale.bar.visibility')
     def setScaleBarVisibility(self, scaleBarVisibility):
 
-        if(self.reader and self.renderView):
+        if self.reader and self.renderView:
 
             # Set scale bar visibility #
 
@@ -409,7 +409,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.set.background.color')
     def setBackgroundColor(self, backgroundColor):
 
-        if(self.renderView):
+        if self.renderView:
 
             if len(backgroundColor) == 6:
 
