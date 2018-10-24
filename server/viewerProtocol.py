@@ -328,6 +328,19 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 message='Scale bar visibility not set'
             )
 
+    @exportRpc('viewer.set.camera.position')
+    def setCameraPosition(self, cameraPosition):
+
+        print('Camera position', cameraPosition)
+
+        #TODO: Set camera position
+
+        return createResponse(
+            value=True,
+            code=1,
+            message='Camera position set'
+        )
+
     @exportRpc('viewer.set.background.color')
     def setBackgroundColor(self, backgroundColor):
 

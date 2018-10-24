@@ -21,6 +21,9 @@ export default function createMethods(session) {
 		setScaleBarVisibility: (scaleBarVisibility) => {
 			return session.call('viewer.set.scale.bar.visibility', [scaleBarVisibility]);
 		},
+		setCameraPosition: (cameraPosition) => {
+			return session.call('viewer.set.camera.position', [cameraPosition]);
+		},
 		setBackgroundColor: (backgroundColor) => {
 			return session.call('viewer.set.background.color', [backgroundColor]);
 		},

@@ -6,6 +6,7 @@ import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
 
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
+import MultiButton from '../../../../Helpers/FormElements/MultiButton/MultiButton.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import Player from '../../../../Helpers/FormElements/Player/Player.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
@@ -22,6 +23,7 @@ export class VisualizationParameterEditor extends Component {
 		super(props);
 
 		/* Attributes */
+
 	}
 
 	render() {
@@ -161,6 +163,50 @@ export class VisualizationParameterEditor extends Component {
 								<td
 									className="fieldLabel"
 								>
+									Camera
+								</td>
+								<td
+									className="fieldEditor"
+								>
+									<MultiButton
+										options={[
+											{
+												text: '+X',
+												value: '+X',
+											},
+											{
+												text: '-X',
+												value: '-X',
+											},
+											{
+												text: '+Y',
+												value: '+Y',
+											},
+											{
+												text: '-Y',
+												value: '-Y',
+											},
+											{
+												text: '+Z',
+												value: '+Z',
+											},
+											{
+												text: '-Z',
+												value: '-Z',
+											},
+										]}
+										action={(cameraPosition) => {
+											this.setCameraPosition(cameraPosition);
+										}}
+									/>
+								</td>
+							</tr>
+							<tr
+								className="fieldLine"
+							>
+								<td
+									className="fieldLabel"
+								>
 									Background
 								</td>
 								<td
@@ -229,6 +275,10 @@ export class VisualizationParameterEditor extends Component {
 				this.props.setScaleBarVisibility(scaleBarVisibility);
 			}
 		});
+	}
+
+	setCameraPosition(cameraPosition) {
+		this.props.client.Viewer.setCameraPosition(cameraPosition);
 	}
 
 	setBackgroundColor(backgroundColor) {
