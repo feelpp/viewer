@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import DeepEqual from 'deep-equal';
+
+import {colorMaps, colorMapNames} from '../../../../../Others/colorMap.js';
 
 import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
@@ -88,6 +91,31 @@ export class VisualizationParameterEditor extends Component {
 										})}
 										action={(representationType) => {
 											this.setRepresentationType(representationType);
+										}}
+									/>
+								</td>
+							</tr>
+							<tr
+								className="fieldLine"
+							>
+								<td
+									className="fieldLabel"
+								>
+									Color map
+								</td>
+								<td
+									className="fieldEditor"
+								>
+									<Select
+										value={this.props.colorMap}
+										options={Object.keys(colorMaps).map((colorMapKey) => {
+											return {
+												text: colorMapNames[colorMaps[colorMapKey]],
+												value: colorMaps[colorMapKey],
+											};
+										})}
+										action={(colorMap) => {
+											this.setColorMap(colorMap);
 										}}
 									/>
 								</td>
@@ -259,6 +287,15 @@ export class VisualizationParameterEditor extends Component {
 		});
 	}
 
+	setColorMap(colorMap) {
+		this.props.client.Viewer.setColorMap(colorMap).then((result) => {
+			if(result.value)
+			{
+				this.props.setColorMap(this.props.dataArray, colorMap);
+			}
+		});
+	}
+
 	setTimeStep(timeStep) {
 		this.props.client.Viewer.setTimeStep(timeStep).then((result) => {
 			if(result.value)
@@ -301,6 +338,8 @@ VisualizationParameterEditor.propTypes = {
 	representationTypes: PropTypes.array.isRequired,
 	representationType: PropTypes.string.isRequired,
 	setRepresentationType: PropTypes.func.isRequired,
+	colorMap: PropTypes.string.isRequired,
+	setColorMap: PropTypes.func.isRequired,
 	timeSteps: PropTypes.array.isRequired,
 	timeStep: PropTypes.number.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
@@ -315,6 +354,17 @@ VisualizationParameterEditor.defaultProps = {
 
 export default connect(
 	(state) => {
+
+		/* ColorMap */
+
+		const colorMapFound = state.visualizationParameters.colorMaps.find((colorMap) => {
+			return DeepEqual(colorMap.dataArray, state.visualizationParameters.dataArray);
+		});
+
+		const colorMap = (colorMapFound) ? colorMapFound.colorMap : colorMaps.coolToWarm;
+
+		/* Return */
+
 		return {
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
@@ -322,6 +372,7 @@ export default connect(
 			dataArray: state.visualizationParameters.dataArray,
 			representationTypes: state.visualizationParameters.representationTypes,
 			representationType: state.visualizationParameters.representationType,
+			colorMap: colorMap,
 			timeSteps: state.visualizationParameters.timeSteps,
 			timeStep: state.visualizationParameters.timeStep,
 			scaleBarVisibility: state.visualizationParameters.scaleBarVisibility,
@@ -338,6 +389,9 @@ export default connect(
 			},
 			setRepresentationType: (representationType) => {
 				dispatch(visualizationParametersActions.setRepresentationType(representationType));
+			},
+			setColorMap: (dataArray, colorMap) => {
+				dispatch(visualizationParametersActions.setColorMap(dataArray, colorMap));
 			},
 			setTimeStep: (timeStep) => {
 				dispatch(visualizationParametersActions.setTimeStep(timeStep));

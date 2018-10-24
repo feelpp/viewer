@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Icon from 'react-fa';
 
 import ViewerProtocol from '../../../../Others/ParaViewWebProtocols/Viewer.js';
+import {colorMaps} from '../../../../Others/colorMap.js';
 
 import {Connection} from '../../../../Helpers/Connection.js';
 
@@ -165,6 +166,13 @@ export class Viewer extends Component {
 							this.props.setRepresentationTypes(result.data.representationTypes);
 							this.props.setRepresentationType(result.data.representationType);
 
+							this.props.setColorMaps(result.data.dataArrays.map((dataArray) => {
+								return {
+									dataArray: dataArray,
+									colorMap: colorMaps.coolToWarm,
+								};
+							}));
+
 							this.props.setTimeSteps(result.data.timeSteps);
 							this.props.setTimeStep(result.data.timeStep);
 
@@ -222,6 +230,7 @@ Viewer.propTypes = {
 	setDataArray: PropTypes.func.isRequired,
 	setRepresentationTypes: PropTypes.func.isRequired,
 	setRepresentationType: PropTypes.func.isRequired,
+	setColorMaps: PropTypes.func.isRequired,
 	setTimeSteps: PropTypes.func.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
 	setScaleBarVisibility: PropTypes.func.isRequired,
@@ -263,6 +272,9 @@ export default connect(
 			},
 			setRepresentationType: (representationType) => {
 				dispatch(visualizationParametersActions.setRepresentationType(representationType));
+			},
+			setColorMaps: (colorMaps) => {
+				dispatch(visualizationParametersActions.setColorMaps(colorMaps));
 			},
 			setTimeSteps: (timeSteps) => {
 				dispatch(visualizationParametersActions.setTimeSteps(timeSteps));

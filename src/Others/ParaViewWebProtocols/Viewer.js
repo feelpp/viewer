@@ -15,6 +15,9 @@ export default function createMethods(session) {
 		setRepresentationType: (representationType) => {
 			return session.call('viewer.set.representation.type', [representationType]);
 		},
+		setColorMap: (colorMap) => {
+			return session.call('viewer.set.color.map', [colorMap]);
+		},
 		setTimeStep: (timeStep) => {
 			return session.call('viewer.set.time.step', [timeStep]);
 		},

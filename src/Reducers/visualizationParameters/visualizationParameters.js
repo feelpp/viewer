@@ -1,9 +1,12 @@
+import DeepEqual from 'deep-equal';
+
 const visualizationParametersInitialState = {
 	editorDisplayStatus: false,
 	dataArrays: [],
 	dataArray: null,
 	representationTypes: [],
 	representationType: null,
+	colorMaps: [],
 	timeSteps: [],
 	timeStep: null,
 	scaleBarVisibility: null,
@@ -64,6 +67,29 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 		{
 			return Object.assign({}, state, {
 				representationType: action.representationType,
+			});
+		}
+
+		/* setColorMaps */
+
+		if(action.type === 'visualizationParameters.setColorMaps')
+		{
+			return Object.assign({}, state, {
+				colorMaps: action.colorMaps,
+			});
+		}
+
+		/* setColorMap */
+
+		if(action.type === 'visualizationParameters.setColorMap')
+		{
+			return Object.assign({}, state, {
+				colorMaps: state.colorMaps.map((colorMap) => {
+					return {
+						dataArray: colorMap.dataArray,
+						colorMap: (DeepEqual(colorMap.dataArray, action.dataArray)) ? action.colorMap : colorMap.colorMap,
+					};
+				}),
 			});
 		}
 

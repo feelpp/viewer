@@ -280,6 +280,71 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 message='Representation type not set'
             )
 
+    @exportRpc('viewer.set.color.map')
+    def setColorMap(self, colorMap):
+
+        colorMapCodes = {
+            'coolToWarm': 'Cool to Warm',
+            'warmToCool': 'Warm to Cool',
+            'coldAndHot': 'Cold and Hot',
+            'blackBodyRadiation': 'Black-Body Radiation',
+            'rainbow': 'rainbow',
+        }
+
+        if(colorMap in colorMapCodes):
+
+            colorMapCode = colorMapCodes[colorMap]
+
+            if(self.representation):
+
+                # Get current data array #
+
+                dataArrayName = self.representation.ColorArrayName[1]
+
+                # Set color map #
+
+                colorTransferFunction = GetColorTransferFunction(dataArrayName)
+
+                if(colorTransferFunction):
+
+                    colorTransferFunction.ApplyPreset(colorMapCode, True)
+
+                    # Update view #
+
+                    self.updateView()
+
+                    # Return #
+
+                    return createResponse(
+                        value=True,
+                        code=1,
+                        message='Color map set'
+                    )
+
+                else:
+
+                    return createResponse(
+                        value=False,
+                        code=-3,
+                        message='ColorMap not set'
+                    )
+
+            else:
+
+                return createResponse(
+                    value=False,
+                    code=-2,
+                    message='ColorMap not set'
+                )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='ColorMap not valid'
+            )
+
     @exportRpc('viewer.set.time.step')
     def setTimeStep(self, timeStep):
 

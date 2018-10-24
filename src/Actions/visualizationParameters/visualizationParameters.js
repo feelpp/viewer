@@ -36,6 +36,19 @@ export default {
 			representationType: representationType,
 		};
 	},
+	setColorMaps: (colorMaps) => {
+		return {
+			type: 'visualizationParameters.setColorMaps',
+			colorMaps: colorMaps,
+		};
+	},
+	setColorMap: (dataArray, colorMap) => {
+		return {
+			type: 'visualizationParameters.setColorMap',
+			dataArray: dataArray,
+			colorMap: colorMap,
+		};
+	},
 	setTimeSteps: (timeSteps) => {
 		return {
 			type: 'visualizationParameters.setTimeSteps',
