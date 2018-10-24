@@ -77,7 +77,7 @@ export class Viewer extends Component {
 
 				let visualizationParameterEditor = null;
 
-				if(this.props.configuration.visualizationParameterEditorDisplayStatus)
+				if(this.props.editorDisplayStatus)
 				{
 					visualizationParameterEditor = (
 						<VisualizationParameterEditor/>
@@ -157,6 +157,8 @@ export class Viewer extends Component {
 
 						if(result.value)
 						{
+							/* Set visualization parameters */
+
 							this.props.setDataArrays(result.data.dataArrays);
 							this.props.setDataArray(result.data.dataArray);
 
@@ -169,6 +171,13 @@ export class Viewer extends Component {
 							this.props.setScaleBarVisibility(result.data.scaleBarVisibility);
 
 							this.props.setBackgroundColor(result.data.backgroundColor);
+
+							/* Display editor */
+
+							if(this.props.configuration.visualizationParameterEditorDisplayStatus)
+							{
+								this.props.setEditorDisplayStatus(true);
+							}
 						}
 
 						/* Load status */
@@ -207,6 +216,8 @@ Viewer.propTypes = {
 	loadStatus: PropTypes.bool.isRequired,
 	setLoadStatus: PropTypes.func.isRequired,
 	setClient: PropTypes.func.isRequired,
+	editorDisplayStatus: PropTypes.bool.isRequired,
+	setEditorDisplayStatus: PropTypes.func.isRequired,
 	setDataArrays: PropTypes.func.isRequired,
 	setDataArray: PropTypes.func.isRequired,
 	setRepresentationTypes: PropTypes.func.isRequired,
@@ -227,6 +238,7 @@ export default connect(
 			data: state.data,
 			loadStatus: state.connection.loadStatus,
 			client: state.connection.client,
+			editorDisplayStatus: state.visualizationParameters.editorDisplayStatus,
 		};
 	},
 	(dispatch) => {
@@ -239,6 +251,9 @@ export default connect(
 			},
 			setDataArrays: (dataArrays) => {
 				dispatch(visualizationParametersActions.setDataArrays(dataArrays));
+			},
+			setEditorDisplayStatus: (editorDisplayStatus) => {
+				dispatch(visualizationParametersActions.setEditorDisplayStatus(editorDisplayStatus));
 			},
 			setDataArray: (dataArray) => {
 				dispatch(visualizationParametersActions.setDataArray(dataArray));

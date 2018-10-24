@@ -1,4 +1,5 @@
 const visualizationParametersInitialState = {
+	editorDisplayStatus: false,
 	dataArrays: [],
 	dataArray: null,
 	representationTypes: [],
@@ -27,6 +28,15 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 		{
 			return Object.assign({}, state, {
 				dataArrays: action.dataArrays,
+			});
+		}
+
+		/* setEditorDisplayStatus */
+
+		if(action.type === 'visualizationParameters.setEditorDisplayStatus')
+		{
+			return Object.assign({}, state, {
+				editorDisplayStatus: action.editorDisplayStatus,
 			});
 		}
 
