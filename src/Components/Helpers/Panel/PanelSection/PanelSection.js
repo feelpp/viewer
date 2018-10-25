@@ -23,7 +23,7 @@ export default class PanelSection extends Component {
 		/* Header */
 
 		const header = (
-			<div className="sectionHeader">
+			<div className="header">
 				<table>
 					<tbody>
 						<tr
@@ -55,7 +55,7 @@ export default class PanelSection extends Component {
 		if(this.state.openStatus)
 		{
 			content = (
-				<div className="sectionContent">
+				<div className="content">
 					{this.props.children}
 				</div>
 			);
