@@ -4,6 +4,9 @@ import {connect} from 'react-redux';
 import DeepEqual from 'deep-equal';
 
 import {colorMaps, colorMapNames} from '../../../../../Others/colorMap.js';
+import {formatExtensions, formatMIMETypes} from '../../../../../Others/format.js';
+
+import {downloadImageURL} from '../../../../../Helpers/download.js';
 
 import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
@@ -296,6 +299,27 @@ export class VisualizationParameterEditor extends Component {
 										/>
 									</td>
 								</tr>
+								<tr
+									className="fieldLine"
+								>
+									<td
+										className="fieldLabel"
+									>
+										Screenshot
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Button
+											disabled={this.props.screenShotGenerator === null}
+											action={() => {
+												this.downloadScreenShot();
+											}}
+										>
+											Download
+										</Button>
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</PanelSection>
@@ -371,9 +395,27 @@ export class VisualizationParameterEditor extends Component {
 			}
 		});
 	}
+
+	downloadScreenShot() {
+		const format = this.props.configuration.screenShot.format;
+		const quality = this.props.configuration.screenShot.quality;
+
+		const MIMEType = formatMIMETypes[format];
+		const extension = formatExtensions[format];
+
+		const screenShotURL = this.props.screenShotGenerator(MIMEType, quality);
+
+		if(screenShotURL)
+		{
+			downloadImageURL(screenShotURL, 'screenshot.' + extension, MIMEType);
+		}
+	}
 }
 
 VisualizationParameterEditor.propTypes = {
+	screenShotGenerator: PropTypes.func,
+
+	configuration: PropTypes.object.isRequired,
 	client: PropTypes.object.isRequired,
 	openStatus: PropTypes.bool.isRequired,
 	setOpenStatus: PropTypes.func.isRequired,
@@ -395,6 +437,7 @@ VisualizationParameterEditor.propTypes = {
 };
 
 VisualizationParameterEditor.defaultProps = {
+	screenShotGenerator: null,
 };
 
 export default connect(
@@ -411,6 +454,7 @@ export default connect(
 		/* Return */
 
 		return {
+			configuration: state.configuration,
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
 			dataArrays: state.visualizationParameters.dataArrays,
@@ -422,6 +466,7 @@ export default connect(
 			timeStep: state.visualizationParameters.timeStep,
 			scaleBarVisibility: state.visualizationParameters.scaleBarVisibility,
 			backgroundColor: state.visualizationParameters.backgroundColor,
+			screenShotGenerator: state.screenShotGenerator,
 		};
 	},
 	(dispatch) => {

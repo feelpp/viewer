@@ -3,6 +3,7 @@ import {reduceConnectionState} from './connection/connection.js';
 import {reduceDataState} from './data/data.js';
 import {reducePanelState} from './panel/panel.js';
 import {reduceVisualizationParametersState} from './visualizationParameters/visualizationParameters.js';
+import {reduceScreenShotGeneratorState} from './screenShotGenerator/screenShotGenerator.js';
 
 export function reduceRootState(state = {}, action) {
 
@@ -14,5 +15,6 @@ export function reduceRootState(state = {}, action) {
 		data: reduceDataState(state.data, action),
 		panel: reducePanelState(state.panel, action),
 		visualizationParameters: reduceVisualizationParametersState(state.visualizationParameters, action),
+		screenShotGenerator: reduceScreenShotGeneratorState(state.screenShotGenerator, action),
 	};
 }

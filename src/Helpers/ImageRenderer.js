@@ -89,6 +89,10 @@ export class ImageRenderer {
 		);
 	}
 
+	getCanvas() {
+		return this.canvas;
+	}
+
 	destroy() {
 
 		/* Subscription */

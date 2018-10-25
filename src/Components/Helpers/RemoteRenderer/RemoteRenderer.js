@@ -303,6 +303,17 @@ export default class RemoteRenderer extends Component {
 			}
 		}
 	}
+
+	generateScreenShot(MIMEType = 'image/png', quality = 1) {
+
+		/* Get Canvas */
+
+		const canvas = this.imageRenderer.getCanvas();
+
+		/* Return */
+
+		return (canvas) ? canvas.toDataURL(MIMEType, quality) : false;
+	}
 }
 
 RemoteRenderer.propTypes = {

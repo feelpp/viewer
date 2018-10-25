@@ -29,6 +29,10 @@ export class Viewer {
 			statisticsDisplayStatus: false,
 			visualizationParameterEditorDisplayStatus: true,
 			visualizationParameterEditorInitialOpenStatus: false,
+			screenShot: {
+				format: 'png',
+				quality: 1,
+			},
 		};
 
 		configuration = Object.assign({}, defaultConfiguration, configuration);

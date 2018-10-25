@@ -10,6 +10,7 @@ import {Connection} from '../../../../Helpers/Connection.js';
 
 import connectionActions from '../../../../Actions/connection/connection.js';
 import visualizationParametersActions from '../../../../Actions/visualizationParameters/visualizationParameters.js';
+import screenShotGeneratorActions from '../../../../Actions/screenShotGenerator/screenShotGenerator.js';
 
 import RemoteRenderer from '../../../Helpers/RemoteRenderer/RemoteRenderer.js';
 
@@ -64,6 +65,11 @@ export class Viewer extends Component {
 
 				const remoteRenderer = (
 					<RemoteRenderer
+						ref={(node) => {
+							this.props.setScreenShotGenerator((MIMEType, quality) => {
+								return node.generateScreenShot(MIMEType, quality);
+							});
+						}}
 						className="remoteRenderer"
 						client={this.props.client}
 						stillQuality={this.props.configuration.render.quality.still}
@@ -224,6 +230,7 @@ Viewer.propTypes = {
 	loadStatus: PropTypes.bool.isRequired,
 	setLoadStatus: PropTypes.func.isRequired,
 	setClient: PropTypes.func.isRequired,
+	setScreenShotGenerator: PropTypes.func.isRequired,
 	editorDisplayStatus: PropTypes.bool.isRequired,
 	setEditorDisplayStatus: PropTypes.func.isRequired,
 	setDataArrays: PropTypes.func.isRequired,
@@ -257,6 +264,9 @@ export default connect(
 			},
 			setClient: (client) => {
 				dispatch(connectionActions.setClient(client));
+			},
+			setScreenShotGenerator: (screenShotGenerator) => {
+				dispatch(screenShotGeneratorActions.set(screenShotGenerator));
 			},
 			setDataArrays: (dataArrays) => {
 				dispatch(visualizationParametersActions.setDataArrays(dataArrays));
