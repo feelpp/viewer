@@ -396,9 +396,52 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.set.camera.position')
     def setCameraPosition(self, cameraPosition):
 
-        print('Camera position', cameraPosition)
+        # Compute camera parameters #
 
-        #TODO: Set camera position
+        focalPoint = [0, 0, 0]
+        viewUp = [0, 0, 0]
+
+        if cameraPosition == '+X':
+
+            focalPoint[0] = 1
+            viewUp[2] = 1
+
+        elif cameraPosition == '-X':
+
+            focalPoint[0] = -1
+            viewUp[2] = 1
+
+        if cameraPosition == '+Y':
+
+            focalPoint[1] = 1
+            viewUp[2] = 1
+
+        elif cameraPosition == '-Y':
+
+            focalPoint[1] = -1
+            viewUp[2] = 1
+
+        if cameraPosition == '+Z':
+
+            focalPoint[2] = 1
+            viewUp[1] = 1
+
+        elif cameraPosition == '-Z':
+
+            focalPoint[2] = -1
+            viewUp[1] = 1
+
+        self.renderView.CameraPosition = [0, 0, 0]
+        self.renderView.CameraFocalPoint = focalPoint
+        self.renderView.CameraViewUp = viewUp
+
+        # Reset camera #
+
+        ResetCamera()
+
+        # Update view #
+
+        self.updateView()
 
         return createResponse(
             value=True,
