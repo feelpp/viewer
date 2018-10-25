@@ -126,7 +126,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         ## Scale bar visibility ##
 
-        scaleBarVisibility = GetDisplayProperties(self.reader, self.renderView).IsScalarBarVisible(self.renderView)
+        scaleBarVisibility = self.representation.IsScalarBarVisible(self.renderView)
 
         ## Background color ##
 
@@ -213,23 +213,21 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.set.data.array')
     def setDataArray(self, dataArray):
 
-        if self.reader and self.renderView:
+        if self.representation:
 
             # Set data array #
 
-            displayProperties = GetDisplayProperties(self.reader, self.renderView)
-
             if dataArray['type'] == 'cell':
 
-                ColorBy(displayProperties, ('CELLS', dataArray['name']))
+                ColorBy(self.representation, ('CELLS', dataArray['name']))
 
             else:
 
-                ColorBy(displayProperties, ('POINTS', dataArray['name']))
+                ColorBy(self.representation, ('POINTS', dataArray['name']))
 
             # Update transfer function #
 
-            displayProperties.RescaleTransferFunctionToDataRange(True, False)
+                self.representation.RescaleTransferFunctionToDataRange(True, False)
 
             # Update view #
 
@@ -254,11 +252,11 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.set.representation.type')
     def setRepresentationType(self, representationType):
 
-        if self.reader and self.renderView:
+        if self.representation:
 
             # Set representation type #
 
-            GetDisplayProperties(self.reader, self.renderView).SetRepresentationType(representationType)
+            self.representation.SetRepresentationType(representationType)
 
             # Update view #
 
@@ -367,11 +365,11 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.set.scale.bar.visibility')
     def setScaleBarVisibility(self, scaleBarVisibility):
 
-        if self.reader and self.renderView:
+        if self.representation:
 
             # Set scale bar visibility #
 
-            GetDisplayProperties(self.reader, self.renderView).SetScalarBarVisibility(self.renderView, scaleBarVisibility)
+            self.representation.SetScalarBarVisibility(self.renderView, scaleBarVisibility)
 
             # Update view #
 
