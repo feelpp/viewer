@@ -343,6 +343,74 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 message='ColorMap preset not valid'
             )
 
+    @exportRpc('viewer.reset.color.map.scale')
+    def resetColorMapScale(self):
+
+        if self.representation:
+
+            # Set scale bar visibility #
+
+            self.representation.RescaleTransferFunctionToDataRange(False, True)
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Color map scale reset'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Color map scale not reset'
+            )
+
+    @exportRpc('viewer.set.color.map.scale')
+    def setColorMapScale(self, inferiorValue, superiorValue):
+
+        if self.representation:
+
+            # Get current data array #
+
+            dataArrayName = self.representation.ColorArrayName[1]
+
+            # Update transfer functions #
+
+            colorTransferFunction = GetColorTransferFunction(dataArrayName)
+            opacityTransferFunction = GetOpacityTransferFunction(dataArrayName)
+
+            if colorTransferFunction and opacityTransferFunction:
+
+                colorTransferFunction.RescaleTransferFunction(inferiorValue, superiorValue)
+                opacityTransferFunction.RescaleTransferFunction(inferiorValue, superiorValue)
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Color map scale set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Color map scale not set'
+            )
+
     @exportRpc('viewer.set.time.step')
     def setTimeStep(self, timeStep):
 

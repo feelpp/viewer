@@ -18,6 +18,12 @@ export default function createMethods(session) {
 		setColorMapPreset: (colorMapPreset) => {
 			return session.call('viewer.set.color.map.preset', [colorMapPreset]);
 		},
+		setColorMapScale: (inferiorValue, superiorValue) => {
+			return session.call('viewer.set.color.map.scale', [inferiorValue, superiorValue]);
+		},
+		resetColorMapScale: () => {
+			return session.call('viewer.reset.color.map.scale');
+		},
 		setTimeStep: (timeStep) => {
 			return session.call('viewer.set.time.step', [timeStep]);
 		},

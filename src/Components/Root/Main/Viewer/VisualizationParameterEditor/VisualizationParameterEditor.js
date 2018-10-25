@@ -12,6 +12,7 @@ import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
 
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
+import Input from '../../../../Helpers/FormElements/Input/Input.js';
 import MultiButton from '../../../../Helpers/FormElements/MultiButton/MultiButton.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import PanelSection from '../../../../Helpers/Panel/PanelSection/PanelSection.js';
@@ -31,6 +32,10 @@ export class VisualizationParameterEditor extends Component {
 
 		/* Attributes */
 
+		this.state = {
+			colorMapScaleInferiorValue: 0,
+			colorMapScaleSuperiorValue: 0,
+		};
 	}
 
 	render() {
@@ -161,6 +166,44 @@ export class VisualizationParameterEditor extends Component {
 												this.setColorMapPreset(colorMapPreset);
 											}}
 										/>
+									</td>
+								</tr>
+								<tr
+									className="fieldLine"
+								>
+									<td
+										className="fieldLabel"
+									>
+										Scale
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Input
+											className="smallInput"
+											type="number"
+											placeholder="Inferior"
+											value={this.state.colorMapScaleInferiorValue}
+											action={(inferiorValue) => {
+												this.setColorMapScale(inferiorValue, this.state.colorMapScaleSuperiorValue);
+											}}
+										/>
+										<Input
+											className="smallInput"
+											type="number"
+											placeholder="Superior"
+											value={this.state.colorMapScaleSuperiorValue}
+											action={(superiorValue) => {
+												this.setColorMapScale(this.state.colorMapScaleInferiorValue, superiorValue);
+											}}
+										/>
+										<Button
+											action={() => {
+												this.resetColorMapScale();
+											}}
+										>
+											Reset
+										</Button>
 									</td>
 								</tr>
 							</tbody>
@@ -364,6 +407,24 @@ export class VisualizationParameterEditor extends Component {
 			}
 		});
 	}
+
+	resetColorMapScale() {
+		this.props.client.Viewer.resetColorMapScale();
+	}
+
+	setColorMapScale(inferiorValue, superiorValue) {
+		this.setState({
+			colorMapScaleInferiorValue: inferiorValue,
+			colorMapScaleSuperiorValue: superiorValue,
+		});
+
+		this.props.client.Viewer.setColorMapScale(inferiorValue, superiorValue).then((result) => {
+			if(! result.value)
+			{
+				this.setState({
+					colorMapScaleInferiorValue: 0,
+					colorMapScaleSuperiorValue: 0,
+				});
 			}
 		});
 	}
