@@ -1,0 +1,70 @@
+/* Imports */
+
+@import '../../../Root/Root.less';
+
+/* Variables */
+
+/* Style definition */
+
+.Input
+{
+	display: inline-block;
+	min-width: 50px;
+
+	&:not(:first-child)
+	{
+		margin-left: 5px;
+	}
+
+	&:not(:last-child)
+	{
+		margin-right: 5px;
+	}
+
+	input
+	{
+		display: block;
+		width: 100%;
+		padding: 5px;
+		box-sizing: border-box;
+
+		font-family: @fontFamily;
+		font-size: @fontSizeNormal;
+		color: @black;
+		vertical-align: middle;
+
+		border: 2px solid @blackSemiTransparentMegaLight;
+		border-radius: 5px;
+		background-color: transparent;
+		box-shadow: none;
+		outline: none;
+
+		-webkit-appearance: none;
+
+		&::placeholder
+		{
+			color: @blackSemiTransparentLight;
+		}
+
+		&:disabled
+		{
+			opacity: 0.5;
+		}
+
+		&:focus
+		{
+			border: 2px solid @blue;
+		}
+
+		&:invalid,
+		&.invalid
+		{
+			border: 2px solid @red;
+		}
+
+		&:not(:disabled):hover
+		{
+
+		}
+	}
+}
