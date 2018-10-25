@@ -36,17 +36,17 @@ export default {
 			representationType: representationType,
 		};
 	},
-	setColorMaps: (colorMaps) => {
+	setColorMapPresets: (colorMapPresets) => {
 		return {
-			type: 'visualizationParameters.setColorMaps',
-			colorMaps: colorMaps,
+			type: 'visualizationParameters.setColorMapPresets',
+			colorMapPresets: colorMapPresets,
 		};
 	},
-	setColorMap: (dataArray, colorMap) => {
+	setColorMapPreset: (dataArray, colorMapPreset) => {
 		return {
-			type: 'visualizationParameters.setColorMap',
+			type: 'visualizationParameters.setColorMapPreset',
 			dataArray: dataArray,
-			colorMap: colorMap,
+			colorMapPreset: colorMapPreset,
 		};
 	},
 	setTimeSteps: (timeSteps) => {

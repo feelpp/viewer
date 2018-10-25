@@ -1,4 +1,4 @@
-export const colorMaps = {
+export const colorMapPresets = {
 	coolToWarm: 'coolToWarm',
 	warmToCool: 'warmToCool',
 	coldAndHot: 'coldAndHot',
@@ -6,7 +6,7 @@ export const colorMaps = {
 	rainbow: 'rainbow',
 };
 
-export const colorMapNames = {
+export const colorMapPresetNames = {
 	coolToWarm: 'Cool to Warm',
 	warmToCool: 'Warm to Cool',
 	coldAndHot: 'Cold and Hot',

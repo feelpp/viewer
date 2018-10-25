@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import DeepEqual from 'deep-equal';
 
-import {colorMaps, colorMapNames} from '../../../../../Others/colorMap.js';
+import {colorMapPresets, colorMapPresetNames} from '../../../../../Others/colorMap.js';
 import {formatExtensions, formatMIMETypes} from '../../../../../Others/format.js';
 
 import {downloadImageURL} from '../../../../../Helpers/download.js';
@@ -150,15 +150,15 @@ export class VisualizationParameterEditor extends Component {
 										className="fieldEditor"
 									>
 										<Select
-											value={this.props.colorMap}
-											options={Object.keys(colorMaps).map((colorMapKey) => {
+											value={this.props.colorMapPreset}
+											options={Object.keys(colorMapPresets).map((colorMapPresetKey) => {
 												return {
-													text: colorMapNames[colorMaps[colorMapKey]],
-													value: colorMaps[colorMapKey],
+													text: colorMapPresetNames[colorMapPresets[colorMapPresetKey]],
+													value: colorMapPresets[colorMapPresetKey],
 												};
 											})}
-											action={(colorMap) => {
-												this.setColorMap(colorMap);
+											action={(colorMapPreset) => {
+												this.setColorMapPreset(colorMapPreset);
 											}}
 										/>
 									</td>
@@ -356,11 +356,14 @@ export class VisualizationParameterEditor extends Component {
 		});
 	}
 
-	setColorMap(colorMap) {
-		this.props.client.Viewer.setColorMap(colorMap).then((result) => {
+	setColorMapPreset(colorMapPreset) {
+		this.props.client.Viewer.setColorMapPreset(colorMapPreset).then((result) => {
 			if(result.value)
 			{
-				this.props.setColorMap(this.props.dataArray, colorMap);
+				this.props.setColorMapPreset(this.props.dataArray, colorMapPreset);
+			}
+		});
+	}
 			}
 		});
 	}
@@ -425,8 +428,8 @@ VisualizationParameterEditor.propTypes = {
 	representationTypes: PropTypes.array.isRequired,
 	representationType: PropTypes.string.isRequired,
 	setRepresentationType: PropTypes.func.isRequired,
-	colorMap: PropTypes.string.isRequired,
-	setColorMap: PropTypes.func.isRequired,
+	colorMapPreset: PropTypes.string.isRequired,
+	setColorMapPreset: PropTypes.func.isRequired,
 	timeSteps: PropTypes.array.isRequired,
 	timeStep: PropTypes.number.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
@@ -443,13 +446,13 @@ VisualizationParameterEditor.defaultProps = {
 export default connect(
 	(state) => {
 
-		/* ColorMap */
+		/* ColorMapPreset */
 
-		const colorMapFound = state.visualizationParameters.colorMaps.find((colorMap) => {
-			return DeepEqual(colorMap.dataArray, state.visualizationParameters.dataArray);
+		const colorMapPresetFound = state.visualizationParameters.colorMapPresets.find((colorMapPreset) => {
+			return DeepEqual(colorMapPreset.dataArray, state.visualizationParameters.dataArray);
 		});
 
-		const colorMap = (colorMapFound) ? colorMapFound.colorMap : colorMaps.coolToWarm;
+		const colorMapPreset = (colorMapPresetFound) ? colorMapPresetFound.colorMapPreset : colorMapPresets.coolToWarm;
 
 		/* Return */
 
@@ -461,7 +464,7 @@ export default connect(
 			dataArray: state.visualizationParameters.dataArray,
 			representationTypes: state.visualizationParameters.representationTypes,
 			representationType: state.visualizationParameters.representationType,
-			colorMap: colorMap,
+			colorMapPreset: colorMapPreset,
 			timeSteps: state.visualizationParameters.timeSteps,
 			timeStep: state.visualizationParameters.timeStep,
 			scaleBarVisibility: state.visualizationParameters.scaleBarVisibility,
@@ -480,8 +483,8 @@ export default connect(
 			setRepresentationType: (representationType) => {
 				dispatch(visualizationParametersActions.setRepresentationType(representationType));
 			},
-			setColorMap: (dataArray, colorMap) => {
-				dispatch(visualizationParametersActions.setColorMap(dataArray, colorMap));
+			setColorMapPreset: (dataArray, colorMapPreset) => {
+				dispatch(visualizationParametersActions.setColorMapPreset(dataArray, colorMapPreset));
 			},
 			setTimeStep: (timeStep) => {
 				dispatch(visualizationParametersActions.setTimeStep(timeStep));

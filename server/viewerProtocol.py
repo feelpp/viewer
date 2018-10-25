@@ -278,10 +278,10 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 message='Representation type not set'
             )
 
-    @exportRpc('viewer.set.color.map')
-    def setColorMap(self, colorMap):
+    @exportRpc('viewer.set.color.map.preset')
+    def setColorMapPreset(self, colorMapPreset):
 
-        colorMapCodes = {
+        colorMapPresetCodes = {
             'coolToWarm': 'Cool to Warm',
             'warmToCool': 'Warm to Cool',
             'coldAndHot': 'Cold and Hot',
@@ -289,9 +289,9 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             'rainbow': 'rainbow',
         }
 
-        if colorMap in colorMapCodes:
+        if colorMapPreset in colorMapPresetCodes:
 
-            colorMapCode = colorMapCodes[colorMap]
+            colorMapPresetCode = colorMapPresetCodes[colorMapPreset]
 
             if self.representation:
 
@@ -305,7 +305,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
                 if colorTransferFunction:
 
-                    colorTransferFunction.ApplyPreset(colorMapCode, True)
+                    colorTransferFunction.ApplyPreset(colorMapPresetCode, True)
 
                     # Update view #
 
@@ -316,7 +316,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                     return createResponse(
                         value=True,
                         code=1,
-                        message='Color map set'
+                        message='ColorMap preset set'
                     )
 
                 else:
@@ -324,7 +324,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                     return createResponse(
                         value=False,
                         code=-3,
-                        message='ColorMap not set'
+                        message='ColorMap preset not set'
                     )
 
             else:
@@ -332,7 +332,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 return createResponse(
                     value=False,
                     code=-2,
-                    message='ColorMap not set'
+                    message='ColorMap preset not set'
                 )
 
         else:
@@ -340,7 +340,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             return createResponse(
                 value=False,
                 code=-1,
-                message='ColorMap not valid'
+                message='ColorMap preset not valid'
             )
 
     @exportRpc('viewer.set.time.step')

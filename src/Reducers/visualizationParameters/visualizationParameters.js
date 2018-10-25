@@ -6,7 +6,7 @@ const visualizationParametersInitialState = {
 	dataArray: null,
 	representationTypes: [],
 	representationType: null,
-	colorMaps: [],
+	colorMapPresets: [],
 	timeSteps: [],
 	timeStep: null,
 	scaleBarVisibility: null,
@@ -70,24 +70,24 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 			});
 		}
 
-		/* setColorMaps */
+		/* setColorMapPresets */
 
-		if(action.type === 'visualizationParameters.setColorMaps')
+		if(action.type === 'visualizationParameters.setColorMapPresets')
 		{
 			return Object.assign({}, state, {
-				colorMaps: action.colorMaps,
+				colorMapPresets: action.colorMapPresets,
 			});
 		}
 
-		/* setColorMap */
+		/* setColorMapPreset */
 
-		if(action.type === 'visualizationParameters.setColorMap')
+		if(action.type === 'visualizationParameters.setColorMapPreset')
 		{
 			return Object.assign({}, state, {
-				colorMaps: state.colorMaps.map((colorMap) => {
+				colorMapPresets: state.colorMapPresets.map((colorMapPreset) => {
 					return {
-						dataArray: colorMap.dataArray,
-						colorMap: (DeepEqual(colorMap.dataArray, action.dataArray)) ? action.colorMap : colorMap.colorMap,
+						dataArray: colorMapPreset.dataArray,
+						colorMapPreset: (DeepEqual(colorMapPreset.dataArray, action.dataArray)) ? action.colorMapPreset : colorMapPreset.colorMapPreset,
 					};
 				}),
 			});
