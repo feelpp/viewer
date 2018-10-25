@@ -134,31 +134,33 @@ export class VisualizationParameterEditor extends Component {
 						<table
 							className="fields"
 						>
-							<tr
-								className="fieldLine"
-							>
-								<td
-									className="fieldLabel"
+							<tbody>
+								<tr
+									className="fieldLine"
 								>
-									Color map
-								</td>
-								<td
-									className="fieldEditor"
-								>
-									<Select
-										value={this.props.colorMap}
-										options={Object.keys(colorMaps).map((colorMapKey) => {
-											return {
-												text: colorMapNames[colorMaps[colorMapKey]],
-												value: colorMaps[colorMapKey],
-											};
-										})}
-										action={(colorMap) => {
-											this.setColorMap(colorMap);
-										}}
-									/>
-								</td>
-							</tr>
+									<td
+										className="fieldLabel"
+									>
+										Color map
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Select
+											value={this.props.colorMap}
+											options={Object.keys(colorMaps).map((colorMapKey) => {
+												return {
+													text: colorMapNames[colorMaps[colorMapKey]],
+													value: colorMaps[colorMapKey],
+												};
+											})}
+											action={(colorMap) => {
+												this.setColorMap(colorMap);
+											}}
+										/>
+									</td>
+								</tr>
+							</tbody>
 						</table>
 					</PanelSection>
 					<PanelSection

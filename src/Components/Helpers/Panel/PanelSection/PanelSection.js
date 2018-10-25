@@ -25,23 +25,25 @@ export default class PanelSection extends Component {
 		const header = (
 			<div className="sectionHeader">
 				<table>
-					<tr
-						onClick={() => {
-							this.setState({
-								openStatus: ! this.state.openStatus,
-							});
-						}}
-					>
-						<td className="label">
-							{this.props.label}
-						</td>
-						<td className="icon">
-							<Icon
-								name={(this.state.openStatus) ? 'chevron-up' : 'chevron-down'}
-								fixedWidth
-							/>
-						</td>
-					</tr>
+					<tbody>
+						<tr
+							onClick={() => {
+								this.setState({
+									openStatus: ! this.state.openStatus,
+								});
+							}}
+						>
+							<td className="label">
+								{this.props.label}
+							</td>
+							<td className="icon">
+								<Icon
+									name={(this.state.openStatus) ? 'chevron-up' : 'chevron-down'}
+									fixedWidth
+								/>
+							</td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 		);
