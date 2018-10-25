@@ -126,6 +126,13 @@ You need to pass to the viewer two parameters:
 	        },
 	    },
 	    statisticsDisplayStatus: ..., // boolean describing if statistics should be displayed
+	    
+	    visualizationParameterEditorDisplayStatus: ..., // boolean describing if visualization parameter editor should be displayed
+	    visualizationParameterEditorInitialOpenStatus: ..., // boolean describing if visualization parameter editor should be opened at start
+	    screenShot: {
+	        format: ..., // string ['png, jpg'] describing the file format for screenshot download
+	        quality: // number [0:1] describing the quality of the screenshot download, only when format is 'jpg'
+	    },
 	}
 	```
 
