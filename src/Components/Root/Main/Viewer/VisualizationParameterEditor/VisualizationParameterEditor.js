@@ -11,6 +11,7 @@ import {downloadImageURL} from '../../../../../Helpers/download.js';
 import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
 import colorMapActions from '../../../../../Actions/visualizationParameters/colorMap/colorMap.js';
+import legendActions from '../../../../../Actions/visualizationParameters/legend/legend.js';
 
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import Input from '../../../../Helpers/FormElements/Input/Input.js';
@@ -213,26 +214,6 @@ export class VisualizationParameterEditor extends Component {
 									<td
 										className="fieldLabel"
 									>
-										Title
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<ValidationInput
-											type="text"
-											value={this.props.colorMapTitle}
-											action={(colorMapTitle) => {
-												this.setColorMapTitle(colorMapTitle);
-											}}
-										/>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
 										LogScale
 									</td>
 									<td
@@ -336,15 +317,35 @@ export class VisualizationParameterEditor extends Component {
 									<td
 										className="fieldLabel"
 									>
-										Legend visibility
+										Display
 									</td>
 									<td
 										className="fieldEditor"
 									>
 										<Switch
-											value={this.props.scaleBarVisibility}
-											action={(scaleBarVisibility) => {
-												this.setScaleBarVisibility(scaleBarVisibility);
+											value={this.props.legendDisplayStatus}
+											action={(legendDisplayStatus) => {
+												this.setLegendDisplayStatus(legendDisplayStatus);
+											}}
+										/>
+									</td>
+								</tr>
+								<tr
+									className="fieldLine"
+								>
+									<td
+										className="fieldLabel"
+									>
+										Title
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<ValidationInput
+											type="text"
+											value={this.props.legendTitle}
+											action={(legendTitle) => {
+												this.setLegendTitle(legendTitle);
 											}}
 										/>
 									</td>
@@ -448,15 +449,6 @@ export class VisualizationParameterEditor extends Component {
 		});
 	}
 
-	setColorMapTitle(colorMapTitle) {
-		this.props.client.Viewer.setColorMapTitle(colorMapTitle).then((result) => {
-			if(result.value)
-			{
-				this.props.setColorMapTitle(this.props.dataArray, colorMapTitle);
-			}
-		});
-	}
-
 	resetColorMapScale() {
 		this.props.client.Viewer.resetColorMapScale();
 	}
@@ -496,11 +488,20 @@ export class VisualizationParameterEditor extends Component {
 		});
 	}
 
-	setScaleBarVisibility(scaleBarVisibility) {
-		this.props.client.Viewer.setScaleBarVisibility(scaleBarVisibility).then((result) => {
+	setLegendDisplayStatus(legendDisplayStatus) {
+		this.props.client.Viewer.setLegendDisplayStatus(legendDisplayStatus).then((result) => {
 			if(result.value)
 			{
-				this.props.setScaleBarVisibility(scaleBarVisibility);
+				this.props.setLegendDisplayStatus(legendDisplayStatus);
+			}
+		});
+	}
+
+	setLegendTitle(legendTitle) {
+		this.props.client.Viewer.setLegendTitle(legendTitle).then((result) => {
+			if(result.value)
+			{
+				this.props.setLegendTitle(this.props.dataArray, legendTitle);
 			}
 		});
 	}
@@ -549,15 +550,15 @@ VisualizationParameterEditor.propTypes = {
 	setRepresentationType: PropTypes.func.isRequired,
 	colorMapPreset: PropTypes.string.isRequired,
 	setColorMapPreset: PropTypes.func.isRequired,
-	colorMapTitle: PropTypes.string.isRequired,
-	setColorMapTitle: PropTypes.func.isRequired,
 	colorMapLogScaleStatus: PropTypes.bool.isRequired,
 	setColorMapLogScaleStatus: PropTypes.func.isRequired,
 	timeSteps: PropTypes.array.isRequired,
 	timeStep: PropTypes.number.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
-	scaleBarVisibility: PropTypes.bool.isRequired,
-	setScaleBarVisibility: PropTypes.func.isRequired,
+	legendDisplayStatus: PropTypes.bool.isRequired,
+	setLegendDisplayStatus: PropTypes.func.isRequired,
+	legendTitle: PropTypes.string.isRequired,
+	setLegendTitle: PropTypes.func.isRequired,
 	backgroundColor: PropTypes.string.isRequired,
 	setBackgroundColor: PropTypes.func.isRequired,
 };
@@ -577,13 +578,13 @@ export default connect(
 
 		const colorMapPreset = (colorMapPresetFound) ? colorMapPresetFound.preset : colorMapPresets.coolToWarm;
 
-		/* ColorMapTitle */
+		/* LegendTitle */
 
-		const colorMapTitleFound = state.visualizationParameters.colorMap.titles.find((colorMapTitle) => {
-			return DeepEqual(colorMapTitle.dataArray, state.visualizationParameters.dataArray);
+		const legendTitleFound = state.visualizationParameters.legend.titles.find((legendTitle) => {
+			return DeepEqual(legendTitle.dataArray, state.visualizationParameters.dataArray);
 		});
 
-		const colorMapTitle = (colorMapTitleFound) ? colorMapTitleFound.title : '';
+		const legendTitle = (legendTitleFound) ? legendTitleFound.title : '';
 
 		/* Return */
 
@@ -596,11 +597,11 @@ export default connect(
 			representationTypes: state.visualizationParameters.representationTypes,
 			representationType: state.visualizationParameters.representationType,
 			colorMapPreset: colorMapPreset,
-			colorMapTitle: colorMapTitle,
+			legendTitle: legendTitle,
 			colorMapLogScaleStatus: state.visualizationParameters.colorMap.logScaleStatus,
 			timeSteps: state.visualizationParameters.timeSteps,
 			timeStep: state.visualizationParameters.timeStep,
-			scaleBarVisibility: state.visualizationParameters.scaleBarVisibility,
+			legendDisplayStatus: state.visualizationParameters.legend.displayStatus,
 			backgroundColor: state.visualizationParameters.backgroundColor,
 			screenShotGenerator: state.screenShotGenerator,
 		};
@@ -619,17 +620,17 @@ export default connect(
 			setColorMapPreset: (dataArray, colorMapPreset) => {
 				dispatch(colorMapActions.setPreset(dataArray, colorMapPreset));
 			},
-			setColorMapTitle: (dataArray, colorMapTitle) => {
-				dispatch(colorMapActions.setTitle(dataArray, colorMapTitle));
-			},
 			setColorMapLogScaleStatus: (logScaleStatus) => {
 				dispatch(colorMapActions.setLogScaleStatus(logScaleStatus));
 			},
 			setTimeStep: (timeStep) => {
 				dispatch(visualizationParametersActions.setTimeStep(timeStep));
 			},
-			setScaleBarVisibility: (scaleBarVisibility) => {
-				dispatch(visualizationParametersActions.setScaleBarVisibility(scaleBarVisibility));
+			setLegendDisplayStatus: (displayStatus) => {
+				dispatch(legendActions.setDisplayStatus(displayStatus));
+			},
+			setLegendTitle: (dataArray, title) => {
+				dispatch(legendActions.setTitle(dataArray, title));
 			},
 			setBackgroundColor: (backgroundColor) => {
 				dispatch(visualizationParametersActions.setBackgroundColor(backgroundColor));

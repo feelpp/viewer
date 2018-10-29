@@ -18,9 +18,6 @@ export default function createMethods(session) {
 		setColorMapPreset: (colorMapPreset) => {
 			return session.call('viewer.set.color.map.preset', [colorMapPreset]);
 		},
-		setColorMapTitle: (colorMapTitle) => {
-			return session.call('viewer.set.color.map.title', [colorMapTitle]);
-		},
 		setColorMapScale: (inferiorValue, superiorValue) => {
 			return session.call('viewer.set.color.map.scale', [inferiorValue, superiorValue]);
 		},
@@ -33,8 +30,11 @@ export default function createMethods(session) {
 		setTimeStep: (timeStep) => {
 			return session.call('viewer.set.time.step', [timeStep]);
 		},
-		setScaleBarVisibility: (scaleBarVisibility) => {
-			return session.call('viewer.set.scale.bar.visibility', [scaleBarVisibility]);
+		setLegendDisplayStatus: (legendDisplayStatus) => {
+			return session.call('viewer.set.legend.display.status', [legendDisplayStatus]);
+		},
+		setLegendTitle: (legendTitle) => {
+			return session.call('viewer.set.legend.title', [legendTitle]);
 		},
 		setCameraPosition: (cameraPosition) => {
 			return session.call('viewer.set.camera.position', [cameraPosition]);

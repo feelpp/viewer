@@ -31,29 +31,6 @@ export function reduceColorMapState(state = colorMapInitialState, action) {
 				}),
 			});
 		}
-		
-		/* setTitles */
-
-		if(action.type === 'visualizationParameters.colorMap.setTitles')
-		{
-			return Object.assign({}, state, {
-				titles: action.titles,
-			});
-		}
-
-		/* setTitle */
-
-		if(action.type === 'visualizationParameters.colorMap.setTitle')
-		{
-			return Object.assign({}, state, {
-				titles: state.titles.map((title) => {
-					return {
-						dataArray: title.dataArray,
-						title: (DeepEqual(title.dataArray, action.dataArray)) ? action.title : title.title,
-					};
-				}),
-			});
-		}
 
 		/* setLogScaleStatus */
 

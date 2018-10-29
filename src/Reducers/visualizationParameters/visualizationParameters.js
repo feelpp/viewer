@@ -1,4 +1,5 @@
 import {reduceColorMapState, colorMapInitialState} from './colorMap/colorMap.js';
+import {reduceLegendState, legendInitialState} from './legend/legend.js';
 
 const visualizationParametersInitialState = {
 	editorDisplayStatus: false,
@@ -7,9 +8,9 @@ const visualizationParametersInitialState = {
 	representationTypes: [],
 	representationType: null,
 	colorMap: colorMapInitialState,
+	legend: legendInitialState,
 	timeSteps: [],
 	timeStep: null,
-	scaleBarVisibility: null,
 	backgroundColor: null,
 };
 
@@ -88,15 +89,6 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 			});
 		}
 
-		/* setScaleBarVisibility */
-
-		if(action.type === 'visualizationParameters.setScaleBarVisibility')
-		{
-			return Object.assign({}, state, {
-				scaleBarVisibility: action.scaleBarVisibility,
-			});
-		}
-
 		/* setBackgroundColor */
 
 		if(action.type === 'visualizationParameters.setBackgroundColor')
@@ -110,6 +102,7 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 
 		return Object.assign({}, state, {
 			colorMap: reduceColorMapState(state.colorMap, action),
+			legend: reduceLegendState(state.legend, action),
 		});
 	}
 	else

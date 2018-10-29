@@ -11,6 +11,7 @@ import {Connection} from '../../../../Helpers/Connection.js';
 import connectionActions from '../../../../Actions/connection/connection.js';
 import visualizationParametersActions from '../../../../Actions/visualizationParameters/visualizationParameters.js';
 import colorMapActions from '../../../../Actions/visualizationParameters/colorMap/colorMap.js';
+import legendActions from '../../../../Actions/visualizationParameters/legend/legend.js';
 import screenShotGeneratorActions from '../../../../Actions/screenShotGenerator/screenShotGenerator.js';
 
 import RemoteRenderer from '../../../Helpers/RemoteRenderer/RemoteRenderer.js';
@@ -167,11 +168,17 @@ export class Viewer extends Component {
 						{
 							/* Set visualization parameters */
 
+							/** Data array **/
+
 							this.props.setDataArrays(result.data.dataArrays);
 							this.props.setDataArray(result.data.dataArray);
 
+							/** Representation **/
+
 							this.props.setRepresentationTypes(result.data.representationTypes);
 							this.props.setRepresentationType(result.data.representationType);
+
+							/** ColorMap **/
 
 							this.props.setColorMapPresets(result.data.dataArrays.map((dataArray) => {
 								return {
@@ -180,19 +187,23 @@ export class Viewer extends Component {
 								};
 							}));
 
-							this.props.setColorMapTitles(result.data.dataArrays.map((dataArray) => {
+							this.props.setColorMapLogScaleStatus(false);
+
+							/** legend **/
+
+							this.props.setLegendDisplayStatus(result.data.legendDisplayStatus);
+
+							this.props.setLegendTitles(result.data.dataArrays.map((dataArray) => {
 								return {
 									dataArray: dataArray,
 									title: dataArray.name,
 								};
 							}));
 
-							this.props.setColorMapLogScaleStatus(false);
+							/** Time step **/
 
 							this.props.setTimeSteps(result.data.timeSteps);
 							this.props.setTimeStep(result.data.timeStep);
-
-							this.props.setScaleBarVisibility(result.data.scaleBarVisibility);
 
 							this.props.setBackgroundColor(result.data.backgroundColor);
 
@@ -252,7 +263,8 @@ Viewer.propTypes = {
 	setColorMapLogScaleStatus: PropTypes.func.isRequired,
 	setTimeSteps: PropTypes.func.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
-	setScaleBarVisibility: PropTypes.func.isRequired,
+	setLegendDisplayStatus: PropTypes.func.isRequired,
+	setLegendTitles: PropTypes.func.isRequired,
 	setBackgroundColor: PropTypes.func.isRequired,
 };
 
@@ -310,8 +322,11 @@ export default connect(
 			setTimeStep: (timeStep) => {
 				dispatch(visualizationParametersActions.setTimeStep(timeStep));
 			},
-			setScaleBarVisibility: (scaleBarVisibility) => {
-				dispatch(visualizationParametersActions.setScaleBarVisibility(scaleBarVisibility));
+			setLegendDisplayStatus: (displayStatus) => {
+				dispatch(legendActions.setDisplayStatus(displayStatus));
+			},
+			setLegendTitles: (titles) => {
+				dispatch(legendActions.setTitles(titles));
 			},
 			setBackgroundColor: (backgroundColor) => {
 				dispatch(visualizationParametersActions.setBackgroundColor(backgroundColor));

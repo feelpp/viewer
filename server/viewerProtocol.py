@@ -124,9 +124,9 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
         timeSteps = formatPropertyValueAsList(GetAnimationScene().TimeKeeper.TimestepValues)
         timeStep = GetAnimationScene().TimeKeeper.Time
 
-        ## Scale bar visibility ##
+        ## Legend ##
 
-        scaleBarVisibility = self.representation.IsScalarBarVisible(self.renderView)
+        legendDisplayStatus = self.representation.IsScalarBarVisible(self.renderView)
 
         ## Background color ##
 
@@ -149,7 +149,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 'representationType': representationType,
                 'timeSteps': timeSteps,
                 'timeStep': timeStep,
-                'scaleBarVisibility': scaleBarVisibility,
+                'legendDisplayStatus': legendDisplayStatus,
                 'backgroundColor': backgroundColor,
             }
         )
@@ -343,63 +343,6 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 message='ColorMap preset not valid'
             )
 
-    @exportRpc('viewer.set.color.map.title')
-    def setColorMapTitle(self, colorMapTitle):
-
-        if self.renderView and self.representation:
-
-            # Get current data array #
-
-            dataArrayName = self.representation.ColorArrayName[1]
-
-            # Set color map #
-
-            colorTransferFunction = GetColorTransferFunction(dataArrayName)
-
-            if colorTransferFunction:
-
-                calarBarWidgetRepresentation = GetScalarBar(colorTransferFunction, self.renderView)
-
-                if calarBarWidgetRepresentation:
-
-                    calarBarWidgetRepresentation.Title = colorMapTitle
-
-                    # Update view #
-
-                    self.updateView()
-
-                    # Return #
-
-                    return createResponse(
-                        value=True,
-                        code=1,
-                        message='ColorMap title set'
-                    )
-
-                else:
-
-                    return createResponse(
-                        value=False,
-                        code=-3,
-                        message='ColorMap title not set'
-                    )
-
-            else:
-
-                return createResponse(
-                    value=False,
-                    code=-2,
-                    message='ColorMap title not set'
-                )
-
-        else:
-
-            return createResponse(
-                value=False,
-                code=-1,
-                message='ColorMap title not set'
-            )
-
     @exportRpc('viewer.reset.color.map.scale')
     def resetColorMapScale(self):
 
@@ -532,14 +475,14 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             message='Time step set'
         )
 
-    @exportRpc('viewer.set.scale.bar.visibility')
-    def setScaleBarVisibility(self, scaleBarVisibility):
+    @exportRpc('viewer.set.legend.display.status')
+    def setLegendDisplayStatus(self, legendDisplayStatus):
 
         if self.representation:
 
-            # Set scale bar visibility #
+            # Set legend display status #
 
-            self.representation.SetScalarBarVisibility(self.renderView, scaleBarVisibility)
+            self.representation.SetScalarBarVisibility(self.renderView, legendDisplayStatus)
 
             # Update view #
 
@@ -550,7 +493,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             return createResponse(
                 value=True,
                 code=1,
-                message='Scale bar visibility set'
+                message='Legend display status set'
             )
 
         else:
@@ -558,7 +501,64 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             return createResponse(
                 value=False,
                 code=-1,
-                message='Scale bar visibility not set'
+                message='Legend display status not set'
+            )
+
+    @exportRpc('viewer.set.legend.title')
+    def setLegendTitle(self, legendTitle):
+
+        if self.renderView and self.representation:
+
+            # Get current data array #
+
+            dataArrayName = self.representation.ColorArrayName[1]
+
+            # Set color map #
+
+            colorTransferFunction = GetColorTransferFunction(dataArrayName)
+
+            if colorTransferFunction:
+
+                calarBarWidgetRepresentation = GetScalarBar(colorTransferFunction, self.renderView)
+
+                if calarBarWidgetRepresentation:
+
+                    calarBarWidgetRepresentation.Title = legendTitle
+
+                    # Update view #
+
+                    self.updateView()
+
+                    # Return #
+
+                    return createResponse(
+                        value=True,
+                        code=1,
+                        message='ColorMap title set'
+                    )
+
+                else:
+
+                    return createResponse(
+                        value=False,
+                        code=-3,
+                        message='ColorMap title not set'
+                    )
+
+            else:
+
+                return createResponse(
+                    value=False,
+                    code=-2,
+                    message='ColorMap title not set'
+                )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='ColorMap title not set'
             )
 
     @exportRpc('viewer.set.camera.position')
