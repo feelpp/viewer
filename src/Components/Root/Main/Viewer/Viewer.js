@@ -180,6 +180,8 @@ export class Viewer extends Component {
 								};
 							}));
 
+							this.props.setColorMapLogScaleStatus(false);
+
 							this.props.setTimeSteps(result.data.timeSteps);
 							this.props.setTimeStep(result.data.timeStep);
 
@@ -239,6 +241,7 @@ Viewer.propTypes = {
 	setRepresentationTypes: PropTypes.func.isRequired,
 	setRepresentationType: PropTypes.func.isRequired,
 	setColorMapPresets: PropTypes.func.isRequired,
+	setColorMapLogScaleStatus: PropTypes.func.isRequired,
 	setTimeSteps: PropTypes.func.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
 	setScaleBarVisibility: PropTypes.func.isRequired,
@@ -286,6 +289,9 @@ export default connect(
 			},
 			setColorMapPresets: (colorMapPresets) => {
 				dispatch(colorMapActions.setPresets(colorMapPresets));
+			},
+			setColorMapLogScaleStatus: (colorMapLogScaleStatus) => {
+				dispatch(colorMapActions.setLogScaleStatus(colorMapLogScaleStatus));
 			},
 			setTimeSteps: (timeSteps) => {
 				dispatch(visualizationParametersActions.setTimeSteps(timeSteps));

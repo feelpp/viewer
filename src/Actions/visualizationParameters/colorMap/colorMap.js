@@ -12,4 +12,10 @@ export default {
 			preset: preset,
 		};
 	},
+	setLogScaleStatus: (logScaleStatus) => {
+		return {
+			type: 'visualizationParameters.colorMap.setLogScaleStatus',
+			logScaleStatus: logScaleStatus,
+		};
+	},
 };

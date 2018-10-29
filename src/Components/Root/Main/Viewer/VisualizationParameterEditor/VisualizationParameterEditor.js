@@ -207,6 +207,25 @@ export class VisualizationParameterEditor extends Component {
 										</Button>
 									</td>
 								</tr>
+								<tr
+									className="fieldLine"
+								>
+									<td
+										className="fieldLabel"
+									>
+										LogScale
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Switch
+											value={this.props.colorMapLogScaleStatus}
+											action={(colorMapLogScaleStatus) => {
+												this.setColorMapLogScaleStatus(colorMapLogScaleStatus);
+											}}
+										/>
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</PanelSection>
@@ -430,6 +449,15 @@ export class VisualizationParameterEditor extends Component {
 		});
 	}
 
+	setColorMapLogScaleStatus(colorMapLogScaleStatus) {
+		this.props.client.Viewer.setColorMapLogScaleStatus(colorMapLogScaleStatus).then((result) => {
+			if(result.value)
+			{
+				this.props.setColorMapLogScaleStatus(colorMapLogScaleStatus);
+			}
+		});
+	}
+
 	setTimeStep(timeStep) {
 		this.props.client.Viewer.setTimeStep(timeStep).then((result) => {
 			if(result.value)
@@ -492,6 +520,8 @@ VisualizationParameterEditor.propTypes = {
 	setRepresentationType: PropTypes.func.isRequired,
 	colorMapPreset: PropTypes.string.isRequired,
 	setColorMapPreset: PropTypes.func.isRequired,
+	colorMapLogScaleStatus: PropTypes.bool.isRequired,
+	setColorMapLogScaleStatus: PropTypes.func.isRequired,
 	timeSteps: PropTypes.array.isRequired,
 	timeStep: PropTypes.number.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
@@ -527,6 +557,7 @@ export default connect(
 			representationTypes: state.visualizationParameters.representationTypes,
 			representationType: state.visualizationParameters.representationType,
 			colorMapPreset: colorMapPreset,
+			colorMapLogScaleStatus: state.visualizationParameters.colorMap.logScaleStatus,
 			timeSteps: state.visualizationParameters.timeSteps,
 			timeStep: state.visualizationParameters.timeStep,
 			scaleBarVisibility: state.visualizationParameters.scaleBarVisibility,
@@ -547,6 +578,9 @@ export default connect(
 			},
 			setColorMapPreset: (dataArray, colorMapPreset) => {
 				dispatch(colorMapActions.setPreset(dataArray, colorMapPreset));
+			},
+			setColorMapLogScaleStatus: (logScaleStatus) => {
+				dispatch(colorMapActions.setLogScaleStatus(logScaleStatus));
 			},
 			setTimeStep: (timeStep) => {
 				dispatch(visualizationParametersActions.setTimeStep(timeStep));

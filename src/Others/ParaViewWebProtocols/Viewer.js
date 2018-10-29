@@ -24,6 +24,9 @@ export default function createMethods(session) {
 		resetColorMapScale: () => {
 			return session.call('viewer.reset.color.map.scale');
 		},
+		setColorMapLogScaleStatus: (colorMapLogScaleStatus) => {
+			return session.call('viewer.set.color.map.log.scale.status', [colorMapLogScaleStatus]);
+		},
 		setTimeStep: (timeStep) => {
 			return session.call('viewer.set.time.step', [timeStep]);
 		},

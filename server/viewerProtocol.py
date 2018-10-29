@@ -411,6 +411,51 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 message='Color map scale not set'
             )
 
+    @exportRpc('viewer.set.color.map.log.scale.status')
+    def setColorMapScale(self, colorMapLogScaleStatus):
+
+        if self.representation:
+
+            # Get current data array #
+
+            dataArrayName = self.representation.ColorArrayName[1]
+
+            # Update color transfer function #
+
+            colorTransferFunction = GetColorTransferFunction(dataArrayName)
+
+            if colorTransferFunction:
+
+                if colorMapLogScaleStatus:
+
+                    colorTransferFunction.MapControlPointsToLogSpace()
+                    colorTransferFunction.UseLogScale = 1
+
+                else:
+
+                    colorTransferFunction.MapControlPointsToLinearSpace()
+                    colorTransferFunction.UseLogScale = 0
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Color map log scale status set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Color map log scale status not set'
+            )
+
     @exportRpc('viewer.set.time.step')
     def setTimeStep(self, timeStep):
 
