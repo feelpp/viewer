@@ -10,6 +10,7 @@ import {downloadImageURL} from '../../../../../Helpers/download.js';
 
 import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
+import colorMapActions from '../../../../../Actions/visualizationParameters/colorMap/colorMap.js';
 
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import Input from '../../../../Helpers/FormElements/Input/Input.js';
@@ -509,11 +510,11 @@ export default connect(
 
 		/* ColorMapPreset */
 
-		const colorMapPresetFound = state.visualizationParameters.colorMapPresets.find((colorMapPreset) => {
+		const colorMapPresetFound = state.visualizationParameters.colorMap.presets.find((colorMapPreset) => {
 			return DeepEqual(colorMapPreset.dataArray, state.visualizationParameters.dataArray);
 		});
 
-		const colorMapPreset = (colorMapPresetFound) ? colorMapPresetFound.colorMapPreset : colorMapPresets.coolToWarm;
+		const colorMapPreset = (colorMapPresetFound) ? colorMapPresetFound.preset : colorMapPresets.coolToWarm;
 
 		/* Return */
 
@@ -545,7 +546,7 @@ export default connect(
 				dispatch(visualizationParametersActions.setRepresentationType(representationType));
 			},
 			setColorMapPreset: (dataArray, colorMapPreset) => {
-				dispatch(visualizationParametersActions.setColorMapPreset(dataArray, colorMapPreset));
+				dispatch(colorMapActions.setPreset(dataArray, colorMapPreset));
 			},
 			setTimeStep: (timeStep) => {
 				dispatch(visualizationParametersActions.setTimeStep(timeStep));

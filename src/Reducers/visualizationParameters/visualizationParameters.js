@@ -1,4 +1,4 @@
-import DeepEqual from 'deep-equal';
+import {reduceColorMapState, colorMapInitialState} from './colorMap/colorMap.js';
 
 const visualizationParametersInitialState = {
 	editorDisplayStatus: false,
@@ -6,7 +6,7 @@ const visualizationParametersInitialState = {
 	dataArray: null,
 	representationTypes: [],
 	representationType: null,
-	colorMapPresets: [],
+	colorMap: colorMapInitialState,
 	timeSteps: [],
 	timeStep: null,
 	scaleBarVisibility: null,
@@ -70,29 +70,6 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 			});
 		}
 
-		/* setColorMapPresets */
-
-		if(action.type === 'visualizationParameters.setColorMapPresets')
-		{
-			return Object.assign({}, state, {
-				colorMapPresets: action.colorMapPresets,
-			});
-		}
-
-		/* setColorMapPreset */
-
-		if(action.type === 'visualizationParameters.setColorMapPreset')
-		{
-			return Object.assign({}, state, {
-				colorMapPresets: state.colorMapPresets.map((colorMapPreset) => {
-					return {
-						dataArray: colorMapPreset.dataArray,
-						colorMapPreset: (DeepEqual(colorMapPreset.dataArray, action.dataArray)) ? action.colorMapPreset : colorMapPreset.colorMapPreset,
-					};
-				}),
-			});
-		}
-
 		/* setTimeSteps */
 
 		if(action.type === 'visualizationParameters.setTimeSteps')
@@ -131,7 +108,9 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 
 		/* Default */
 
-		return state;
+		return Object.assign({}, state, {
+			colorMap: reduceColorMapState(state.colorMap, action),
+		});
 	}
 	else
 	{

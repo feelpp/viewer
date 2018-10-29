@@ -10,6 +10,7 @@ import {Connection} from '../../../../Helpers/Connection.js';
 
 import connectionActions from '../../../../Actions/connection/connection.js';
 import visualizationParametersActions from '../../../../Actions/visualizationParameters/visualizationParameters.js';
+import colorMapActions from '../../../../Actions/visualizationParameters/colorMap/colorMap.js';
 import screenShotGeneratorActions from '../../../../Actions/screenShotGenerator/screenShotGenerator.js';
 
 import RemoteRenderer from '../../../Helpers/RemoteRenderer/RemoteRenderer.js';
@@ -175,7 +176,7 @@ export class Viewer extends Component {
 							this.props.setColorMapPresets(result.data.dataArrays.map((dataArray) => {
 								return {
 									dataArray: dataArray,
-									colorMapPreset: colorMapPresets.coolToWarm,
+									preset: colorMapPresets.coolToWarm,
 								};
 							}));
 
@@ -284,7 +285,7 @@ export default connect(
 				dispatch(visualizationParametersActions.setRepresentationType(representationType));
 			},
 			setColorMapPresets: (colorMapPresets) => {
-				dispatch(visualizationParametersActions.setColorMapPresets(colorMapPresets));
+				dispatch(colorMapActions.setPresets(colorMapPresets));
 			},
 			setTimeSteps: (timeSteps) => {
 				dispatch(visualizationParametersActions.setTimeSteps(timeSteps));
