@@ -18,6 +18,9 @@ export default function createMethods(session) {
 		setColorMapPreset: (colorMapPreset) => {
 			return session.call('viewer.set.color.map.preset', [colorMapPreset]);
 		},
+		setColorMapTitle: (colorMapTitle) => {
+			return session.call('viewer.set.color.map.title', [colorMapTitle]);
+		},
 		setColorMapScale: (inferiorValue, superiorValue) => {
 			return session.call('viewer.set.color.map.scale', [inferiorValue, superiorValue]);
 		},

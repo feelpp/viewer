@@ -213,6 +213,26 @@ export class VisualizationParameterEditor extends Component {
 									<td
 										className="fieldLabel"
 									>
+										Title
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<ValidationInput
+											type="text"
+											value={this.props.colorMapTitle}
+											action={(colorMapTitle) => {
+												this.setColorMapTitle(colorMapTitle);
+											}}
+										/>
+									</td>
+								</tr>
+								<tr
+									className="fieldLine"
+								>
+									<td
+										className="fieldLabel"
+									>
 										LogScale
 									</td>
 									<td
@@ -428,6 +448,15 @@ export class VisualizationParameterEditor extends Component {
 		});
 	}
 
+	setColorMapTitle(colorMapTitle) {
+		this.props.client.Viewer.setColorMapTitle(colorMapTitle).then((result) => {
+			if(result.value)
+			{
+				this.props.setColorMapTitle(this.props.dataArray, colorMapTitle);
+			}
+		});
+	}
+
 	resetColorMapScale() {
 		this.props.client.Viewer.resetColorMapScale();
 	}
@@ -520,6 +549,8 @@ VisualizationParameterEditor.propTypes = {
 	setRepresentationType: PropTypes.func.isRequired,
 	colorMapPreset: PropTypes.string.isRequired,
 	setColorMapPreset: PropTypes.func.isRequired,
+	colorMapTitle: PropTypes.string.isRequired,
+	setColorMapTitle: PropTypes.func.isRequired,
 	colorMapLogScaleStatus: PropTypes.bool.isRequired,
 	setColorMapLogScaleStatus: PropTypes.func.isRequired,
 	timeSteps: PropTypes.array.isRequired,
@@ -546,6 +577,14 @@ export default connect(
 
 		const colorMapPreset = (colorMapPresetFound) ? colorMapPresetFound.preset : colorMapPresets.coolToWarm;
 
+		/* ColorMapTitle */
+
+		const colorMapTitleFound = state.visualizationParameters.colorMap.titles.find((colorMapTitle) => {
+			return DeepEqual(colorMapTitle.dataArray, state.visualizationParameters.dataArray);
+		});
+
+		const colorMapTitle = (colorMapTitleFound) ? colorMapTitleFound.title : '';
+
 		/* Return */
 
 		return {
@@ -557,6 +596,7 @@ export default connect(
 			representationTypes: state.visualizationParameters.representationTypes,
 			representationType: state.visualizationParameters.representationType,
 			colorMapPreset: colorMapPreset,
+			colorMapTitle: colorMapTitle,
 			colorMapLogScaleStatus: state.visualizationParameters.colorMap.logScaleStatus,
 			timeSteps: state.visualizationParameters.timeSteps,
 			timeStep: state.visualizationParameters.timeStep,
@@ -578,6 +618,9 @@ export default connect(
 			},
 			setColorMapPreset: (dataArray, colorMapPreset) => {
 				dispatch(colorMapActions.setPreset(dataArray, colorMapPreset));
+			},
+			setColorMapTitle: (dataArray, colorMapTitle) => {
+				dispatch(colorMapActions.setTitle(dataArray, colorMapTitle));
 			},
 			setColorMapLogScaleStatus: (logScaleStatus) => {
 				dispatch(colorMapActions.setLogScaleStatus(logScaleStatus));

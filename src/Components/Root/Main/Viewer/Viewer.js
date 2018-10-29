@@ -180,6 +180,13 @@ export class Viewer extends Component {
 								};
 							}));
 
+							this.props.setColorMapTitles(result.data.dataArrays.map((dataArray) => {
+								return {
+									dataArray: dataArray,
+									title: dataArray.name,
+								};
+							}));
+
 							this.props.setColorMapLogScaleStatus(false);
 
 							this.props.setTimeSteps(result.data.timeSteps);
@@ -241,6 +248,7 @@ Viewer.propTypes = {
 	setRepresentationTypes: PropTypes.func.isRequired,
 	setRepresentationType: PropTypes.func.isRequired,
 	setColorMapPresets: PropTypes.func.isRequired,
+	setColorMapTitles: PropTypes.func.isRequired,
 	setColorMapLogScaleStatus: PropTypes.func.isRequired,
 	setTimeSteps: PropTypes.func.isRequired,
 	setTimeStep: PropTypes.func.isRequired,
@@ -289,6 +297,9 @@ export default connect(
 			},
 			setColorMapPresets: (colorMapPresets) => {
 				dispatch(colorMapActions.setPresets(colorMapPresets));
+			},
+			setColorMapTitles: (colorMapTitles) => {
+				dispatch(colorMapActions.setTitles(colorMapTitles));
 			},
 			setColorMapLogScaleStatus: (colorMapLogScaleStatus) => {
 				dispatch(colorMapActions.setLogScaleStatus(colorMapLogScaleStatus));

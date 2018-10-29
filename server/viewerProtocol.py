@@ -343,6 +343,63 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 message='ColorMap preset not valid'
             )
 
+    @exportRpc('viewer.set.color.map.title')
+    def setColorMapTitle(self, colorMapTitle):
+
+        if self.renderView and self.representation:
+
+            # Get current data array #
+
+            dataArrayName = self.representation.ColorArrayName[1]
+
+            # Set color map #
+
+            colorTransferFunction = GetColorTransferFunction(dataArrayName)
+
+            if colorTransferFunction:
+
+                calarBarWidgetRepresentation = GetScalarBar(colorTransferFunction, self.renderView)
+
+                if calarBarWidgetRepresentation:
+
+                    calarBarWidgetRepresentation.Title = colorMapTitle
+
+                    # Update view #
+
+                    self.updateView()
+
+                    # Return #
+
+                    return createResponse(
+                        value=True,
+                        code=1,
+                        message='ColorMap title set'
+                    )
+
+                else:
+
+                    return createResponse(
+                        value=False,
+                        code=-3,
+                        message='ColorMap title not set'
+                    )
+
+            else:
+
+                return createResponse(
+                    value=False,
+                    code=-2,
+                    message='ColorMap title not set'
+                )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='ColorMap title not set'
+            )
+
     @exportRpc('viewer.reset.color.map.scale')
     def resetColorMapScale(self):
 
