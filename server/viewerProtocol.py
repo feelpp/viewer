@@ -417,7 +417,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
             )
 
     @exportRpc('viewer.set.color.map.log.scale.status')
-    def setColorMapScale(self, colorMapLogScaleStatus):
+    def setColorMapLogScaleStatus(self, colorMapLogScaleStatus):
 
         if self.representation:
 
