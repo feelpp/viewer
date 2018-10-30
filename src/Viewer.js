@@ -27,8 +27,18 @@ export class Viewer {
 				},
 			},
 			statisticsDisplayStatus: false,
-			visualizationParameterEditorDisplayStatus: true,
-			visualizationParameterEditorInitialOpenStatus: false,
+			visualizationParameterEditor: {
+				displayStatus: true,
+				initialOpenStatus: false,
+				sectionInitialOpenStatus: {
+					view: true,
+					colorMap: false,
+					camera: false,
+					legend: false,
+					grid: false,
+					others: false,
+				},
+			},
 			screenShot: {
 				format: 'png',
 				quality: 1,

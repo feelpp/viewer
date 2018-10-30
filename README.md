@@ -126,9 +126,18 @@ You need to pass to the viewer two parameters:
 	        },
 	    },
 	    statisticsDisplayStatus: ..., // boolean describing if statistics should be displayed
-	    
-	    visualizationParameterEditorDisplayStatus: ..., // boolean describing if visualization parameter editor should be displayed
-	    visualizationParameterEditorInitialOpenStatus: ..., // boolean describing if visualization parameter editor should be opened at start
+	    visualizationParameterEditor: {
+	        displayStatus: ..., // boolean describing if visualization parameter editor should be displayed
+	        initialOpenStatus: ..., // boolean describing if visualization parameter editor should be opened at start
+	        sectionInitialOpenStatus: {
+	            view: ..., // boolean
+	            colorMap: ..., // boolean
+	            camera: ..., // boolean
+	            legend: ..., // boolean 
+	            grid: ..., // boolean
+	            others: ..., // boolean
+	        },
+	    },
 	    screenShot: {
 	        format: ..., // string ['png, jpg'] describing the file format for screenshot download
 	        quality: // number [0:1] describing the quality of the screenshot download, only when format is 'jpg'

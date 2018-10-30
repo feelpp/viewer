@@ -39,7 +39,7 @@ export default class Root extends Component {
 
 		/** Initialization **/
 
-		this.store.dispatch(panelActions.setOpenStatus(this.props.configuration.visualizationParameterEditorInitialOpenStatus));
+		this.store.dispatch(panelActions.setOpenStatus(this.props.configuration.visualizationParameterEditor.initialOpenStatus));
 	}
 
 	render() {

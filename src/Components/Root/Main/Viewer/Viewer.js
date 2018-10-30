@@ -220,7 +220,7 @@ export class Viewer extends Component {
 
 							/* Display editor */
 
-							if(this.props.configuration.visualizationParameterEditorDisplayStatus)
+							if(this.props.configuration.visualizationParameterEditor.displayStatus)
 							{
 								this.props.setEditorDisplayStatus(true);
 							}

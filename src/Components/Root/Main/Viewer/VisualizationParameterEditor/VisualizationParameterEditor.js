@@ -55,6 +55,7 @@ export class VisualizationParameterEditor extends Component {
 				>
 					<PanelSection
 						label="View"
+						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.view}
 					>
 						<table
 							className="fields"
@@ -141,6 +142,7 @@ export class VisualizationParameterEditor extends Component {
 					</PanelSection>
 					<PanelSection
 						label="Color map"
+						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.colorMap}
 					>
 						<table
 							className="fields"
@@ -233,6 +235,7 @@ export class VisualizationParameterEditor extends Component {
 					</PanelSection>
 					<PanelSection
 						label="Camera"
+						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.camera}
 					>
 						<table
 							className="fields"
@@ -307,6 +310,7 @@ export class VisualizationParameterEditor extends Component {
 					</PanelSection>
 					<PanelSection
 						label="Legend"
+						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.legend}
 					>
 						<table
 							className="fields"
@@ -356,6 +360,7 @@ export class VisualizationParameterEditor extends Component {
 					</PanelSection>
 					<PanelSection
 						label="Grid"
+						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.grid}
 					>
 						<table
 							className="fields"
@@ -445,6 +450,7 @@ export class VisualizationParameterEditor extends Component {
 					</PanelSection>
 					<PanelSection
 						label="Others"
+						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.others}
 					>
 						<table
 							className="fields"
