@@ -1,5 +1,6 @@
 import {reduceColorMapState, colorMapInitialState} from './colorMap/colorMap.js';
 import {reduceLegendState, legendInitialState} from './legend/legend.js';
+import {reduceGridState, gridInitialState} from './grid/grid.js';
 
 const visualizationParametersInitialState = {
 	editorDisplayStatus: false,
@@ -8,6 +9,7 @@ const visualizationParametersInitialState = {
 	representationTypes: [],
 	representationType: null,
 	colorMap: colorMapInitialState,
+	grid: gridInitialState,
 	legend: legendInitialState,
 	timeSteps: [],
 	timeStep: null,
@@ -102,6 +104,7 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 
 		return Object.assign({}, state, {
 			colorMap: reduceColorMapState(state.colorMap, action),
+			grid: reduceGridState(state.grid, action),
 			legend: reduceLegendState(state.legend, action),
 		});
 	}

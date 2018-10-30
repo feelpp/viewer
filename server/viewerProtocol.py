@@ -128,6 +128,10 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         legendDisplayStatus = self.representation.IsScalarBarVisible(self.renderView)
 
+        ## GridDisplayStatus ##
+
+        gridDisplayStatus = False
+
         ## Background color ##
 
         R = convertDecimalToHexadecimal(int(self.renderView.Background[0] * 255))
@@ -150,6 +154,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 'timeSteps': timeSteps,
                 'timeStep': timeStep,
                 'legendDisplayStatus': legendDisplayStatus,
+                'gridDisplayStatus': gridDisplayStatus,
                 'backgroundColor': backgroundColor,
             }
         )
@@ -559,6 +564,80 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 value=False,
                 code=-1,
                 message='ColorMap title not set'
+            )
+
+    @exportRpc('viewer.set.grid.display.status')
+    def setGridDisplayStatus(self, gridDisplayStatus):
+
+        if self.representation:
+
+            # Set grid display status #
+
+            if gridDisplayStatus:
+
+                self.representation.DataAxesGrid.GridAxesVisibility = 1
+
+            else:
+
+                self.representation.DataAxesGrid.GridAxesVisibility = 0
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Grid display status set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Grid display status not set'
+            )
+
+    @exportRpc('viewer.set.grid.title')
+    def setGridTitle(self, gridAxis, gridTitle):
+
+        if self.representation:
+
+            # Update title #
+
+            if gridAxis == 'X':
+
+                self.representation.DataAxesGrid.XTitle = gridTitle
+
+            elif gridAxis == 'Y':
+
+                self.representation.DataAxesGrid.YTitle = gridTitle
+
+            elif gridAxis == 'Z':
+
+                self.representation.DataAxesGrid.ZTitle = gridTitle
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Grid title set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Grid title not set'
             )
 
     @exportRpc('viewer.set.camera.position')

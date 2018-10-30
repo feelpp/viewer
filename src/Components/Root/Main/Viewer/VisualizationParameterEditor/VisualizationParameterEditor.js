@@ -12,6 +12,7 @@ import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
 import colorMapActions from '../../../../../Actions/visualizationParameters/colorMap/colorMap.js';
 import legendActions from '../../../../../Actions/visualizationParameters/legend/legend.js';
+import gridActions from '../../../../../Actions/visualizationParameters/grid/grid.js';
 
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import Input from '../../../../Helpers/FormElements/Input/Input.js';
@@ -354,6 +355,95 @@ export class VisualizationParameterEditor extends Component {
 						</table>
 					</PanelSection>
 					<PanelSection
+						label="Grid"
+					>
+						<table
+							className="fields"
+						>
+							<tbody>
+								<tr
+									className="fieldLine"
+								>
+									<td
+										className="fieldLabel"
+									>
+										Display
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<Switch
+											value={this.props.gridDisplayStatus}
+											action={(gridDisplayStatus) => {
+												this.setGridDisplayStatus(gridDisplayStatus);
+											}}
+										/>
+									</td>
+								</tr>
+								<tr
+									className="fieldLine"
+								>
+									<td
+										className="fieldLabel"
+									>
+										X axis title
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<ValidationInput
+											type="text"
+											value={this.props.gridTitles.X}
+											action={(gridTitle) => {
+												this.setGridTitle('X', gridTitle);
+											}}
+										/>
+									</td>
+								</tr>
+								<tr
+									className="fieldLine"
+								>
+									<td
+										className="fieldLabel"
+									>
+										Y axis title
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<ValidationInput
+											type="text"
+											value={this.props.gridTitles.Y}
+											action={(gridTitle) => {
+												this.setGridTitle('Y', gridTitle);
+											}}
+										/>
+									</td>
+								</tr>
+								<tr
+									className="fieldLine"
+								>
+									<td
+										className="fieldLabel"
+									>
+										Z axis title
+									</td>
+									<td
+										className="fieldEditor"
+									>
+										<ValidationInput
+											type="text"
+											value={this.props.gridTitles.Z}
+											action={(gridTitle) => {
+												this.setGridTitle('Z', gridTitle);
+											}}
+										/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</PanelSection>
+					<PanelSection
 						label="Others"
 					>
 						<table
@@ -506,6 +596,24 @@ export class VisualizationParameterEditor extends Component {
 		});
 	}
 
+	setGridDisplayStatus(gridDisplayStatus) {
+		this.props.client.Viewer.setGridDisplayStatus(gridDisplayStatus).then((result) => {
+			if(result.value)
+			{
+				this.props.setGridDisplayStatus(gridDisplayStatus);
+			}
+		});
+	}
+
+	setGridTitle(gridAxis, gridTitle) {
+		this.props.client.Viewer.setGridTitle(gridAxis, gridTitle).then((result) => {
+			if(result.value)
+			{
+				this.props.setGridTitle(gridAxis, gridTitle);
+			}
+		});
+	}
+
 	setCameraPosition(cameraPosition) {
 		this.props.client.Viewer.setCameraPosition(cameraPosition);
 	}
@@ -559,6 +667,10 @@ VisualizationParameterEditor.propTypes = {
 	setLegendDisplayStatus: PropTypes.func.isRequired,
 	legendTitle: PropTypes.string.isRequired,
 	setLegendTitle: PropTypes.func.isRequired,
+	gridDisplayStatus: PropTypes.bool.isRequired,
+	setGridDisplayStatus: PropTypes.func.isRequired,
+	gridTitles: PropTypes.object.isRequired,
+	setGridTitle: PropTypes.func.isRequired,
 	backgroundColor: PropTypes.string.isRequired,
 	setBackgroundColor: PropTypes.func.isRequired,
 };
@@ -597,11 +709,13 @@ export default connect(
 			representationTypes: state.visualizationParameters.representationTypes,
 			representationType: state.visualizationParameters.representationType,
 			colorMapPreset: colorMapPreset,
-			legendTitle: legendTitle,
 			colorMapLogScaleStatus: state.visualizationParameters.colorMap.logScaleStatus,
 			timeSteps: state.visualizationParameters.timeSteps,
 			timeStep: state.visualizationParameters.timeStep,
+			legendTitle: legendTitle,
 			legendDisplayStatus: state.visualizationParameters.legend.displayStatus,
+			gridDisplayStatus: state.visualizationParameters.grid.displayStatus,
+			gridTitles: state.visualizationParameters.grid.titles,
 			backgroundColor: state.visualizationParameters.backgroundColor,
 			screenShotGenerator: state.screenShotGenerator,
 		};
@@ -631,6 +745,12 @@ export default connect(
 			},
 			setLegendTitle: (dataArray, title) => {
 				dispatch(legendActions.setTitle(dataArray, title));
+			},
+			setGridDisplayStatus: (displayStatus) => {
+				dispatch(gridActions.setDisplayStatus(displayStatus));
+			},
+			setGridTitle: (axis, title) => {
+				dispatch(gridActions.setTitle(axis, title));
 			},
 			setBackgroundColor: (backgroundColor) => {
 				dispatch(visualizationParametersActions.setBackgroundColor(backgroundColor));

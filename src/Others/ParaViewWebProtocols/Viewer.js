@@ -36,6 +36,12 @@ export default function createMethods(session) {
 		setLegendTitle: (legendTitle) => {
 			return session.call('viewer.set.legend.title', [legendTitle]);
 		},
+		setGridDisplayStatus: (gridDisplayStatus) => {
+			return session.call('viewer.set.grid.display.status', [gridDisplayStatus]);
+		},
+		setGridTitle: (gridAxis, gridTitle) => {
+			return session.call('viewer.set.grid.title', [gridAxis, gridTitle]);
+		},
 		setCameraPosition: (cameraPosition) => {
 			return session.call('viewer.set.camera.position', [cameraPosition]);
 		},

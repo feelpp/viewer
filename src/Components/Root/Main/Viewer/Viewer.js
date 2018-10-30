@@ -12,6 +12,7 @@ import connectionActions from '../../../../Actions/connection/connection.js';
 import visualizationParametersActions from '../../../../Actions/visualizationParameters/visualizationParameters.js';
 import colorMapActions from '../../../../Actions/visualizationParameters/colorMap/colorMap.js';
 import legendActions from '../../../../Actions/visualizationParameters/legend/legend.js';
+import gridActions from '../../../../Actions/visualizationParameters/grid/grid.js';
 import screenShotGeneratorActions from '../../../../Actions/screenShotGenerator/screenShotGenerator.js';
 
 import RemoteRenderer from '../../../Helpers/RemoteRenderer/RemoteRenderer.js';
@@ -189,7 +190,7 @@ export class Viewer extends Component {
 
 							this.props.setColorMapLogScaleStatus(false);
 
-							/** legend **/
+							/** Legend **/
 
 							this.props.setLegendDisplayStatus(result.data.legendDisplayStatus);
 
@@ -199,6 +200,16 @@ export class Viewer extends Component {
 									title: dataArray.name,
 								};
 							}));
+
+							/** Grid **/
+
+							this.props.setGridDisplayStatus(result.data.gridDisplayStatus);
+
+							this.props.setGridTitles({
+								X: 'X axis',
+								Y: 'Y axis',
+								Z: 'Z axis',
+							});
 
 							/** Time step **/
 
@@ -265,6 +276,8 @@ Viewer.propTypes = {
 	setTimeStep: PropTypes.func.isRequired,
 	setLegendDisplayStatus: PropTypes.func.isRequired,
 	setLegendTitles: PropTypes.func.isRequired,
+	setGridDisplayStatus: PropTypes.func.isRequired,
+	setGridTitles: PropTypes.func.isRequired,
 	setBackgroundColor: PropTypes.func.isRequired,
 };
 
@@ -327,6 +340,12 @@ export default connect(
 			},
 			setLegendTitles: (titles) => {
 				dispatch(legendActions.setTitles(titles));
+			},
+			setGridDisplayStatus: (displayStatus) => {
+				dispatch(gridActions.setDisplayStatus(displayStatus));
+			},
+			setGridTitles: (titles) => {
+				dispatch(gridActions.setTitles(titles));
 			},
 			setBackgroundColor: (backgroundColor) => {
 				dispatch(visualizationParametersActions.setBackgroundColor(backgroundColor));
