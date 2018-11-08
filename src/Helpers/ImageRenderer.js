@@ -72,21 +72,23 @@ export class ImageRenderer {
 	}
 
 	updateCanvas() {
+		if(this.image.src)
+		{
+			/* Canvas */
 
-		/* Canvas */
+			this.canvas.setAttribute('width', this.size.width);
+			this.canvas.setAttribute('height', this.size.height);
 
-		this.canvas.setAttribute('width', this.size.width);
-		this.canvas.setAttribute('height', this.size.height);
+			/* Context */
 
-		/* Context */
-
-		this.context.drawImage(
-			this.image,
-			0,
-			0,
-			this.size.width,
-			this.size.height
-		);
+			this.context.drawImage(
+				this.image,
+				0,
+				0,
+				this.size.width,
+				this.size.height
+			);
+		}
 	}
 
 	getCanvas() {
