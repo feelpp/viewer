@@ -12,6 +12,8 @@
 
 .Panel
 {
+	display: flex;
+	flex-direction: column;
 	position: absolute;
 	top: @margin;
 	right: @margin;
@@ -84,7 +86,6 @@
 	{
 		box-sizing: border-box;
 		width: 100%;
-		max-height: ~'calc(100vh - (30px + 15px))'; //100vh - @headerHeight - 2 * @padding
 		color: @black;
 		background-color: @offWhite;
 		overflow-y: auto;
