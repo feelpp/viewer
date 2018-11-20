@@ -43,6 +43,488 @@ export class VisualizationParameterEditor extends Component {
 
 	render() {
 
+		/* PanelSections */
+
+		/** View **/
+
+		const viewPanelSection = (
+			<PanelSection
+				label="View"
+				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.view}
+			>
+				<table
+					className="fields"
+				>
+					<tbody>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Data array
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Select
+									value={this.props.dataArray}
+									options={this.props.dataArrays.map((dataArray) => {
+										return {
+											text: dataArray.name + ' (' + dataArray.type + ')',
+											value: dataArray,
+										};
+									})}
+									action={(dataArray) => {
+										this.setDataArray(dataArray);
+									}}
+								/>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Representation type
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Select
+									value={this.props.representationType}
+									options={this.props.representationTypes.map((representationType) => {
+										return {
+											text: representationType,
+											value: representationType,
+										};
+									})}
+									action={(representationType) => {
+										this.setRepresentationType(representationType);
+									}}
+								/>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Time step
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Player
+									value={this.props.timeStep}
+									options={this.props.timeSteps.map((timeStep) => {
+										return {
+											text: timeStep,
+											value: timeStep,
+										};
+									})}
+									action={(timeStep) => {
+										this.setTimeStep(Number(timeStep));
+									}}
+									delay={1000}
+								/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</PanelSection>
+		);
+
+		/** ColorMap **/
+
+		const colorMapPanelSection = (
+			<PanelSection
+				label="Color map"
+				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.colorMap}
+			>
+				<table
+					className="fields"
+				>
+					<tbody>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Color map
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Select
+									value={this.props.colorMapPreset}
+									options={Object.keys(colorMapPresets).map((colorMapPresetKey) => {
+										return {
+											text: colorMapPresetNames[colorMapPresets[colorMapPresetKey]],
+											value: colorMapPresets[colorMapPresetKey],
+										};
+									})}
+									action={(colorMapPreset) => {
+										this.setColorMapPreset(colorMapPreset);
+									}}
+								/>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Scale
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Input
+									className="smallInput"
+									type="number"
+									placeholder="Inferior"
+									value={this.state.colorMapScaleInferiorValue}
+									action={(inferiorValue) => {
+										this.setColorMapScale(inferiorValue, this.state.colorMapScaleSuperiorValue);
+									}}
+								/>
+								<Input
+									className="smallInput"
+									type="number"
+									placeholder="Superior"
+									value={this.state.colorMapScaleSuperiorValue}
+									action={(superiorValue) => {
+										this.setColorMapScale(this.state.colorMapScaleInferiorValue, superiorValue);
+									}}
+								/>
+								<Button
+									action={() => {
+										this.resetColorMapScale();
+									}}
+								>
+									Reset
+								</Button>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								LogScale
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Switch
+									value={this.props.colorMapLogScaleStatus}
+									action={(colorMapLogScaleStatus) => {
+										this.setColorMapLogScaleStatus(colorMapLogScaleStatus);
+									}}
+								/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</PanelSection>
+		);
+
+		/** Camera **/
+
+		const cameraPanelSection = (
+			<PanelSection
+				label="Camera"
+				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.camera}
+			>
+				<table
+					className="fields"
+				>
+					<tbody>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								View
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Button
+									action={() => {
+										this.resetView();
+									}}
+								>
+									Reset
+								</Button>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Camera
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<MultiButton
+									options={[
+										{
+											text: '+X',
+											value: '+X',
+										},
+										{
+											text: '-X',
+											value: '-X',
+										},
+										{
+											text: '+Y',
+											value: '+Y',
+										},
+										{
+											text: '-Y',
+											value: '-Y',
+										},
+										{
+											text: '+Z',
+											value: '+Z',
+										},
+										{
+											text: '-Z',
+											value: '-Z',
+										},
+									]}
+									action={(cameraPosition) => {
+										this.setCameraPosition(cameraPosition);
+									}}
+								/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</PanelSection>
+		);
+
+		/** Legend **/
+
+		const legendPanelSection = (
+			<PanelSection
+				label="Legend"
+				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.legend}
+			>
+				<table
+					className="fields"
+				>
+					<tbody>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Display
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Switch
+									value={this.props.legendDisplayStatus}
+									action={(legendDisplayStatus) => {
+										this.setLegendDisplayStatus(legendDisplayStatus);
+									}}
+								/>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Title
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<ValidationInput
+									type="text"
+									value={this.props.legendTitle}
+									action={(legendTitle) => {
+										this.setLegendTitle(legendTitle);
+									}}
+								/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</PanelSection>
+		);
+
+		/** Grid **/
+
+		const gridPanelSection = (
+			<PanelSection
+				label="Grid"
+				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.grid}
+			>
+				<table
+					className="fields"
+				>
+					<tbody>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Display
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Switch
+									value={this.props.gridDisplayStatus}
+									action={(gridDisplayStatus) => {
+										this.setGridDisplayStatus(gridDisplayStatus);
+									}}
+								/>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								X axis title
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<ValidationInput
+									type="text"
+									value={this.props.gridTitles.X}
+									action={(gridTitle) => {
+										this.setGridTitle('X', gridTitle);
+									}}
+								/>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Y axis title
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<ValidationInput
+									type="text"
+									value={this.props.gridTitles.Y}
+									action={(gridTitle) => {
+										this.setGridTitle('Y', gridTitle);
+									}}
+								/>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Z axis title
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<ValidationInput
+									type="text"
+									value={this.props.gridTitles.Z}
+									action={(gridTitle) => {
+										this.setGridTitle('Z', gridTitle);
+									}}
+								/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</PanelSection>
+		);
+
+		/** Others **/
+
+		const othersPanelSection = (
+			<PanelSection
+				label="Others"
+				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.others}
+			>
+				<table
+					className="fields"
+				>
+					<tbody>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Background
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<ValidationInput
+									type="text"
+									value={this.props.backgroundColor}
+									checker={(backgroundColor) => {
+										return /[A-Fa-f0-9]{6}/.test(backgroundColor)
+									}}
+									action={(backgroundColor) => {
+										this.setBackgroundColor(backgroundColor);
+									}}
+								/>
+							</td>
+						</tr>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Screenshot
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Button
+									disabled={this.props.screenShotGenerator === null}
+									action={() => {
+										this.downloadScreenShot();
+									}}
+								>
+									Download
+								</Button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</PanelSection>
+		);
+
 		/* Element */
 
 		const element = (
@@ -53,456 +535,12 @@ export class VisualizationParameterEditor extends Component {
 						this.props.setOpenStatus(openStatus);
 					}}
 				>
-					<PanelSection
-						label="View"
-						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.view}
-					>
-						<table
-							className="fields"
-						>
-							<tbody>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Data array
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Select
-											value={this.props.dataArray}
-											options={this.props.dataArrays.map((dataArray) => {
-												return {
-													text: dataArray.name + ' (' + dataArray.type + ')',
-													value: dataArray,
-												};
-											})}
-											action={(dataArray) => {
-												this.setDataArray(dataArray);
-											}}
-										/>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Representation type
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Select
-											value={this.props.representationType}
-											options={this.props.representationTypes.map((representationType) => {
-												return {
-													text: representationType,
-													value: representationType,
-												};
-											})}
-											action={(representationType) => {
-												this.setRepresentationType(representationType);
-											}}
-										/>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Time step
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Player
-											value={this.props.timeStep}
-											options={this.props.timeSteps.map((timeStep) => {
-												return {
-													text: timeStep,
-													value: timeStep,
-												};
-											})}
-											action={(timeStep) => {
-												this.setTimeStep(Number(timeStep));
-											}}
-											delay={1000}
-										/>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</PanelSection>
-					<PanelSection
-						label="Color map"
-						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.colorMap}
-					>
-						<table
-							className="fields"
-						>
-							<tbody>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Color map
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Select
-											value={this.props.colorMapPreset}
-											options={Object.keys(colorMapPresets).map((colorMapPresetKey) => {
-												return {
-													text: colorMapPresetNames[colorMapPresets[colorMapPresetKey]],
-													value: colorMapPresets[colorMapPresetKey],
-												};
-											})}
-											action={(colorMapPreset) => {
-												this.setColorMapPreset(colorMapPreset);
-											}}
-										/>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Scale
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Input
-											className="smallInput"
-											type="number"
-											placeholder="Inferior"
-											value={this.state.colorMapScaleInferiorValue}
-											action={(inferiorValue) => {
-												this.setColorMapScale(inferiorValue, this.state.colorMapScaleSuperiorValue);
-											}}
-										/>
-										<Input
-											className="smallInput"
-											type="number"
-											placeholder="Superior"
-											value={this.state.colorMapScaleSuperiorValue}
-											action={(superiorValue) => {
-												this.setColorMapScale(this.state.colorMapScaleInferiorValue, superiorValue);
-											}}
-										/>
-										<Button
-											action={() => {
-												this.resetColorMapScale();
-											}}
-										>
-											Reset
-										</Button>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										LogScale
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Switch
-											value={this.props.colorMapLogScaleStatus}
-											action={(colorMapLogScaleStatus) => {
-												this.setColorMapLogScaleStatus(colorMapLogScaleStatus);
-											}}
-										/>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</PanelSection>
-					<PanelSection
-						label="Camera"
-						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.camera}
-					>
-						<table
-							className="fields"
-						>
-							<tbody>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										View
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Button
-											action={() => {
-												this.resetView();
-											}}
-										>
-											Reset
-										</Button>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Camera
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<MultiButton
-											options={[
-												{
-													text: '+X',
-													value: '+X',
-												},
-												{
-													text: '-X',
-													value: '-X',
-												},
-												{
-													text: '+Y',
-													value: '+Y',
-												},
-												{
-													text: '-Y',
-													value: '-Y',
-												},
-												{
-													text: '+Z',
-													value: '+Z',
-												},
-												{
-													text: '-Z',
-													value: '-Z',
-												},
-											]}
-											action={(cameraPosition) => {
-												this.setCameraPosition(cameraPosition);
-											}}
-										/>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</PanelSection>
-					<PanelSection
-						label="Legend"
-						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.legend}
-					>
-						<table
-							className="fields"
-						>
-							<tbody>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Display
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Switch
-											value={this.props.legendDisplayStatus}
-											action={(legendDisplayStatus) => {
-												this.setLegendDisplayStatus(legendDisplayStatus);
-											}}
-										/>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Title
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<ValidationInput
-											type="text"
-											value={this.props.legendTitle}
-											action={(legendTitle) => {
-												this.setLegendTitle(legendTitle);
-											}}
-										/>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</PanelSection>
-					<PanelSection
-						label="Grid"
-						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.grid}
-					>
-						<table
-							className="fields"
-						>
-							<tbody>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Display
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Switch
-											value={this.props.gridDisplayStatus}
-											action={(gridDisplayStatus) => {
-												this.setGridDisplayStatus(gridDisplayStatus);
-											}}
-										/>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										X axis title
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<ValidationInput
-											type="text"
-											value={this.props.gridTitles.X}
-											action={(gridTitle) => {
-												this.setGridTitle('X', gridTitle);
-											}}
-										/>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Y axis title
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<ValidationInput
-											type="text"
-											value={this.props.gridTitles.Y}
-											action={(gridTitle) => {
-												this.setGridTitle('Y', gridTitle);
-											}}
-										/>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Z axis title
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<ValidationInput
-											type="text"
-											value={this.props.gridTitles.Z}
-											action={(gridTitle) => {
-												this.setGridTitle('Z', gridTitle);
-											}}
-										/>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</PanelSection>
-					<PanelSection
-						label="Others"
-						initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.others}
-					>
-						<table
-							className="fields"
-						>
-							<tbody>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Background
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<ValidationInput
-											type="text"
-											value={this.props.backgroundColor}
-											checker={(backgroundColor) => {
-												return /[A-Fa-f0-9]{6}/.test(backgroundColor)
-											}}
-											action={(backgroundColor) => {
-												this.setBackgroundColor(backgroundColor);
-											}}
-										/>
-									</td>
-								</tr>
-								<tr
-									className="fieldLine"
-								>
-									<td
-										className="fieldLabel"
-									>
-										Screenshot
-									</td>
-									<td
-										className="fieldEditor"
-									>
-										<Button
-											disabled={this.props.screenShotGenerator === null}
-											action={() => {
-												this.downloadScreenShot();
-											}}
-										>
-											Download
-										</Button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</PanelSection>
+					{viewPanelSection}
+					{colorMapPanelSection}
+					{cameraPanelSection}
+					{legendPanelSection}
+					{gridPanelSection}
+					{othersPanelSection}
 				</Panel>
 			</div>
 		);
