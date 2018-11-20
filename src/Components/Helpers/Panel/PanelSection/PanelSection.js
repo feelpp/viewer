@@ -38,7 +38,7 @@ export default class PanelSection extends Component {
 							</td>
 							<td className="icon">
 								<Icon
-									name={(this.state.openStatus) ? 'chevron-up' : 'chevron-down'}
+									name={(this.state.openStatus) ? 'chevron-down' : 'chevron-up'}
 									fixedWidth
 								/>
 							</td>
