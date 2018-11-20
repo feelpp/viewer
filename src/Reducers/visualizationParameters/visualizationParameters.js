@@ -1,4 +1,5 @@
 import {reduceColorMapState, colorMapInitialState} from './colorMap/colorMap.js';
+import {reduceFiltersState, filtersInitialState} from './filters/filters.js';
 import {reduceLegendState, legendInitialState} from './legend/legend.js';
 import {reduceGridState, gridInitialState} from './grid/grid.js';
 
@@ -14,6 +15,7 @@ const visualizationParametersInitialState = {
 	timeSteps: [],
 	timeStep: null,
 	backgroundColor: null,
+	filters: filtersInitialState,
 };
 
 export function reduceVisualizationParametersState(state = visualizationParametersInitialState, action) {
@@ -106,6 +108,7 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 			colorMap: reduceColorMapState(state.colorMap, action),
 			grid: reduceGridState(state.grid, action),
 			legend: reduceLegendState(state.legend, action),
+			filters: reduceFiltersState(state.filters, action),
 		});
 	}
 	else

@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import DeepEqual from 'deep-equal';
 
 import {colorMapPresets, colorMapPresetNames} from '../../../../../Others/colorMap.js';
+import {filters, filterNames} from '../../../../../Others/filter.js';
 import {formatExtensions, formatMIMETypes} from '../../../../../Others/format.js';
 
 import {downloadImageURL} from '../../../../../Helpers/download.js';
@@ -13,6 +14,7 @@ import visualizationParametersActions from '../../../../../Actions/visualization
 import colorMapActions from '../../../../../Actions/visualizationParameters/colorMap/colorMap.js';
 import legendActions from '../../../../../Actions/visualizationParameters/legend/legend.js';
 import gridActions from '../../../../../Actions/visualizationParameters/grid/grid.js';
+import filtersActions from '../../../../../Actions/visualizationParameters/filters/filters.js';
 
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import Input from '../../../../Helpers/FormElements/Input/Input.js';
@@ -465,6 +467,51 @@ export class VisualizationParameterEditor extends Component {
 			</PanelSection>
 		);
 
+		/** Filters **/
+
+		const filtersPanelSection = (
+			<PanelSection
+				label="Filters"
+				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.filters}
+			>
+				<table
+					className="fields"
+				>
+					<tbody>
+						<tr
+							className="fieldLine"
+						>
+							<td
+								className="fieldLabel"
+							>
+								Filter
+							</td>
+							<td
+								className="fieldEditor"
+							>
+								<Select
+									value={this.props.filter}
+									options={[
+										{
+											text: 'No filter',
+											value: null,
+										},
+										{
+											text: filterNames[filters.warpByVector],
+											value: filters.warpByVector,
+										},
+									]}
+									action={(filter) => {
+										this.setFilter(filter);
+									}}
+								/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</PanelSection>
+		);
+
 		/** Others **/
 
 		const othersPanelSection = (
@@ -540,6 +587,7 @@ export class VisualizationParameterEditor extends Component {
 					{cameraPanelSection}
 					{legendPanelSection}
 					{gridPanelSection}
+					{filtersPanelSection}
 					{othersPanelSection}
 				</Panel>
 			</div>
@@ -671,6 +719,10 @@ export class VisualizationParameterEditor extends Component {
 		});
 	}
 
+	setFilter(filter) {
+		this.props.setFilter(filter);
+	}
+
 	downloadScreenShot() {
 		const format = this.props.configuration.screenShot.format;
 		const quality = this.props.configuration.screenShot.quality;
@@ -717,6 +769,8 @@ VisualizationParameterEditor.propTypes = {
 	setGridTitle: PropTypes.func.isRequired,
 	backgroundColor: PropTypes.string.isRequired,
 	setBackgroundColor: PropTypes.func.isRequired,
+	filter: PropTypes.string,
+	setFilter: PropTypes.func.isRequired,
 };
 
 VisualizationParameterEditor.defaultProps = {
@@ -761,6 +815,7 @@ export default connect(
 			gridDisplayStatus: state.visualizationParameters.grid.displayStatus,
 			gridTitles: state.visualizationParameters.grid.titles,
 			backgroundColor: state.visualizationParameters.backgroundColor,
+			filter: state.visualizationParameters.filters.filter,
 			screenShotGenerator: state.screenShotGenerator,
 		};
 	},
@@ -798,6 +853,9 @@ export default connect(
 			},
 			setBackgroundColor: (backgroundColor) => {
 				dispatch(visualizationParametersActions.setBackgroundColor(backgroundColor));
+			},
+			setFilter: (filter) => {
+				dispatch(filtersActions.setFilter(filter));
 			},
 		};
 	}

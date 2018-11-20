@@ -36,6 +36,7 @@ export class Viewer {
 					camera: false,
 					legend: false,
 					grid: false,
+					filters: false,
 					others: false,
 				},
 			},
