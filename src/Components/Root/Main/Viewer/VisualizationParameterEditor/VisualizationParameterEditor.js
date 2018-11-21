@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import DeepEqual from 'deep-equal';
 
 import {filters, filterNames} from '../../../../../Others/filter.js';
 import {formatExtensions, formatMIMETypes} from '../../../../../Others/format.js';
@@ -10,13 +9,13 @@ import {downloadImageURL} from '../../../../../Helpers/download.js';
 
 import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
-import legendActions from '../../../../../Actions/visualizationParameters/legend/legend.js';
 import gridActions from '../../../../../Actions/visualizationParameters/grid/grid.js';
 import filtersActions from '../../../../../Actions/visualizationParameters/filters/filters.js';
 
 import ViewSection from './ViewSection/ViewSection.js';
 import ColorMapSection from './ColorMapSection/ColorMapSection.js';
 import CameraSection from './CameraSection/CameraSection.js';
+import LegendSection from './LegendSection/LegendSection.js';
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import PanelSection from '../../../../Helpers/Panel/PanelSection/PanelSection.js';
@@ -61,56 +60,7 @@ export class VisualizationParameterEditor extends Component {
 		/** Legend **/
 
 		const legendPanelSection = (
-			<PanelSection
-				label="Legend"
-				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.legend}
-			>
-				<table
-					className="fields"
-				>
-					<tbody>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Display
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Switch
-									value={this.props.legendDisplayStatus}
-									action={(legendDisplayStatus) => {
-										this.setLegendDisplayStatus(legendDisplayStatus);
-									}}
-								/>
-							</td>
-						</tr>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Title
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<ValidationInput
-									type="text"
-									value={this.props.legendTitle}
-									action={(legendTitle) => {
-										this.setLegendTitle(legendTitle);
-									}}
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</PanelSection>
+			<LegendSection/>
 		);
 
 		/** Grid **/
@@ -341,24 +291,6 @@ export class VisualizationParameterEditor extends Component {
 
 	/* Specific */
 
-	setLegendDisplayStatus(legendDisplayStatus) {
-		this.props.client.Viewer.setLegendDisplayStatus(legendDisplayStatus).then((result) => {
-			if(result.value)
-			{
-				this.props.setLegendDisplayStatus(legendDisplayStatus);
-			}
-		});
-	}
-
-	setLegendTitle(legendTitle) {
-		this.props.client.Viewer.setLegendTitle(legendTitle).then((result) => {
-			if(result.value)
-			{
-				this.props.setLegendTitle(this.props.dataArray, legendTitle);
-			}
-		});
-	}
-
 	setGridDisplayStatus(gridDisplayStatus) {
 		this.props.client.Viewer.setGridDisplayStatus(gridDisplayStatus).then((result) => {
 			if(result.value)
@@ -413,11 +345,6 @@ VisualizationParameterEditor.propTypes = {
 	client: PropTypes.object.isRequired,
 	openStatus: PropTypes.bool.isRequired,
 	setOpenStatus: PropTypes.func.isRequired,
-	dataArray: PropTypes.object.isRequired,
-	legendDisplayStatus: PropTypes.bool.isRequired,
-	setLegendDisplayStatus: PropTypes.func.isRequired,
-	legendTitle: PropTypes.string.isRequired,
-	setLegendTitle: PropTypes.func.isRequired,
 	gridDisplayStatus: PropTypes.bool.isRequired,
 	setGridDisplayStatus: PropTypes.func.isRequired,
 	gridTitles: PropTypes.object.isRequired,
@@ -434,24 +361,10 @@ VisualizationParameterEditor.defaultProps = {
 
 export default connect(
 	(state) => {
-
-		/* LegendTitle */
-
-		const legendTitleFound = state.visualizationParameters.legend.titles.find((legendTitle) => {
-			return DeepEqual(legendTitle.dataArray, state.visualizationParameters.dataArray);
-		});
-
-		const legendTitle = (legendTitleFound) ? legendTitleFound.title : '';
-
-		/* Return */
-
 		return {
 			configuration: state.configuration,
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
-			dataArray: state.visualizationParameters.dataArray,
-			legendTitle: legendTitle,
-			legendDisplayStatus: state.visualizationParameters.legend.displayStatus,
 			gridDisplayStatus: state.visualizationParameters.grid.displayStatus,
 			gridTitles: state.visualizationParameters.grid.titles,
 			backgroundColor: state.visualizationParameters.backgroundColor,
@@ -463,12 +376,6 @@ export default connect(
 		return {
 			setOpenStatus: (openStatus) => {
 				dispatch(panelActions.setOpenStatus(openStatus));
-			},
-			setLegendDisplayStatus: (displayStatus) => {
-				dispatch(legendActions.setDisplayStatus(displayStatus));
-			},
-			setLegendTitle: (dataArray, title) => {
-				dispatch(legendActions.setTitle(dataArray, title));
 			},
 			setGridDisplayStatus: (displayStatus) => {
 				dispatch(gridActions.setDisplayStatus(displayStatus));
