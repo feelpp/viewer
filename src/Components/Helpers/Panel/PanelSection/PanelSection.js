@@ -82,13 +82,15 @@ export default class PanelSection extends Component {
 }
 
 PanelSection.propTypes = {
-	label: PropTypes.string.isRequired,
-
+	className: PropTypes.string,
 	initialOpenStatus: PropTypes.bool,
 	children: PropTypes.node,
+
+	label: PropTypes.string.isRequired,
 };
 
 PanelSection.defaultProps = {
+	className: null,
 	initialOpenStatus: true,
 	children: null,
 };

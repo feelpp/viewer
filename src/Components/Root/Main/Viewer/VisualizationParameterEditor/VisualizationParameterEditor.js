@@ -16,12 +16,12 @@ import legendActions from '../../../../../Actions/visualizationParameters/legend
 import gridActions from '../../../../../Actions/visualizationParameters/grid/grid.js';
 import filtersActions from '../../../../../Actions/visualizationParameters/filters/filters.js';
 
+import ViewSection from './ViewSection/ViewSection.js';
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import Input from '../../../../Helpers/FormElements/Input/Input.js';
 import MultiButton from '../../../../Helpers/FormElements/MultiButton/MultiButton.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import PanelSection from '../../../../Helpers/Panel/PanelSection/PanelSection.js';
-import Player from '../../../../Helpers/FormElements/Player/Player.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
 import Switch from '../../../../Helpers/FormElements/Switch/Switch.js';
 import ValidationInput from '../../../../Helpers/FormElements/ValidationInput/ValidationInput.js';
@@ -50,93 +50,7 @@ export class VisualizationParameterEditor extends Component {
 		/** View **/
 
 		const viewPanelSection = (
-			<PanelSection
-				label="View"
-				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.view}
-			>
-				<table
-					className="fields"
-				>
-					<tbody>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Data array
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Select
-									value={this.props.dataArray}
-									options={this.props.dataArrays.map((dataArray) => {
-										return {
-											text: dataArray.name + ' (' + dataArray.type + ')',
-											value: dataArray,
-										};
-									})}
-									action={(dataArray) => {
-										this.setDataArray(dataArray);
-									}}
-								/>
-							</td>
-						</tr>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Representation type
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Select
-									value={this.props.representationType}
-									options={this.props.representationTypes.map((representationType) => {
-										return {
-											text: representationType,
-											value: representationType,
-										};
-									})}
-									action={(representationType) => {
-										this.setRepresentationType(representationType);
-									}}
-								/>
-							</td>
-						</tr>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Time step
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Player
-									value={this.props.timeStep}
-									options={this.props.timeSteps.map((timeStep) => {
-										return {
-											text: timeStep,
-											value: timeStep,
-										};
-									})}
-									action={(timeStep) => {
-										this.setTimeStep(Number(timeStep));
-									}}
-									delay={1000}
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</PanelSection>
+			<ViewSection/>
 		);
 
 		/** ColorMap **/
@@ -604,24 +518,6 @@ export class VisualizationParameterEditor extends Component {
 		this.props.client.Viewer.resetView();
 	}
 
-	setDataArray(dataArray) {
-		this.props.client.Viewer.setDataArray(dataArray).then((result) => {
-			if(result.value)
-			{
-				this.props.setDataArray(dataArray);
-			}
-		});
-	}
-
-	setRepresentationType(representationType) {
-		this.props.client.Viewer.setRepresentationType(representationType).then((result) => {
-			if(result.value)
-			{
-				this.props.setRepresentationType(representationType);
-			}
-		});
-	}
-
 	setColorMapPreset(colorMapPreset) {
 		this.props.client.Viewer.setColorMapPreset(colorMapPreset).then((result) => {
 			if(result.value)
@@ -657,15 +553,6 @@ export class VisualizationParameterEditor extends Component {
 			if(result.value)
 			{
 				this.props.setColorMapLogScaleStatus(colorMapLogScaleStatus);
-			}
-		});
-	}
-
-	setTimeStep(timeStep) {
-		this.props.client.Viewer.setTimeStep(timeStep).then((result) => {
-			if(result.value)
-			{
-				this.props.setTimeStep(timeStep);
 			}
 		});
 	}
@@ -746,19 +633,11 @@ VisualizationParameterEditor.propTypes = {
 	client: PropTypes.object.isRequired,
 	openStatus: PropTypes.bool.isRequired,
 	setOpenStatus: PropTypes.func.isRequired,
-	dataArrays: PropTypes.array.isRequired,
 	dataArray: PropTypes.object.isRequired,
-	setDataArray: PropTypes.func.isRequired,
-	representationTypes: PropTypes.array.isRequired,
-	representationType: PropTypes.string.isRequired,
-	setRepresentationType: PropTypes.func.isRequired,
 	colorMapPreset: PropTypes.string.isRequired,
 	setColorMapPreset: PropTypes.func.isRequired,
 	colorMapLogScaleStatus: PropTypes.bool.isRequired,
 	setColorMapLogScaleStatus: PropTypes.func.isRequired,
-	timeSteps: PropTypes.array.isRequired,
-	timeStep: PropTypes.number.isRequired,
-	setTimeStep: PropTypes.func.isRequired,
 	legendDisplayStatus: PropTypes.bool.isRequired,
 	setLegendDisplayStatus: PropTypes.func.isRequired,
 	legendTitle: PropTypes.string.isRequired,
@@ -802,14 +681,9 @@ export default connect(
 			configuration: state.configuration,
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
-			dataArrays: state.visualizationParameters.dataArrays,
 			dataArray: state.visualizationParameters.dataArray,
-			representationTypes: state.visualizationParameters.representationTypes,
-			representationType: state.visualizationParameters.representationType,
 			colorMapPreset: colorMapPreset,
 			colorMapLogScaleStatus: state.visualizationParameters.colorMap.logScaleStatus,
-			timeSteps: state.visualizationParameters.timeSteps,
-			timeStep: state.visualizationParameters.timeStep,
 			legendTitle: legendTitle,
 			legendDisplayStatus: state.visualizationParameters.legend.displayStatus,
 			gridDisplayStatus: state.visualizationParameters.grid.displayStatus,
@@ -824,20 +698,11 @@ export default connect(
 			setOpenStatus: (openStatus) => {
 				dispatch(panelActions.setOpenStatus(openStatus));
 			},
-			setDataArray: (dataArray) => {
-				dispatch(visualizationParametersActions.setDataArray(dataArray));
-			},
-			setRepresentationType: (representationType) => {
-				dispatch(visualizationParametersActions.setRepresentationType(representationType));
-			},
 			setColorMapPreset: (dataArray, colorMapPreset) => {
 				dispatch(colorMapActions.setPreset(dataArray, colorMapPreset));
 			},
 			setColorMapLogScaleStatus: (logScaleStatus) => {
 				dispatch(colorMapActions.setLogScaleStatus(logScaleStatus));
-			},
-			setTimeStep: (timeStep) => {
-				dispatch(visualizationParametersActions.setTimeStep(timeStep));
 			},
 			setLegendDisplayStatus: (displayStatus) => {
 				dispatch(legendActions.setDisplayStatus(displayStatus));
