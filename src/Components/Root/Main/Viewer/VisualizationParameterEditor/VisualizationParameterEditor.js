@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import DeepEqual from 'deep-equal';
 
-import {colorMapPresets, colorMapPresetNames} from '../../../../../Others/colorMap.js';
 import {filters, filterNames} from '../../../../../Others/filter.js';
 import {formatExtensions, formatMIMETypes} from '../../../../../Others/format.js';
 
@@ -11,14 +10,13 @@ import {downloadImageURL} from '../../../../../Helpers/download.js';
 
 import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
-import colorMapActions from '../../../../../Actions/visualizationParameters/colorMap/colorMap.js';
 import legendActions from '../../../../../Actions/visualizationParameters/legend/legend.js';
 import gridActions from '../../../../../Actions/visualizationParameters/grid/grid.js';
 import filtersActions from '../../../../../Actions/visualizationParameters/filters/filters.js';
 
 import ViewSection from './ViewSection/ViewSection.js';
+import ColorMapSection from './ColorMapSection/ColorMapSection.js';
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
-import Input from '../../../../Helpers/FormElements/Input/Input.js';
 import MultiButton from '../../../../Helpers/FormElements/MultiButton/MultiButton.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import PanelSection from '../../../../Helpers/Panel/PanelSection/PanelSection.js';
@@ -36,11 +34,6 @@ export class VisualizationParameterEditor extends Component {
 		super(props);
 
 		/* Attributes */
-
-		this.state = {
-			colorMapScaleInferiorValue: 0,
-			colorMapScaleSuperiorValue: 0,
-		};
 	}
 
 	render() {
@@ -56,99 +49,7 @@ export class VisualizationParameterEditor extends Component {
 		/** ColorMap **/
 
 		const colorMapPanelSection = (
-			<PanelSection
-				label="Color map"
-				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.colorMap}
-			>
-				<table
-					className="fields"
-				>
-					<tbody>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Color map
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Select
-									value={this.props.colorMapPreset}
-									options={Object.keys(colorMapPresets).map((colorMapPresetKey) => {
-										return {
-											text: colorMapPresetNames[colorMapPresets[colorMapPresetKey]],
-											value: colorMapPresets[colorMapPresetKey],
-										};
-									})}
-									action={(colorMapPreset) => {
-										this.setColorMapPreset(colorMapPreset);
-									}}
-								/>
-							</td>
-						</tr>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Scale
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Input
-									className="smallInput"
-									type="number"
-									placeholder="Inferior"
-									value={this.state.colorMapScaleInferiorValue}
-									action={(inferiorValue) => {
-										this.setColorMapScale(inferiorValue, this.state.colorMapScaleSuperiorValue);
-									}}
-								/>
-								<Input
-									className="smallInput"
-									type="number"
-									placeholder="Superior"
-									value={this.state.colorMapScaleSuperiorValue}
-									action={(superiorValue) => {
-										this.setColorMapScale(this.state.colorMapScaleInferiorValue, superiorValue);
-									}}
-								/>
-								<Button
-									action={() => {
-										this.resetColorMapScale();
-									}}
-								>
-									Reset
-								</Button>
-							</td>
-						</tr>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								LogScale
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Switch
-									value={this.props.colorMapLogScaleStatus}
-									action={(colorMapLogScaleStatus) => {
-										this.setColorMapLogScaleStatus(colorMapLogScaleStatus);
-									}}
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</PanelSection>
+			<ColorMapSection/>
 		);
 
 		/** Camera **/
@@ -518,45 +419,6 @@ export class VisualizationParameterEditor extends Component {
 		this.props.client.Viewer.resetView();
 	}
 
-	setColorMapPreset(colorMapPreset) {
-		this.props.client.Viewer.setColorMapPreset(colorMapPreset).then((result) => {
-			if(result.value)
-			{
-				this.props.setColorMapPreset(this.props.dataArray, colorMapPreset);
-			}
-		});
-	}
-
-	resetColorMapScale() {
-		this.props.client.Viewer.resetColorMapScale();
-	}
-
-	setColorMapScale(inferiorValue, superiorValue) {
-		this.setState({
-			colorMapScaleInferiorValue: inferiorValue,
-			colorMapScaleSuperiorValue: superiorValue,
-		});
-
-		this.props.client.Viewer.setColorMapScale(inferiorValue, superiorValue).then((result) => {
-			if(! result.value)
-			{
-				this.setState({
-					colorMapScaleInferiorValue: 0,
-					colorMapScaleSuperiorValue: 0,
-				});
-			}
-		});
-	}
-
-	setColorMapLogScaleStatus(colorMapLogScaleStatus) {
-		this.props.client.Viewer.setColorMapLogScaleStatus(colorMapLogScaleStatus).then((result) => {
-			if(result.value)
-			{
-				this.props.setColorMapLogScaleStatus(colorMapLogScaleStatus);
-			}
-		});
-	}
-
 	setLegendDisplayStatus(legendDisplayStatus) {
 		this.props.client.Viewer.setLegendDisplayStatus(legendDisplayStatus).then((result) => {
 			if(result.value)
@@ -634,10 +496,6 @@ VisualizationParameterEditor.propTypes = {
 	openStatus: PropTypes.bool.isRequired,
 	setOpenStatus: PropTypes.func.isRequired,
 	dataArray: PropTypes.object.isRequired,
-	colorMapPreset: PropTypes.string.isRequired,
-	setColorMapPreset: PropTypes.func.isRequired,
-	colorMapLogScaleStatus: PropTypes.bool.isRequired,
-	setColorMapLogScaleStatus: PropTypes.func.isRequired,
 	legendDisplayStatus: PropTypes.bool.isRequired,
 	setLegendDisplayStatus: PropTypes.func.isRequired,
 	legendTitle: PropTypes.string.isRequired,
@@ -659,14 +517,6 @@ VisualizationParameterEditor.defaultProps = {
 export default connect(
 	(state) => {
 
-		/* ColorMapPreset */
-
-		const colorMapPresetFound = state.visualizationParameters.colorMap.presets.find((colorMapPreset) => {
-			return DeepEqual(colorMapPreset.dataArray, state.visualizationParameters.dataArray);
-		});
-
-		const colorMapPreset = (colorMapPresetFound) ? colorMapPresetFound.preset : colorMapPresets.coolToWarm;
-
 		/* LegendTitle */
 
 		const legendTitleFound = state.visualizationParameters.legend.titles.find((legendTitle) => {
@@ -682,8 +532,6 @@ export default connect(
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
 			dataArray: state.visualizationParameters.dataArray,
-			colorMapPreset: colorMapPreset,
-			colorMapLogScaleStatus: state.visualizationParameters.colorMap.logScaleStatus,
 			legendTitle: legendTitle,
 			legendDisplayStatus: state.visualizationParameters.legend.displayStatus,
 			gridDisplayStatus: state.visualizationParameters.grid.displayStatus,
@@ -697,12 +545,6 @@ export default connect(
 		return {
 			setOpenStatus: (openStatus) => {
 				dispatch(panelActions.setOpenStatus(openStatus));
-			},
-			setColorMapPreset: (dataArray, colorMapPreset) => {
-				dispatch(colorMapActions.setPreset(dataArray, colorMapPreset));
-			},
-			setColorMapLogScaleStatus: (logScaleStatus) => {
-				dispatch(colorMapActions.setLogScaleStatus(logScaleStatus));
 			},
 			setLegendDisplayStatus: (displayStatus) => {
 				dispatch(legendActions.setDisplayStatus(displayStatus));
