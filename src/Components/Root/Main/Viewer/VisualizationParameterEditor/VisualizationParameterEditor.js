@@ -16,8 +16,8 @@ import filtersActions from '../../../../../Actions/visualizationParameters/filte
 
 import ViewSection from './ViewSection/ViewSection.js';
 import ColorMapSection from './ColorMapSection/ColorMapSection.js';
+import CameraSection from './CameraSection/CameraSection.js';
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
-import MultiButton from '../../../../Helpers/FormElements/MultiButton/MultiButton.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import PanelSection from '../../../../Helpers/Panel/PanelSection/PanelSection.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
@@ -55,81 +55,7 @@ export class VisualizationParameterEditor extends Component {
 		/** Camera **/
 
 		const cameraPanelSection = (
-			<PanelSection
-				label="Camera"
-				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.camera}
-			>
-				<table
-					className="fields"
-				>
-					<tbody>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								View
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Button
-									action={() => {
-										this.resetView();
-									}}
-								>
-									Reset
-								</Button>
-							</td>
-						</tr>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Camera
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<MultiButton
-									options={[
-										{
-											text: '+X',
-											value: '+X',
-										},
-										{
-											text: '-X',
-											value: '-X',
-										},
-										{
-											text: '+Y',
-											value: '+Y',
-										},
-										{
-											text: '-Y',
-											value: '-Y',
-										},
-										{
-											text: '+Z',
-											value: '+Z',
-										},
-										{
-											text: '-Z',
-											value: '-Z',
-										},
-									]}
-									action={(cameraPosition) => {
-										this.setCameraPosition(cameraPosition);
-									}}
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</PanelSection>
+			<CameraSection/>
 		);
 
 		/** Legend **/
@@ -415,10 +341,6 @@ export class VisualizationParameterEditor extends Component {
 
 	/* Specific */
 
-	resetView() {
-		this.props.client.Viewer.resetView();
-	}
-
 	setLegendDisplayStatus(legendDisplayStatus) {
 		this.props.client.Viewer.setLegendDisplayStatus(legendDisplayStatus).then((result) => {
 			if(result.value)
@@ -453,10 +375,6 @@ export class VisualizationParameterEditor extends Component {
 				this.props.setGridTitle(gridAxis, gridTitle);
 			}
 		});
-	}
-
-	setCameraPosition(cameraPosition) {
-		this.props.client.Viewer.setCameraPosition(cameraPosition);
 	}
 
 	setBackgroundColor(backgroundColor) {
