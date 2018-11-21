@@ -2,24 +2,22 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {filters, filterNames} from '../../../../../Others/filter.js';
 import {formatExtensions, formatMIMETypes} from '../../../../../Others/format.js';
 
 import {downloadImageURL} from '../../../../../Helpers/download.js';
 
 import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
-import filtersActions from '../../../../../Actions/visualizationParameters/filters/filters.js';
 
 import ViewSection from './ViewSection/ViewSection.js';
 import ColorMapSection from './ColorMapSection/ColorMapSection.js';
 import CameraSection from './CameraSection/CameraSection.js';
 import LegendSection from './LegendSection/LegendSection.js';
 import GridSection from './GridSection/GridSection.js';
+import FiltersSection from './FiltersSection/FiltersSection.js';
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import PanelSection from '../../../../Helpers/Panel/PanelSection/PanelSection.js';
-import Select from '../../../../Helpers/FormElements/Select/Select.js';
 import ValidationInput from '../../../../Helpers/FormElements/ValidationInput/ValidationInput.js';
 
 import './VisualizationParameterEditor.less';
@@ -71,46 +69,7 @@ export class VisualizationParameterEditor extends Component {
 		/** Filters **/
 
 		const filtersPanelSection = (
-			<PanelSection
-				label="Filters"
-				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.filters}
-			>
-				<table
-					className="fields"
-				>
-					<tbody>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Filter
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Select
-									value={this.props.filter}
-									options={[
-										{
-											text: 'No filter',
-											value: null,
-										},
-										{
-											text: filterNames[filters.warpByVector],
-											value: filters.warpByVector,
-										},
-									]}
-									action={(filter) => {
-										this.setFilter(filter);
-									}}
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</PanelSection>
+			<FiltersSection/>
 		);
 
 		/** Others **/
@@ -210,10 +169,6 @@ export class VisualizationParameterEditor extends Component {
 		});
 	}
 
-	setFilter(filter) {
-		this.props.setFilter(filter);
-	}
-
 	downloadScreenShot() {
 		const format = this.props.configuration.screenShot.format;
 		const quality = this.props.configuration.screenShot.quality;
@@ -239,8 +194,6 @@ VisualizationParameterEditor.propTypes = {
 	setOpenStatus: PropTypes.func.isRequired,
 	backgroundColor: PropTypes.string.isRequired,
 	setBackgroundColor: PropTypes.func.isRequired,
-	filter: PropTypes.string,
-	setFilter: PropTypes.func.isRequired,
 };
 
 VisualizationParameterEditor.defaultProps = {
@@ -254,7 +207,6 @@ export default connect(
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
 			backgroundColor: state.visualizationParameters.backgroundColor,
-			filter: state.visualizationParameters.filters.filter,
 			screenShotGenerator: state.screenShotGenerator,
 		};
 	},
@@ -265,9 +217,6 @@ export default connect(
 			},
 			setBackgroundColor: (backgroundColor) => {
 				dispatch(visualizationParametersActions.setBackgroundColor(backgroundColor));
-			},
-			setFilter: (filter) => {
-				dispatch(filtersActions.setFilter(filter));
 			},
 		};
 	}
