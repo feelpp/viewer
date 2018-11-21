@@ -9,18 +9,17 @@ import {downloadImageURL} from '../../../../../Helpers/download.js';
 
 import panelActions from '../../../../../Actions/panel/panel.js';
 import visualizationParametersActions from '../../../../../Actions/visualizationParameters/visualizationParameters.js';
-import gridActions from '../../../../../Actions/visualizationParameters/grid/grid.js';
 import filtersActions from '../../../../../Actions/visualizationParameters/filters/filters.js';
 
 import ViewSection from './ViewSection/ViewSection.js';
 import ColorMapSection from './ColorMapSection/ColorMapSection.js';
 import CameraSection from './CameraSection/CameraSection.js';
 import LegendSection from './LegendSection/LegendSection.js';
+import GridSection from './GridSection/GridSection.js';
 import Button from '../../../../Helpers/FormElements/Button/Button.js';
 import Panel from '../../../../Helpers/Panel/Panel.js';
 import PanelSection from '../../../../Helpers/Panel/PanelSection/PanelSection.js';
 import Select from '../../../../Helpers/FormElements/Select/Select.js';
-import Switch from '../../../../Helpers/FormElements/Switch/Switch.js';
 import ValidationInput from '../../../../Helpers/FormElements/ValidationInput/ValidationInput.js';
 
 import './VisualizationParameterEditor.less';
@@ -66,96 +65,7 @@ export class VisualizationParameterEditor extends Component {
 		/** Grid **/
 
 		const gridPanelSection = (
-			<PanelSection
-				label="Grid"
-				initialOpenStatus={this.props.configuration.visualizationParameterEditor.sectionInitialOpenStatus.grid}
-			>
-				<table
-					className="fields"
-				>
-					<tbody>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Display
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<Switch
-									value={this.props.gridDisplayStatus}
-									action={(gridDisplayStatus) => {
-										this.setGridDisplayStatus(gridDisplayStatus);
-									}}
-								/>
-							</td>
-						</tr>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								X axis title
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<ValidationInput
-									type="text"
-									value={this.props.gridTitles.X}
-									action={(gridTitle) => {
-										this.setGridTitle('X', gridTitle);
-									}}
-								/>
-							</td>
-						</tr>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Y axis title
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<ValidationInput
-									type="text"
-									value={this.props.gridTitles.Y}
-									action={(gridTitle) => {
-										this.setGridTitle('Y', gridTitle);
-									}}
-								/>
-							</td>
-						</tr>
-						<tr
-							className="fieldLine"
-						>
-							<td
-								className="fieldLabel"
-							>
-								Z axis title
-							</td>
-							<td
-								className="fieldEditor"
-							>
-								<ValidationInput
-									type="text"
-									value={this.props.gridTitles.Z}
-									action={(gridTitle) => {
-										this.setGridTitle('Z', gridTitle);
-									}}
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</PanelSection>
+			<GridSection/>
 		);
 
 		/** Filters **/
@@ -291,24 +201,6 @@ export class VisualizationParameterEditor extends Component {
 
 	/* Specific */
 
-	setGridDisplayStatus(gridDisplayStatus) {
-		this.props.client.Viewer.setGridDisplayStatus(gridDisplayStatus).then((result) => {
-			if(result.value)
-			{
-				this.props.setGridDisplayStatus(gridDisplayStatus);
-			}
-		});
-	}
-
-	setGridTitle(gridAxis, gridTitle) {
-		this.props.client.Viewer.setGridTitle(gridAxis, gridTitle).then((result) => {
-			if(result.value)
-			{
-				this.props.setGridTitle(gridAxis, gridTitle);
-			}
-		});
-	}
-
 	setBackgroundColor(backgroundColor) {
 		this.props.client.Viewer.setBackgroundColor(backgroundColor).then((result) => {
 			if(result.value)
@@ -345,10 +237,6 @@ VisualizationParameterEditor.propTypes = {
 	client: PropTypes.object.isRequired,
 	openStatus: PropTypes.bool.isRequired,
 	setOpenStatus: PropTypes.func.isRequired,
-	gridDisplayStatus: PropTypes.bool.isRequired,
-	setGridDisplayStatus: PropTypes.func.isRequired,
-	gridTitles: PropTypes.object.isRequired,
-	setGridTitle: PropTypes.func.isRequired,
 	backgroundColor: PropTypes.string.isRequired,
 	setBackgroundColor: PropTypes.func.isRequired,
 	filter: PropTypes.string,
@@ -365,8 +253,6 @@ export default connect(
 			configuration: state.configuration,
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
-			gridDisplayStatus: state.visualizationParameters.grid.displayStatus,
-			gridTitles: state.visualizationParameters.grid.titles,
 			backgroundColor: state.visualizationParameters.backgroundColor,
 			filter: state.visualizationParameters.filters.filter,
 			screenShotGenerator: state.screenShotGenerator,
@@ -376,12 +262,6 @@ export default connect(
 		return {
 			setOpenStatus: (openStatus) => {
 				dispatch(panelActions.setOpenStatus(openStatus));
-			},
-			setGridDisplayStatus: (displayStatus) => {
-				dispatch(gridActions.setDisplayStatus(displayStatus));
-			},
-			setGridTitle: (axis, title) => {
-				dispatch(gridActions.setTitle(axis, title));
 			},
 			setBackgroundColor: (backgroundColor) => {
 				dispatch(visualizationParametersActions.setBackgroundColor(backgroundColor));
