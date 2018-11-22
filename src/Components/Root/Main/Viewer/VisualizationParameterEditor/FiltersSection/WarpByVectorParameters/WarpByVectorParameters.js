@@ -69,6 +69,9 @@ export class WarpByVectorParameters extends Component {
 						<ValidationInput
 							type="number"
 							value={this.props.scaleFactor}
+							checker={(scaleFactor) => {
+								return scaleFactor !== 0;
+							}}
 							action={(scaleFactor) => {
 								this.setScaleFactor(scaleFactor);
 							}}
