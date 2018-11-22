@@ -161,13 +161,17 @@ export class Viewer extends Component {
 
 					/* Load data */
 
-					client.Viewer.loadFile(this.props.data).then((result) => {
+					client.Viewer.loadData(this.props.data).then((result) => {
 
 						/* Other */
 
 						if(result.value)
 						{
 							/* Set visualization parameters */
+
+							/** DataDisplayStatus */
+
+							this.props.setDataDisplayStatus(result.data.dataDisplayStatus);
 
 							/** Data array **/
 
@@ -265,6 +269,7 @@ Viewer.propTypes = {
 	setScreenShotGenerator: PropTypes.func.isRequired,
 	editorDisplayStatus: PropTypes.bool.isRequired,
 	setEditorDisplayStatus: PropTypes.func.isRequired,
+	setDataDisplayStatus: PropTypes.func.isRequired,
 	setDataArrays: PropTypes.func.isRequired,
 	setDataArray: PropTypes.func.isRequired,
 	setRepresentationTypes: PropTypes.func.isRequired,
@@ -304,6 +309,9 @@ export default connect(
 			},
 			setScreenShotGenerator: (screenShotGenerator) => {
 				dispatch(screenShotGeneratorActions.set(screenShotGenerator));
+			},
+			setDataDisplayStatus: (dataDisplayStatus) => {
+				dispatch(visualizationParametersActions.setDataDisplayStatus(dataDisplayStatus));
 			},
 			setDataArrays: (dataArrays) => {
 				dispatch(visualizationParametersActions.setDataArrays(dataArrays));

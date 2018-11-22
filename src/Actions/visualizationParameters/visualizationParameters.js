@@ -12,6 +12,12 @@ export default {
 			dataArrays: dataArrays,
 		};
 	},
+	setDataDisplayStatus: (dataDisplayStatus) => {
+		return {
+			type: 'visualizationParameters.setDataDisplayStatus',
+			dataDisplayStatus: dataDisplayStatus,
+		};
+	},
 	setEditorDisplayStatus: (editorDisplayStatus) => {
 		return {
 			type: 'visualizationParameters.setEditorDisplayStatus',

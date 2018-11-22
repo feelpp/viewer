@@ -5,6 +5,7 @@ import {reduceGridState, gridInitialState} from './grid/grid.js';
 
 const visualizationParametersInitialState = {
 	editorDisplayStatus: false,
+	dataDisplayStatus: null,
 	dataArrays: [],
 	dataArray: null,
 	representationTypes: [],
@@ -27,6 +28,15 @@ export function reduceVisualizationParametersState(state = visualizationParamete
 		{
 			return Object.assign({}, state, {
 				[action.field]: action.value,
+			});
+		}
+
+		/* setDataDisplayStatus */
+
+		if(action.type === 'visualizationParameters.setDataDisplayStatus')
+		{
+			return Object.assign({}, state, {
+				dataDisplayStatus: action.dataDisplayStatus,
 			});
 		}
 

@@ -6,8 +6,11 @@ export default function createMethods(session) {
 		setOrientationAxesVisibility: (orientationAxesVisibility) => {
 			return session.call('viewer.set.orientation.visibility', [orientationAxesVisibility]);
 		},
-		loadFile: (fileName) => {
-			return session.call('viewer.load.file', [fileName]);
+		loadData: (data) => {
+			return session.call('viewer.load.data', [data]);
+		},
+		setDataDisplayStatus: (dataDisplayStatus) => {
+			return session.call('viewer.set.data.display.status', [dataDisplayStatus]);
 		},
 		setDataArray: (dataArray) => {
 			return session.call('viewer.set.data.array', [dataArray]);

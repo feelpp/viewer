@@ -4,12 +4,14 @@ import {connect} from 'react-redux';
 
 import {filters, filterNames} from '../../../../../../Others/filter.js';
 
+import visualizationParametersActions from '../../../../../../Actions/visualizationParameters/visualizationParameters.js';
 import filtersActions from '../../../../../../Actions/visualizationParameters/filters/filters.js';
 import warpByVectorActions from '../../../../../../Actions/visualizationParameters/filters/warpByVector/warpByVector.js';
 
 import WarpByVectorParameters from './WarpByVectorParameters/WarpByVectorParameters.js';
 import PanelSection from '../../../../../Helpers/Panel/PanelSection/PanelSection.js';
 import Select from '../../../../../Helpers/FormElements/Select/Select.js';
+import Switch from '../../../../../Helpers/FormElements/Switch/Switch.js';
 
 import './FiltersSection.less';
 
@@ -56,6 +58,26 @@ export class FiltersSection extends Component {
 								<td
 									className="fieldLabel"
 								>
+									Display original data
+								</td>
+								<td
+									className="fieldEditor"
+								>
+									<Switch
+										value={this.props.dataDisplayStatus}
+										disabled={this.props.filter === null}
+										action={(dataDisplayStatus) => {
+											this.setDataDisplayStatus(dataDisplayStatus);
+										}}
+									/>
+								</td>
+							</tr>
+							<tr
+								className="fieldLine"
+							>
+								<td
+									className="fieldLabel"
+								>
 									Filter
 								</td>
 								<td
@@ -93,6 +115,15 @@ export class FiltersSection extends Component {
 
 	/* Specific */
 
+	setDataDisplayStatus(dataDisplayStatus) {
+		this.props.client.Viewer.setDataDisplayStatus(dataDisplayStatus).then((result) => {
+			if(result.value)
+			{
+				this.props.setDataDisplayStatus(dataDisplayStatus);
+			}
+		});
+	}
+
 	setFilter(filter) {
 		if(filter === filters.warpByVector)
 		{
@@ -113,7 +144,14 @@ export class FiltersSection extends Component {
 		else
 		{
 			this.props.client.Viewer.disableCurrentFilter().then(() => {
+
+				/* Set filter */
+
 				this.props.setFilter(filter);
+
+				/* Display data */
+
+				this.setDataDisplayStatus(true);
 			});
 		}
 	}
@@ -123,6 +161,8 @@ FiltersSection.propTypes = {
 	initialOpenStatus: PropTypes.bool,
 
 	client: PropTypes.object.isRequired,
+	dataDisplayStatus: PropTypes.bool.isRequired,
+	setDataDisplayStatus: PropTypes.func.isRequired,
 	filter: PropTypes.string,
 	setFilter: PropTypes.func.isRequired,
 	setVectors: PropTypes.func.isRequired,
@@ -138,11 +178,15 @@ export default connect(
 		return {
 			initialOpenStatus: state.configuration.visualizationParameterEditor.sectionInitialOpenStatus.filters,
 			client: state.connection.client,
+			dataDisplayStatus: state.visualizationParameters.dataDisplayStatus,
 			filter: state.visualizationParameters.filters.filter,
 		};
 	},
 	(dispatch) => {
 		return {
+			setDataDisplayStatus: (dataDisplayStatus) => {
+				dispatch(visualizationParametersActions.setDataDisplayStatus(dataDisplayStatus));
+			},
 			setFilter: (filter) => {
 				dispatch(filtersActions.setFilter(filter));
 			},

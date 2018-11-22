@@ -33,8 +33,8 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
         print('dataDirectoryPath: ' + self.dataDirectoryPath)
         print('dataLoadSignatureDecoder: ' + self.dataLoadSignatureDecoder)
 
-    @exportRpc('viewer.load.file')
-    def load(self, dataLoadSignature):
+    @exportRpc('viewer.load.data')
+    def loadData(self, dataLoadSignature):
 
         # Reset #
 
@@ -56,7 +56,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
             if os.path.isfile(self.fileName):
 
-               return self.displayData()
+               return self.initializeVisualization()
 
             else:
 
@@ -78,19 +78,19 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 message='DataLoadSignature decoding failed'
             )
 
-    def displayData(self):
+    def initializeVisualization(self):
 
-        # Display #
+        # Read data #
         
         self.reader = EnSightReader(CaseFileName=self.fileName)
-        
-        self.representation = Show(OutputPort(self.reader, 1))
-        
-        self.resetView()
-        
-        # Logging #
-        
+
         print('Loaded')
+
+        # Display data #
+        
+        self.setDisplayStatus(True)
+
+        self.resetView()
 
         # Data #
 
@@ -144,12 +144,13 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
         backgroundColor = R + G + B
 
         # Return #
-        
+
         return createResponse(
             value=True,
             code=1,
             message='Data loading succeed',
             data={
+                'dataDisplayStatus': True,
                 'dataArrays': dataArrays,
                 'dataArray': dataArray,
                 'representationTypes': representationTypes,
@@ -161,6 +162,43 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 'backgroundColor': backgroundColor,
             }
         )
+
+    @exportRpc('viewer.set.data.display.status')
+    def setDisplayStatus(self, displayStatus):
+
+        if self.reader:
+
+            # Update display status #
+
+            if displayStatus:
+
+                self.representation = Show(self.reader, self.renderView)
+
+            else:
+
+                Hide(self.reader, self.renderView)
+
+                self.representation = None
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Data display status set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Data display status not set'
+            )
 
     def updateView(self):
 
@@ -770,7 +808,9 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         self.warpByVectorFilter = WarpByVector(Input=self.reader)
 
-        Show(self.warpByVectorFilter)
+        # Display filter #
+
+        Show(self.warpByVectorFilter, self.renderView)
 
         # Update indicator #
 
@@ -795,9 +835,9 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
     @exportRpc('viewer.filters.disable.wrap.by.vector.filter')
     def disableWarpByVectorFilter(self):
 
-        # Create filter #
+        # Hide filter #
 
-        Hide(self.warpByVectorFilter)
+        Hide(self.warpByVectorFilter, self.renderView)
 
         self.warpByVectorFilter = None
 
@@ -842,7 +882,7 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
             return createResponse(
                 value=False,
-                code=-11,
+                code=-1,
                 message='WarpByVector filter vectors not set'
             )
 
@@ -871,6 +911,6 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
             return createResponse(
                 value=False,
-                code=-11,
+                code=-1,
                 message='WarpByVector filter scale factor not set'
             )
