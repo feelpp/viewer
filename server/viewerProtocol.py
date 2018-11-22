@@ -25,6 +25,9 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
         self.representation = None
         self.fileName = None
 
+        self.filter = None
+        self.warpByVectorFilter = None
+
         # Logging #
 
         print('dataDirectoryPath: ' + self.dataDirectoryPath)
@@ -690,6 +693,8 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         self.updateView()
 
+        # Return #
+
         return createResponse(
             value=True,
             code=1,
@@ -739,4 +744,133 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 value=False,
                 code=-1,
                 message='Background color not set'
+            )
+
+    # Filters #
+
+    @exportRpc('viewer.filters.disable.current.filter')
+    def disableCurrentFilter(self):
+
+        if self.filter:
+
+            if self.filter == 'warpByVector':
+
+                self.disableWarpByVectorFilter()
+
+    ## WarpByVector ##
+
+    @exportRpc('viewer.filters.enable.wrap.by.vector.filter')
+    def enableWarpByVectorFilter(self):
+
+        # Disable current filter #
+
+        self.disableCurrentFilter()
+
+        # Create filter #
+
+        self.warpByVectorFilter = WarpByVector(Input=self.reader)
+
+        Show(self.warpByVectorFilter)
+
+        # Update indicator #
+
+        self.filter = 'warpByVector'
+
+        # Update view #
+
+        self.updateView()
+
+        # Return #
+
+        return createResponse(
+            value=True,
+            code=1,
+            message='WarpByVector filter enabled',
+            data={
+                'scaleFactor': self.warpByVectorFilter.ScaleFactor,
+                'vectors': self.warpByVectorFilter.Vectors[1],
+            }
+        )
+
+    @exportRpc('viewer.filters.disable.wrap.by.vector.filter')
+    def disableWarpByVectorFilter(self):
+
+        # Create filter #
+
+        Hide(self.warpByVectorFilter)
+
+        self.warpByVectorFilter = None
+
+        # Update indicator #
+
+        self.filter = None
+
+        # Update view #
+
+        self.updateView()
+
+        # Return #
+
+        return createResponse(
+            value=True,
+            code=1,
+            message='WarpByVector filter disabled',
+        )
+
+    @exportRpc('viewer.filters.set.wrap.by.vector.filter.vectors')
+    def setWarpByVectorFilterVectors(self, vectors):
+
+        if (self.filter == 'warpByVector') and self.warpByVectorFilter:
+
+            # Set ScaleFactor #
+
+            self.warpByVectorFilter.Vectors = vectors
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='WarpByVector filter vectors set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-11,
+                message='WarpByVector filter vectors not set'
+            )
+
+    @exportRpc('viewer.filters.set.wrap.by.vector.filter.scale.factor')
+    def setWarpByVectorFilterScaleFactor(self, scaleFactor):
+
+        if (self.filter == 'warpByVector') and self.warpByVectorFilter:
+
+            # Set ScaleFactor #
+
+            self.warpByVectorFilter.ScaleFactor = scaleFactor
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='WarpByVector filter scale factor set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-11,
+                message='WarpByVector filter scale factor not set'
             )

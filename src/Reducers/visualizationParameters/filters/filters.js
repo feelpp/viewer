@@ -1,9 +1,11 @@
 import {filters} from '../../../Others/filter.js';
 
+import {reduceWarpByVectorState, warpByVectorInitialState} from './warpByVector/warpByVector.js';
+
 export const filtersInitialState = {
 	filter: null,
 	parameters: {
-		[filters.warpByVector]: null,
+		[filters.warpByVector]: warpByVectorInitialState,
 	},
 };
 
@@ -19,20 +21,13 @@ export function reduceFiltersState(state = filtersInitialState, action) {
 			});
 		}
 
-		/* setParameters */
-
-		if(action.type === 'visualizationParameters.filters.setParameters')
-		{
-			return Object.assign({}, state, {
-				parameters: Object.assign(state.parameters, {
-					[action.filter]: action.parameters,
-				}),
-			});
-		}
-
 		/* Default */
 
-		return state;
+		return Object.assign({}, state, {
+			parameters: {
+				[filters.warpByVector]: reduceWarpByVectorState(state.parameters[filters.warpByVector], action),
+			},
+		});
 	}
 	else
 	{

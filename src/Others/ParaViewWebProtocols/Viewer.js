@@ -48,5 +48,17 @@ export default function createMethods(session) {
 		setBackgroundColor: (backgroundColor) => {
 			return session.call('viewer.set.background.color', [backgroundColor]);
 		},
+		disableCurrentFilter: () => {
+			return session.call('viewer.filters.disable.current.filter', []);
+		},
+		enableWarpByVectorFilter: () => {
+			return session.call('viewer.filters.enable.wrap.by.vector.filter', []);
+		},
+		setWarpByVectorFilterVectors: (vectors) => {
+			return session.call('viewer.filters.set.wrap.by.vector.filter.vectors', [vectors]);
+		},
+		setWarpByVectorFilterScaleFactor: (scaleFactor) => {
+			return session.call('viewer.filters.set.wrap.by.vector.filter.scale.factor', [scaleFactor]);
+		},
 	};
 }

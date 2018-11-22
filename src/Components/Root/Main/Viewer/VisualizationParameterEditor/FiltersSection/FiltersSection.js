@@ -5,7 +5,9 @@ import {connect} from 'react-redux';
 import {filters, filterNames} from '../../../../../../Others/filter.js';
 
 import filtersActions from '../../../../../../Actions/visualizationParameters/filters/filters.js';
+import warpByVectorActions from '../../../../../../Actions/visualizationParameters/filters/warpByVector/warpByVector.js';
 
+import WarpByVectorParameters from './WarpByVectorParameters/WarpByVectorParameters.js';
 import PanelSection from '../../../../../Helpers/Panel/PanelSection/PanelSection.js';
 import Select from '../../../../../Helpers/FormElements/Select/Select.js';
 
@@ -22,6 +24,17 @@ export class FiltersSection extends Component {
 	}
 
 	render() {
+
+		/* FilterParameters */
+
+		let filterParameters = null;
+
+		if(this.props.filter === filters.warpByVector)
+		{
+			filterParameters = (
+				<WarpByVectorParameters/>
+			);
+		}
 
 		/* Element */
 
@@ -67,6 +80,7 @@ export class FiltersSection extends Component {
 								</td>
 							</tr>
 						</tbody>
+						{filterParameters}
 					</table>
 				</PanelSection>
 			</div>
@@ -80,7 +94,28 @@ export class FiltersSection extends Component {
 	/* Specific */
 
 	setFilter(filter) {
-		this.props.setFilter(filter);
+		if(filter === filters.warpByVector)
+		{
+			this.props.client.Viewer.enableWarpByVectorFilter().then((result) => {
+				if(result.value)
+				{
+					/* Set parameters */
+
+					this.props.setVectors(result.data.vectors);
+					this.props.setScaleFactor(result.data.scaleFactor);
+
+					/* Set filter */
+
+					this.props.setFilter(filter);
+				}
+			});
+		}
+		else
+		{
+			this.props.client.Viewer.disableCurrentFilter().then(() => {
+				this.props.setFilter(filter);
+			});
+		}
 	}
 }
 
@@ -90,6 +125,8 @@ FiltersSection.propTypes = {
 	client: PropTypes.object.isRequired,
 	filter: PropTypes.string,
 	setFilter: PropTypes.func.isRequired,
+	setVectors: PropTypes.func.isRequired,
+	setScaleFactor: PropTypes.func.isRequired,
 };
 
 FiltersSection.defaultProps = {
@@ -108,6 +145,12 @@ export default connect(
 		return {
 			setFilter: (filter) => {
 				dispatch(filtersActions.setFilter(filter));
+			},
+			setVectors: (vectors) => {
+				dispatch(warpByVectorActions.setVectors(vectors));
+			},
+			setScaleFactor: (scaleFactor) => {
+				dispatch(warpByVectorActions.setScaleFactor(scaleFactor));
 			},
 		};
 	}
