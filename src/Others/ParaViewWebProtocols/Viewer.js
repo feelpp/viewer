@@ -63,5 +63,14 @@ export default function createMethods(session) {
 		setWarpByVectorFilterScaleFactor: (scaleFactor) => {
 			return session.call('viewer.filters.set.wrap.by.vector.filter.scale.factor', [scaleFactor]);
 		},
+		enableContourFilter: () => {
+			return session.call('viewer.filters.enable.contour.filter', []);
+		},
+		setContourFilterData: (pointArrayName, field) => {
+			return session.call('viewer.filters.set.contour.filter.data', [pointArrayName, field]);
+		},
+		setContourFilterValues: (values) => {
+			return session.call('viewer.filters.set.contour.filter.values', [values]);
+		},
 	};
 }

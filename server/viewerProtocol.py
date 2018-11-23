@@ -27,6 +27,8 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
 
         self.filter = None
         self.warpByVectorFilter = None
+        self.contourFilter = None
+        self.contourFilterCalculator = None
 
         # Logging #
 
@@ -913,4 +915,176 @@ class Viewer(paraViewWebProtocols.ParaViewWebProtocol):
                 value=False,
                 code=-1,
                 message='WarpByVector filter scale factor not set'
+            )
+
+    ## Contour ##
+
+    @exportRpc('viewer.filters.enable.contour.filter')
+    def enableContourFilter(self):
+
+        pointArrays = self.reader.PointArrays
+
+        if len(pointArrays):
+
+            # Disable current filter #
+
+            self.disableCurrentFilter()
+
+            # Create calculator #
+
+            self.contourFilterCalculator = Calculator(Input=self.reader)
+
+            self.contourFilterCalculator.ResultArrayName = 'Result'
+            self.contourFilterCalculator.Function = 'mag(' + pointArrays[0] + ')'
+
+            # Get range #
+
+            self.contourFilterCalculator.UpdatePipeline()
+
+            range = self.contourFilterCalculator.GetDataInformation().DataInformation.GetPointDataInformation().GetArrayInformation('Result').GetComponentRange(0)
+
+            # Create filter #
+
+            self.contourFilter = Contour(Input=self.contourFilterCalculator)
+
+            self.contourFilter.Isosurfaces = [round((range[0] + range[1]) / 2, 2)]
+            self.contourFilter.ContourBy = ['POINTS', 'Result']
+
+            # Display filter #
+
+            Show(self.contourFilter, self.renderView)
+
+            # Update indicator #
+
+            self.filter = 'contour'
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Contour filter enabled',
+                data={
+                    'data': {
+                        'pointArrayName': pointArrays[0],
+                        'field': 'mag',
+                    },
+                    'values': list(self.contourFilter.Isosurfaces),
+                }
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Contour filter not enabled'
+            )
+
+    @exportRpc('viewer.filters.disable.contour.filter')
+    def disableContourFilter(self):
+
+        # Hide filter #
+
+        Hide(self.contourFilter, self.renderView)
+
+        self.contourFilter = None
+        self.contourFilterCalculator = None
+
+        # Update indicator #
+
+        self.filter = None
+
+        # Update view #
+
+        self.updateView()
+
+        # Return #
+
+        return createResponse(
+            value=True,
+            code=1,
+            message='Contour filter disabled',
+        )
+
+    @exportRpc('viewer.filters.set.contour.filter.data')
+    def setContourFilterData(self, pointArrayName, field):
+
+        if (self.filter == 'contour') and self.contourFilterCalculator and self.contourFilter:
+
+            # Compute function #
+
+            function = None
+
+            if field == 'mag':
+
+                function = 'mag(' + pointArrayName + ')'
+
+            elif field == 'X':
+
+                function = pointArrayName + '_X'
+
+            elif field == 'Y':
+
+                function = pointArrayName + '_Y'
+
+            elif field == 'Z':
+
+                function = pointArrayName + '_Z'
+
+            # Set Function #
+
+            self.contourFilterCalculator.Function = function
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Contour filter function set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Contour filter function not set'
+            )
+
+    @exportRpc('viewer.filters.set.contour.filter.values')
+    def setContourFilterValues(self, values):
+
+        if (self.filter == 'contour') and self.contourFilterCalculator and self.contourFilter:
+
+            # Set Function #
+
+            self.contourFilter.Isosurfaces = values
+
+            # Update view #
+
+            self.updateView()
+
+            # Return #
+
+            return createResponse(
+                value=True,
+                code=1,
+                message='Contour filter values set'
+            )
+
+        else:
+
+            return createResponse(
+                value=False,
+                code=-1,
+                message='Contour filter values not set'
             )

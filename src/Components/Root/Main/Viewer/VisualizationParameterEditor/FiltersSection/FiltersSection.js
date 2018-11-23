@@ -7,8 +7,10 @@ import {filters, filterNames} from '../../../../../../Others/filter.js';
 import visualizationParametersActions from '../../../../../../Actions/visualizationParameters/visualizationParameters.js';
 import filtersActions from '../../../../../../Actions/visualizationParameters/filters/filters.js';
 import warpByVectorActions from '../../../../../../Actions/visualizationParameters/filters/warpByVector/warpByVector.js';
+import contourActions from '../../../../../../Actions/visualizationParameters/filters/contour/contour.js';
 
 import WarpByVectorParameters from './WarpByVectorParameters/WarpByVectorParameters.js';
+import ContourParameters from './ContourParameters/ContourParameters.js';
 import PanelSection from '../../../../../Helpers/Panel/PanelSection/PanelSection.js';
 import Select from '../../../../../Helpers/FormElements/Select/Select.js';
 import Switch from '../../../../../Helpers/FormElements/Switch/Switch.js';
@@ -35,6 +37,12 @@ export class FiltersSection extends Component {
 		{
 			filterParameters = (
 				<WarpByVectorParameters/>
+			);
+		}
+		else if(this.props.filter === filters.contour)
+		{
+			filterParameters = (
+				<ContourParameters/>
 			);
 		}
 
@@ -94,6 +102,10 @@ export class FiltersSection extends Component {
 												text: filterNames[filters.warpByVector],
 												value: filters.warpByVector,
 											},
+											{
+												text: filterNames[filters.contour],
+												value: filters.contour,
+											},
 										]}
 										action={(filter) => {
 											this.setFilter(filter);
@@ -132,8 +144,24 @@ export class FiltersSection extends Component {
 				{
 					/* Set parameters */
 
-					this.props.setVectors(result.data.vectors);
-					this.props.setScaleFactor(result.data.scaleFactor);
+					this.props.setWarpByVectorFilterVectors(result.data.vectors);
+					this.props.setWarpByVectorFilterScaleFactor(result.data.scaleFactor);
+
+					/* Set filter */
+
+					this.props.setFilter(filter);
+				}
+			});
+		}
+		else if(filter === filters.contour)
+		{
+			this.props.client.Viewer.enableContourFilter().then((result) => {
+				if(result.value)
+				{
+					/* Set parameters */
+
+					this.props.setContourFilterData(result.data.data);
+					this.props.setContourFilterValues(result.data.values);
 
 					/* Set filter */
 
@@ -165,8 +193,10 @@ FiltersSection.propTypes = {
 	setDataDisplayStatus: PropTypes.func.isRequired,
 	filter: PropTypes.string,
 	setFilter: PropTypes.func.isRequired,
-	setVectors: PropTypes.func.isRequired,
-	setScaleFactor: PropTypes.func.isRequired,
+	setWarpByVectorFilterVectors: PropTypes.func.isRequired,
+	setWarpByVectorFilterScaleFactor: PropTypes.func.isRequired,
+	setContourFilterData: PropTypes.func.isRequired,
+	setContourFilterValues: PropTypes.func.isRequired,
 };
 
 FiltersSection.defaultProps = {
@@ -190,11 +220,17 @@ export default connect(
 			setFilter: (filter) => {
 				dispatch(filtersActions.setFilter(filter));
 			},
-			setVectors: (vectors) => {
+			setWarpByVectorFilterVectors: (vectors) => {
 				dispatch(warpByVectorActions.setVectors(vectors));
 			},
-			setScaleFactor: (scaleFactor) => {
+			setWarpByVectorFilterScaleFactor: (scaleFactor) => {
 				dispatch(warpByVectorActions.setScaleFactor(scaleFactor));
+			},
+			setContourFilterData: (data) => {
+				dispatch(contourActions.setData(data));
+			},
+			setContourFilterValues: (values) => {
+				dispatch(contourActions.setValues(values));
 			},
 		};
 	}
