@@ -129,13 +129,35 @@ You need to pass to the viewer two parameters:
 	    visualizationParameterEditor: {
 	        displayStatus: ..., // boolean describing if visualization parameter editor should be displayed
 	        initialOpenStatus: ..., // boolean describing if visualization parameter editor should be opened at start
-	        sectionInitialOpenStatus: {
-	            view: ..., // boolean
-	            colorMap: ..., // boolean
-	            camera: ..., // boolean
-	            legend: ..., // boolean 
-	            grid: ..., // boolean
-	            others: ..., // boolean
+	        sections: {
+	            view: {
+	                enableStatus: ..., // boolean describing if section is enabled
+	                initialOpenStatus: ..., // boolean describing if section should be opened at start
+	            },
+	            colorMap: {
+	                enableStatus: ..., // boolean describing if section is enabled
+	                initialOpenStatus: ..., // boolean describing if section should be opened at start
+	            },
+	            camera: {
+	                enableStatus: ..., // boolean describing if section is enabled
+	                initialOpenStatus: ..., // boolean describing if section should be opened at start
+	            },
+	            legend: {
+	                enableStatus: ..., // boolean describing if section is enabled
+	                initialOpenStatus: ..., // boolean describing if section should be opened at start
+	            },
+	            grid: {
+	                enableStatus: ..., // boolean describing if section is enabled
+	                initialOpenStatus: ..., // boolean describing if section should be opened at start
+	            },
+	            filters: {
+	                enableStatus: ..., // boolean describing if section is enabled
+	                initialOpenStatus: ..., // boolean describing if section should be opened at start
+	            },
+	            others: {
+	                enableStatus: ..., // boolean describing if section is enabled
+	                initialOpenStatus: ..., // boolean describing if section should be opened at start
+	            },
 	        },
 	    },
 	    screenShot: {
