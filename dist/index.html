@@ -64,8 +64,40 @@
 					},
 				},
 				statisticsDisplayStatus: true,
-				visualizationParameterEditorDisplayStatus: true,
-				visualizationParameterEditorInitialOpenStatus: true,
+				visualizationParameterEditor: {
+					displayStatus: true,
+					initialOpenStatus: false,
+					sections: {
+						view: {
+							enableStatus: true,
+							initialOpenStatus: true,
+						},
+						colorMap: {
+							enableStatus: true,
+							initialOpenStatus: false,
+						},
+						camera: {
+							enableStatus: true,
+							initialOpenStatus: false,
+						},
+						legend: {
+							enableStatus: true,
+							initialOpenStatus: false,
+						},
+						grid: {
+							enableStatus: true,
+							initialOpenStatus: false,
+						},
+						filters: {
+							enableStatus: true,
+							initialOpenStatus: false,
+						},
+						others: {
+							enableStatus: true,
+							initialOpenStatus: false,
+						},
+					},
+				},
 				screenShot: {
 					format: 'png',
 					quality: 1,

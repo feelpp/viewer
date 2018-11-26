@@ -137,7 +137,7 @@ export default connect(
 		/* Return */
 
 		return {
-			initialOpenStatus: state.configuration.visualizationParameterEditor.sectionInitialOpenStatus.legend,
+			initialOpenStatus: state.configuration.visualizationParameterEditor.sections.legend.initialOpenStatus,
 			client: state.connection.client,
 			dataArray: state.visualizationParameters.dataArray,
 			legendTitle: legendTitle,

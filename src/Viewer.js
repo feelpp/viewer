@@ -30,14 +30,35 @@ export class Viewer {
 			visualizationParameterEditor: {
 				displayStatus: true,
 				initialOpenStatus: false,
-				sectionInitialOpenStatus: {
-					view: true,
-					colorMap: false,
-					camera: false,
-					legend: false,
-					grid: false,
-					filters: false,
-					others: false,
+				sections: {
+					view: {
+						enableStatus: true,
+						initialOpenStatus: true,
+					},
+					colorMap: {
+						enableStatus: true,
+						initialOpenStatus: true,
+					},
+					camera: {
+						enableStatus: true,
+						initialOpenStatus: true,
+					},
+					legend: {
+						enableStatus: true,
+						initialOpenStatus: true,
+					},
+					grid: {
+						enableStatus: true,
+						initialOpenStatus: true,
+					},
+					filters: {
+						enableStatus: true,
+						initialOpenStatus: true,
+					},
+					others: {
+						enableStatus: true,
+						initialOpenStatus: true,
+					},
 				},
 			},
 			screenShot: {

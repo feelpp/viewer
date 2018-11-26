@@ -133,7 +133,7 @@ CameraSection.defaultProps = {
 export default connect(
 	(state) => {
 		return {
-			initialOpenStatus: state.configuration.visualizationParameterEditor.sectionInitialOpenStatus.camera,
+			initialOpenStatus: state.configuration.visualizationParameterEditor.sections.camera.initialOpenStatus,
 			client: state.connection.client,
 		};
 	}

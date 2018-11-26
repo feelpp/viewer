@@ -210,7 +210,7 @@ export default connect(
 		/* Return */
 
 		return {
-			initialOpenStatus: state.configuration.visualizationParameterEditor.sectionInitialOpenStatus.colorMap,
+			initialOpenStatus: state.configuration.visualizationParameterEditor.sections.colorMap.initialOpenStatus,
 			client: state.connection.client,
 			dataArray: state.visualizationParameters.dataArray,
 			colorMapPreset: colorMapPreset,

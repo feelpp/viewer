@@ -164,7 +164,7 @@ GridSection.defaultProps = {
 export default connect(
 	(state) => {
 		return {
-			initialOpenStatus: state.configuration.visualizationParameterEditor.sectionInitialOpenStatus.grid,
+			initialOpenStatus: state.configuration.visualizationParameterEditor.sections.grid.initialOpenStatus,
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
 			gridDisplayStatus: state.visualizationParameters.grid.displayStatus,

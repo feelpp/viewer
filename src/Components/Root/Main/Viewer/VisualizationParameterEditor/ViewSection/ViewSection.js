@@ -177,7 +177,7 @@ ViewSection.defaultProps = {
 export default connect(
 	(state) => {
 		return {
-			initialOpenStatus: state.configuration.visualizationParameterEditor.sectionInitialOpenStatus.view,
+			initialOpenStatus: state.configuration.visualizationParameterEditor.sections.view.initialOpenStatus,
 			client: state.connection.client,
 			openStatus: state.panel.openStatus,
 			dataArrays: state.visualizationParameters.dataArrays,

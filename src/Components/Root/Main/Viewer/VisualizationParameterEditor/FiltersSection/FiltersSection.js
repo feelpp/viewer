@@ -206,7 +206,7 @@ FiltersSection.defaultProps = {
 export default connect(
 	(state) => {
 		return {
-			initialOpenStatus: state.configuration.visualizationParameterEditor.sectionInitialOpenStatus.filters,
+			initialOpenStatus: state.configuration.visualizationParameterEditor.sections.filters.initialOpenStatus,
 			client: state.connection.client,
 			dataDisplayStatus: state.visualizationParameters.dataDisplayStatus,
 			filter: state.visualizationParameters.filters.filter,

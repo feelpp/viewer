@@ -140,7 +140,7 @@ OthersSection.defaultProps = {
 export default connect(
 	(state) => {
 		return {
-			initialOpenStatus: state.configuration.visualizationParameterEditor.sectionInitialOpenStatus.filters,
+			initialOpenStatus: state.configuration.visualizationParameterEditor.sections.filters.initialOpenStatus,
 			configuration: state.configuration,
 			client: state.connection.client,
 			backgroundColor: state.visualizationParameters.backgroundColor,

@@ -31,45 +31,80 @@ export class VisualizationParameterEditor extends Component {
 
 		/** View **/
 
-		const viewPanelSection = (
-			<ViewSection/>
-		);
+		let viewPanelSection = null;
+
+		if(this.props.viewSectionEnableStatus)
+		{
+			viewPanelSection = (
+				<ViewSection/>
+			);
+		}
 
 		/** ColorMap **/
 
-		const colorMapPanelSection = (
-			<ColorMapSection/>
-		);
+		let colorMapPanelSection = null;
+
+		if(this.props.colorMapSectionEnableStatus)
+		{
+			colorMapPanelSection = (
+				<ColorMapSection/>
+			);
+		}
 
 		/** Camera **/
 
-		const cameraPanelSection = (
-			<CameraSection/>
-		);
+		let cameraPanelSection = null;
+
+		if(this.props.cameraSectionEnableStatus)
+		{
+			cameraPanelSection = (
+				<CameraSection/>
+			);
+		}
 
 		/** Legend **/
 
-		const legendPanelSection = (
-			<LegendSection/>
-		);
+		let legendPanelSection = null;
+
+		if(this.props.legendSectionEnableStatus)
+		{
+			legendPanelSection = (
+				<LegendSection/>
+			);
+		}
 
 		/** Grid **/
 
-		const gridPanelSection = (
-			<GridSection/>
-		);
+		let gridPanelSection = null;
+
+		if(this.props.gridSectionEnableStatus)
+		{
+			gridPanelSection = (
+				<GridSection/>
+			);
+		}
 
 		/** Filters **/
 
-		const filtersPanelSection = (
-			<FiltersSection/>
-		);
+		let filtersPanelSection = null;
+
+		if(this.props.filtersSectionEnableStatus)
+		{
+			filtersPanelSection = (
+				<FiltersSection/>
+			);
+		}
 
 		/** Others **/
 
-		const othersPanelSection = (
-			<OthersSection/>
-		);
+		let othersPanelSection = null;
+
+		if(this.props.othersSectionEnableStatus)
+		{
+			othersPanelSection = (
+				<OthersSection/>
+			);
+		}
 
 		/* Element */
 
@@ -104,6 +139,13 @@ export class VisualizationParameterEditor extends Component {
 VisualizationParameterEditor.propTypes = {
 	openStatus: PropTypes.bool.isRequired,
 	setOpenStatus: PropTypes.func.isRequired,
+	viewSectionEnableStatus: PropTypes.bool.isRequired,
+	colorMapSectionEnableStatus: PropTypes.bool.isRequired,
+	cameraSectionEnableStatus: PropTypes.bool.isRequired,
+	legendSectionEnableStatus: PropTypes.bool.isRequired,
+	gridSectionEnableStatus: PropTypes.bool.isRequired,
+	filtersSectionEnableStatus: PropTypes.bool.isRequired,
+	othersSectionEnableStatus: PropTypes.bool.isRequired,
 };
 
 VisualizationParameterEditor.defaultProps = {
@@ -114,6 +156,13 @@ export default connect(
 	(state) => {
 		return {
 			openStatus: state.panel.openStatus,
+			viewSectionEnableStatus: state.configuration.visualizationParameterEditor.sections.view.enableStatus,
+			colorMapSectionEnableStatus: state.configuration.visualizationParameterEditor.sections.colorMap.enableStatus,
+			cameraSectionEnableStatus: state.configuration.visualizationParameterEditor.sections.camera.enableStatus,
+			legendSectionEnableStatus: state.configuration.visualizationParameterEditor.sections.legend.enableStatus,
+			gridSectionEnableStatus: state.configuration.visualizationParameterEditor.sections.grid.enableStatus,
+			filtersSectionEnableStatus: state.configuration.visualizationParameterEditor.sections.filters.enableStatus,
+			othersSectionEnableStatus: state.configuration.visualizationParameterEditor.sections.others.enableStatus,
 		};
 	},
 	(dispatch) => {
