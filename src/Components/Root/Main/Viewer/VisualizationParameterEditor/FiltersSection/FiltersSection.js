@@ -8,9 +8,11 @@ import visualizationParametersActions from '../../../../../../Actions/visualizat
 import filtersActions from '../../../../../../Actions/visualizationParameters/filters/filters.js';
 import warpByVectorActions from '../../../../../../Actions/visualizationParameters/filters/warpByVector/warpByVector.js';
 import contourActions from '../../../../../../Actions/visualizationParameters/filters/contour/contour.js';
+import cellDataToPointDataActions from '../../../../../../Actions/visualizationParameters/filters/cellDataToPointData/cellDataToPointData.js';
 
 import WarpByVectorParameters from './WarpByVectorParameters/WarpByVectorParameters.js';
 import ContourParameters from './ContourParameters/ContourParameters.js';
+import CellDataToPointDataParameters from './CellDataToPointDataParameters/CellDataToPointDataParameters.js';
 import PanelSection from '../../../../../Helpers/Panel/PanelSection/PanelSection.js';
 import Select from '../../../../../Helpers/FormElements/Select/Select.js';
 import Switch from '../../../../../Helpers/FormElements/Switch/Switch.js';
@@ -45,6 +47,12 @@ export class FiltersSection extends Component {
 				<ContourParameters/>
 			);
 		}
+                else if(this.props.filter === filters.cellDataToPointData)
+	        {
+		    filterParameters = (
+			    <CellDataToPointDataParameters/>
+		    );
+	        }
 
 		/* Element */
 
@@ -106,6 +114,10 @@ export class FiltersSection extends Component {
 												text: filterNames[filters.contour],
 												value: filters.contour,
 											},
+                                                                                        {
+											    text: filterNames[filters.cellDataToPointData],
+											    value: filters.cellDataToPointData,
+										        },
 										]}
 										action={(filter) => {
 											this.setFilter(filter);
@@ -169,6 +181,22 @@ export class FiltersSection extends Component {
 				}
 			});
 		}
+               else if(filter === filters.contour)
+	       {
+	        	this.props.client.Viewer.enableCellDataToPointDataFilter().then((result) => {
+		    if(result.value)
+		    {
+			/* Set parameters */
+
+			this.props.setCellDataToPointDataFilterData(result.data.data);
+			this.props.setCellDataToPointDataFilterValues(result.data.values);
+
+			/* Set filter */
+
+			this.props.setFilter(filter);
+		    }
+		});
+	       }
 		else
 		{
 			this.props.client.Viewer.disableCurrentFilter().then(() => {
@@ -195,8 +223,10 @@ FiltersSection.propTypes = {
 	setFilter: PropTypes.func.isRequired,
 	setWarpByVectorFilterVectors: PropTypes.func.isRequired,
 	setWarpByVectorFilterScaleFactor: PropTypes.func.isRequired,
-	setContourFilterData: PropTypes.func.isRequired,
-	setContourFilterValues: PropTypes.func.isRequired,
+        setContourFilterData: PropTypes.func.isRequired,
+        setContourFilterValues: PropTypes.func.isRequired,
+        setCellDataToPointDataFilterData: PropTypes.func.isRequired,
+
 };
 
 FiltersSection.defaultProps = {
@@ -232,6 +262,9 @@ export default connect(
 			setContourFilterValues: (values) => {
 				dispatch(contourActions.setValues(values));
 			},
+                        setCellDataToPointDataFilterData: (data) => {
+			       dispatch(cellDataToPointDataActions.setData(data));
+		        },
 		};
 	}
 )(FiltersSection);

@@ -1,9 +1,11 @@
 export const filters = {
 	warpByVector: 'warpByVector',
-	contour: 'contour',
+    contour: 'contour',
+    cellDataToPointData: 'cellDatatoPointData'
 };
 
 export const filterNames = {
 	warpByVector: 'WarpByVector',
-	contour: 'Contour',
+    contour: 'Contour',
+    cellDataToPointData: 'CellDatatoPointData'
 };
